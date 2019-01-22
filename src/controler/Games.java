@@ -1,8 +1,10 @@
 package controler;
 
 import model.Deck;
+import model.GameStatistics;
 import model.Player;
 import model.RequestDecision;
+import model.TestFile;
 
 public class Games {
 	private RequestDecision view;
@@ -10,7 +12,13 @@ public class Games {
 	private String DECK_LOCATION = "StarCitizenDeck.txt";
 	private Player[] players;
 	private Deck deck;
+	private TestFile testFile;
+	private GameStatistics stats;
 
+	public void setTestFile(TestFile testFile) {
+		this.testFile = testFile;
+	}
+	
 	public Games(int numberOfPlayers) {
 		//set up the objects needed to play any number of games
 		createPlayers(numberOfPlayers);
@@ -28,6 +36,7 @@ public class Games {
 	private void playGame() {
 		// A single game of Top-Trumps
 		// initialisation for a single game
+		stats = new GameStatistics(players);
 		
 		// game play loop
 		while (!gameOver()) {
