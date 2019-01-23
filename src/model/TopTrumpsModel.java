@@ -1,14 +1,6 @@
-package controler;
+package model;
 
-import model.Deck;
-import model.GameStatistics;
-import model.Player;
-import model.RequestDecision;
-import model.TestFile;
-
-public class Games {
-	private RequestDecision view;
-	
+public class TopTrumpsModel {	
 	private String DECK_LOCATION = "StarCitizenDeck.txt";
 	private Player[] players;
 	private Deck deck;
@@ -19,7 +11,7 @@ public class Games {
 		this.testFile = testFile;
 	}
 	
-	public Games(int numberOfPlayers) {
+	public TopTrumpsModel(int numberOfPlayers) {
 		//set up the objects needed to play any number of games
 		createPlayers(numberOfPlayers);
 		deck = new Deck(DECK_LOCATION);

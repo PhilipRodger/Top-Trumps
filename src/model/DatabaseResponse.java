@@ -23,6 +23,8 @@ public class DatabaseResponse {
 	public int getTotalHumanWins() {
 		return totalHumanWins;
 	}
+	
+	
 	public void setTotalHumanWins(int totalHumanWins) {
 		this.totalHumanWins = totalHumanWins;
 	}
@@ -38,7 +40,4 @@ public class DatabaseResponse {
 	public void setLargestNumberOfRounds(int largestNumberOfRounds) {
 		this.largestNumberOfRounds = largestNumberOfRounds;
 	}
-	
-	
-
 }
