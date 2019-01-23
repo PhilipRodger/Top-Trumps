@@ -1,17 +1,17 @@
-package controler;
+package model;
 
-import model.Deck;
-import model.Player;
-import model.RequestDecision;
-
-public class Games {
-	private RequestDecision view;
-	
+public class TopTrumpsModel {	
 	private String DECK_LOCATION = "StarCitizenDeck.txt";
 	private Player[] players;
 	private Deck deck;
+	private TestFile testFile;
+	private GameStatistics stats;
 
-	public Games(int numberOfPlayers) {
+	public void setTestFile(TestFile testFile) {
+		this.testFile = testFile;
+	}
+	
+	public TopTrumpsModel(int numberOfPlayers) {
 		//set up the objects needed to play any number of games
 		createPlayers(numberOfPlayers);
 		deck = new Deck(DECK_LOCATION);
@@ -28,6 +28,7 @@ public class Games {
 	private void playGame() {
 		// A single game of Top-Trumps
 		// initialisation for a single game
+		stats = new GameStatistics(players);
 		
 		// game play loop
 		while (!gameOver()) {

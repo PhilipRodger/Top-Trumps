@@ -5,6 +5,7 @@ public abstract class Player {
 	
 	private PlayersCards cards; // A player's deck
 	private int catagoryChoice; // Holds the player's choice
+	private int roundsWon; // Stored for one game
 	
 	//The way they make decisions should be different.
 	public abstract int chooseCatagory(Card c);
@@ -32,6 +33,14 @@ public abstract class Player {
 
 	public void addCardPileToBottom(CardPile pileToAdd) {
 		//TODO: code that adds a pile of cards to the players cards, used when a player wins a round
+	}
+
+	public void incrementRoundsWon() {
+		roundsWon++;
+	}
+
+	public void resetNumRoundsWon() {
+		roundsWon = 0;
 	}
 
 }
