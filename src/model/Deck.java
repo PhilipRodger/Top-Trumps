@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Deck extends CardPile {
-	 // The deck is a special pile of cards, it should have the ability to create a
+	// The deck is a special pile of cards, it should have the ability to create a
 	// private representation of a cononical deck of cards from a file,
 	// and refresh the it's pile of cards with a shuffled representation.
 	private static List<Card> deck = new ArrayList<>();
 	private String fileName = "StarCitizenDeck.txt";
-	
 
 	public Deck(String fileName) {
 		FileReader reader = null;
@@ -23,30 +22,28 @@ public class Deck extends CardPile {
 
 			reader = new FileReader(fileName);
 			Scanner scanner = new Scanner(reader);
+			String categoriesIncludingDescription[] = scanner.nextLine().split(" ");
+			// removing the first category (description)
+			String[] categories = new String[categoriesIncludingDescription.length - 1];
+			for (int i = 1; i < categoriesIncludingDescription.length; i++) {
+				categories[i-1] = categoriesIncludingDescription[i];
+			}
+			Card.setCategories(categories);
 
-			String line = scanner.nextLine();
-			String[] array = line.split(" ");
-			for (int i = 0; i < 5; i++) {
-
-				while (scanner.hasNextLine()) {
-
-					String description = array[0];
-					int size = Integer.parseInt(array[1]);
-					int speed = Integer.parseInt(array[2]);
-					int range = Integer.parseInt(array[3]);
-					int firepower = Integer.parseInt(array[4]);
-					int cargo = Integer.parseInt(array[5]);
-
-					Card card = new Card(description, size, speed, range, firepower, cargo);
-					deck.add(card);
-
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				String[] array = line.split(" ");
+				String description = array[0];
+				int[] attributes = new int[array.length - 1];
+				for (int i = 1; i < array.length; i++) {
+					attributes[i-1] = Integer.parseInt(array[i]);
 				}
-
+				Card card = new Card(description, attributes);
+				//addCard(card);
+				System.out.println(card);
 			}
 
 			scanner.close();
-
-			System.out.println(deck.toString());
 
 		} catch (FileNotFoundException exception) {
 			exception.printStackTrace();

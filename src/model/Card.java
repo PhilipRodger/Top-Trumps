@@ -2,24 +2,6 @@ package model;
 
 public class Card {
 
-	private String description;
-	private int size;
-	private int speed;
-	private int range;
-	private int firepower;
-	private int cargo;
-
-	public Card(String d, int si, int sp, int r, int f, int c) {
-
-		this.setDescription(d);
-		this.setSize(si);
-		this.setSpeed(sp);
-		this.setRange(r);
-		this.setFirepower(f);
-		this.setCargo(c);
-
-	}
-
 	// Same for all the cards:
 	private static String[] categories; // Contains the names of categories/attributes for all the cards.
 
@@ -58,67 +40,14 @@ public class Card {
 		// gives back the value a category i, where i is the index of the property.
 		return values[i];
 	}
-
 	
-	
-	public String getDescription() {
-		return description;
+	@Override
+	public String toString() {
+		String toDisplay = name + " ";
+		for (int i = 0; i < categories.length; i++) {
+			toDisplay += String.format("%s: %d, ", categories[i], values[i]);
+		}
+		toDisplay += String.format("Owner: %s", owner);
+		return toDisplay;
 	}
-	public void setDescription(String d) {
-		description = d;
-	}
-
-	public int getSize() {
-		return size;
-	}
-	
-	public void setSize(int si) {
-		size = si;
-	}
-
-	public int getSpeed() {
-		return speed;
-	}
-	
-	public void setSpeed(int sp) {
-		speed = sp;
-	}
-
-	public int getRange() {
-		return range;
-	}
-
-	
-	public void setRange(int r) {
-		range = r;
-	}
-
-	public int getFirepower() {
-		return firepower;
-	}
-
-	
-	public void setFirepower(int f) {
-		firepower = f;
-	}
-
-	public int getCargo() {
-		return cargo;
-	}
-	
-	public void setCargo(int c) {
-		cargo = c;
-	}
-
-	
-	
-
-	
-
-	
-
-	
-	
-	
-
 }
