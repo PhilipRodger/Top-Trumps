@@ -19,12 +19,10 @@ public class TopTrumps {
 		boolean printTestLog = false;
 		
 		// check the command line for what switches are active
-		for (String arg : args) {
-			
+		for (String arg : args) {	
 			if (arg.equalsIgnoreCase("-t")) printTestLog=true;
 			if (arg.equalsIgnoreCase("-c")) commandLineMode=true;
-			if (arg.equalsIgnoreCase("-o")) onlineMode=true;
-			
+			if (arg.equalsIgnoreCase("-o")) onlineMode=true;	
 		}
 		
 		// We cannot run online and command line mode simultaniously
@@ -43,7 +41,5 @@ public class TopTrumps {
 			String[] commandArgs = {String.valueOf(printTestLog)};
 			TopTrumpsCLIApplication.main(commandArgs);
 		}
-		
 	}
-	
 }
