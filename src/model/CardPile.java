@@ -17,4 +17,8 @@ public class CardPile {
 		//TODO: return true if there is a next card on the pile or false if not.
 		return true;
 	}
+	
+	public int size() {
+		return pile.size();
+	}
 }

@@ -1,16 +1,25 @@
 package model;
 
+import listeners.UserTurnListener;
+
 public class HumanPlayer extends Player{
 
-	@Override
-	public int chooseCatagory(Card c) {
-		/*if (request != null) {
-			return request.makeDecision(c);
-		}*/
-		return 0;
-	}
+	UserTurnListener userTurnListener;
 	
-	/*public void setRequestDecision(RequestDecision request) {
-		//this.request = request;
-	}*/
+	public HumanPlayer(TopTrumpsModel model) {
+		super(model);
+	}	
+	
+	
+	public void addUserTurnListener(UserTurnListener listner) {
+		this.userTurnListener = listner;
+	}
+
+	@Override
+	protected void showCard() {
+		if(userTurnListener != null) {
+			model.setResolveUserTurnPossible(true);
+			userTurnListener.showUserTurn();
+		}	
+	}
 }

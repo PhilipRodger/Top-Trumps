@@ -29,7 +29,7 @@ public class TopTrumpsContoller {
 			 */
 			@Override
 			public void gameStarted() {
-				// TODO Auto-generated method stub
+				model.playGame();
 
 			}
 		});
@@ -57,8 +57,9 @@ public class TopTrumpsContoller {
 			 */
 			@Override
 			public void nextCatagory() {
-				// TODO Auto-generated method stub
-
+				if(model.resolveComputerTurnPossible()) {
+					model.nextCatagory();
+				}
 			}
 		});
 
@@ -71,8 +72,10 @@ public class TopTrumpsContoller {
 			 * @param selectedCatagory is the index of the category the user has chosen
 			 */
 			@Override
-			public void userSelection(int selectedCatagory) {
-				// TODO Auto-generated method stub
+			public void userSelection(int selectedCategory) {
+				if(model.resolveUserTurnPossible()) {
+					model.userSelection(selectedCategory);
+				}
 
 			}
 		});
@@ -101,5 +104,4 @@ public class TopTrumpsContoller {
 			}
 		});
 	}
-
 }
