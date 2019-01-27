@@ -6,7 +6,7 @@ public class CardPile {
 	private Queue<Card> pile;
 	
 	public void addCard(Card c) {
-		addCard(c);
+		pile.add(c);
 	}
 	
 	public Card drawCard() {
