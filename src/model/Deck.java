@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Deck extends CardPile {
@@ -17,7 +16,7 @@ public class Deck extends CardPile {
 	private String fileName = "StarCitizenDeck.txt";
 	
 
-	public Deck(String fileName) throws FileNotFoundException {
+	public Deck(String fileName) {
 		FileReader reader = null;
 
 		try {
