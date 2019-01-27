@@ -1,9 +1,16 @@
 package commandline;
 
+import commandline.view.CommandLineView;
+import controler.TopTrumpsContoller;
+import model.TestFile;
+import model.TopTrumpsModel;
+
 /**
  * Top Trumps command line application
  */
 public class TopTrumpsCLIApplication {
+	final static int numberOfPlayers = 5;
+	final static String testFileName = "log.txt";
 
 	/**
 	 * This main method is called by TopTrumps.java when the user specifies that they want to run in
@@ -14,7 +21,15 @@ public class TopTrumpsCLIApplication {
 
 		boolean writeGameLogsToFile = false; // Should we write game logs to file?
 		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
-
-	}
+		
+		
+		TopTrumpsModel model = new TopTrumpsModel(numberOfPlayers);
+		if(writeGameLogsToFile) {
+			model.setTestFile(new TestFile(testFileName));		
+			}
+		CommandLineView view = new CommandLineView(model);
+		TopTrumpsContoller controller = new TopTrumpsContoller(model, view);
+		view.run();
+		}
 
 }

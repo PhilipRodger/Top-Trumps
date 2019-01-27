@@ -6,7 +6,7 @@ public class CardPile {
 	private Queue<Card> pile;
 	
 	public void addCard(Card c) {
-		addCard(c);
+		pile.add(c);
 	}
 	
 	public Card drawCard() {
@@ -16,5 +16,9 @@ public class CardPile {
 	public boolean hasNextCard() {
 		//TODO: return true if there is a next card on the pile or false if not.
 		return true;
+	}
+	
+	public int size() {
+		return pile.size();
 	}
 }
