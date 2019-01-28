@@ -51,6 +51,10 @@ public abstract class Player {
 	public int getCatagoryChoice() {
 		return catagoryChoice;
 	}
+	
+	public int getRoundsWon() {
+		return roundsWon;
+	}
 
 
 	public void addCardPileToBottom(CardPile pileToAdd) {
