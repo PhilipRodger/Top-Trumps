@@ -66,11 +66,11 @@ public class Database {
 				gWinner = 5;
 			}
 		}
-		gameID++;
 		String gameStats = "INSERT INTO TopTrumpStats VALUES (" + gameID + ", " + nDraws + ", " + nRounds + ", "
 				+ gWinner + ", " + p1RW + ", " + p2RW + ", " + p3RW + ", " + p4RW + ", " + p5RW + ");";
 
 		insertStats(gameStats);
+		gameID++;
 	}
 	/**
 	 * takes a string of game stats from the method writeGameStatistics()
