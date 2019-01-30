@@ -15,7 +15,9 @@ public class Deck extends CardPile {
 	// private representation of a cononical deck of cards from a file,
 	// and refresh the it's pile of cards with a shuffled representation.
 	private static List<Card> deck = new ArrayList<>();
-	private Deque<Card> shuffleDeck = new ArrayDeque<Card>();
+
+  private Deque<Card> shuffleDeck = new ArrayDeque<Card>();
+  
 	private String fileName = "StarCitizenDeck.txt";
 
 	public Deck(String fileName) {
@@ -62,6 +64,8 @@ public class Deck extends CardPile {
 
 	}
 
+
+
 	public Deque<Card> getShuffledDeck() {
 
 		Collections.shuffle(deck);
@@ -71,6 +75,7 @@ public class Deck extends CardPile {
 	}
 		
 		
+
 
 	public String getFileName() {
 		return fileName;

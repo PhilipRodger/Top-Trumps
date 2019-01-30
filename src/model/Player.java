@@ -34,6 +34,8 @@ public abstract class Player {
 		currentCardDrawn = cards.drawCard();
 		showCard();
 		return currentCardDrawn;
+
+
 	}
 	
 	protected int justMakeARandomChoice() {
@@ -41,6 +43,7 @@ public abstract class Player {
 		return r.nextInt(Card.getCategories().length);
 	}
 	
+
 	protected abstract void showCard();
 
 
@@ -50,6 +53,10 @@ public abstract class Player {
 	
 	public int getCatagoryChoice() {
 		return catagoryChoice;
+	}
+	
+	public int getRoundsWon() {
+		return roundsWon;
 	}
 
 

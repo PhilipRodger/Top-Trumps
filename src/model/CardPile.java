@@ -43,7 +43,7 @@ public class CardPile {
 	public int size() {
 		return pile.size();
 	}
-	
+
 	public void dealCards(int numberOfPlayers) {
 
 		pile = deck.getShuffledDeck();
@@ -80,4 +80,5 @@ public class CardPile {
 			}
 		}
 }
+
 }

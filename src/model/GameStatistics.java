@@ -24,6 +24,12 @@ public class GameStatistics {
 		numOfDraws++;
 	}
 	
+
+	public Player[] getPlayerArray() {
+		return players;
+	}
+	
+
 	public Player getWinner() {
 		return winner;
 	}
