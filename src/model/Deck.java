@@ -16,8 +16,8 @@ public class Deck extends CardPile {
 	// and refresh the it's pile of cards with a shuffled representation.
 	private static List<Card> deck = new ArrayList<>();
 
-  private Deque<Card> shuffleDeck = new ArrayDeque<Card>();
-  
+	private Deque<Card> shuffleDeck = new ArrayDeque<Card>();
+
 	private String fileName = "StarCitizenDeck.txt";
 
 	public Deck(String fileName) {
@@ -31,7 +31,7 @@ public class Deck extends CardPile {
 			// removing the first category (description)
 			String[] categories = new String[categoriesIncludingDescription.length - 1];
 			for (int i = 1; i < categoriesIncludingDescription.length; i++) {
-				categories[i-1] = categoriesIncludingDescription[i];
+				categories[i - 1] = categoriesIncludingDescription[i];
 			}
 			Card.setCategories(categories);
 
@@ -41,7 +41,7 @@ public class Deck extends CardPile {
 				String description = array[0];
 				int[] attributes = new int[array.length - 1];
 				for (int i = 1; i < array.length; i++) {
-					attributes[i-1] = Integer.parseInt(array[i]);
+					attributes[i - 1] = Integer.parseInt(array[i]);
 				}
 				Card card = new Card(description, attributes);
 				addCard(card);
@@ -62,8 +62,6 @@ public class Deck extends CardPile {
 		}
 	}
 
-
-
 	public Deque<Card> getShuffledDeck() {
 
 		Collections.shuffle(deck);
@@ -71,9 +69,6 @@ public class Deck extends CardPile {
 
 		return shuffleDeck;
 	}
-		
-		
-
 
 	public String getFileName() {
 		return fileName;

@@ -51,6 +51,10 @@ public abstract class Player {
 		return cards.drawCard();
 	}
 	
+	public void giveCard(Card c) {
+		cards.addCard(c);
+	}
+	
 	public int getCatagoryChoice() {
 		return catagoryChoice;
 	}

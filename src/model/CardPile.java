@@ -42,6 +42,9 @@ public class CardPile {
 	public void dealCards(int numberOfPlayers) {
 
 		pile = deck.getShuffledDeck();
+		for (Card card : deck.getShuffledDeck()) {
+			System.out.println(card);
+		}
 		System.out.println(pile.toString());
 		while (!pile.isEmpty()) {
 			if (pile.isEmpty()) {

@@ -85,6 +85,13 @@ public class TopTrumpsModel {
 		// Add view specific listners.
 		addTurnListners();
 	}
+	
+	private void dealCard() {
+		CardPile shuffled = deck.getShuffledDeck();
+		while(true) {
+			//TODO code here that dishes out the cards to the players
+		}
+	}
 
 	private void startRound() {
 		// A single round in a game!
