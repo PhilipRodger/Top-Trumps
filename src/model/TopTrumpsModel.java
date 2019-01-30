@@ -85,11 +85,20 @@ public class TopTrumpsModel {
 		// Add view specific listners.
 		addTurnListners();
 	}
-	
-	private void dealCard() {
-		CardPile shuffled = deck.getShuffledDeck();
-		while(true) {
-			//TODO code here that dishes out the cards to the players
+
+	private void dealDeck() {
+		CardPile shuffled = deck.getShuffledDeck();					
+		
+
+		while (shuffled.hasNextCard()) {
+			for (Player player : players) {
+				if (!shuffled.hasNextCard()) {
+					System.out.println("handing out a card");
+					player.giveCard(shuffled.drawCard());
+
+				}
+			}
+
 		}
 	}
 
@@ -346,6 +355,7 @@ public class TopTrumpsModel {
 		// A single game of Top-Trumps
 		// initialisation for a single game
 		createPlayers(numberOfPlayers);
+		dealDeck();
 
 		stats = new GameStatistics(players);
 		randomlyChoseStartingPlayer();

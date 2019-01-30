@@ -14,6 +14,7 @@ public abstract class Player {
 	
 	
 	public Player(TopTrumpsModel model) {
+		cards = new PlayersCards(this);
 		this.model = model;
 	}
 

@@ -7,7 +7,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Deck extends CardPile {
@@ -15,8 +17,6 @@ public class Deck extends CardPile {
 	// private representation of a cononical deck of cards from a file,
 	// and refresh the it's pile of cards with a shuffled representation.
 	private static List<Card> deck = new ArrayList<>();
-
-	private Deque<Card> shuffleDeck = new ArrayDeque<Card>();
 
 	private String fileName = "StarCitizenDeck.txt";
 
@@ -44,7 +44,7 @@ public class Deck extends CardPile {
 					attributes[i - 1] = Integer.parseInt(array[i]);
 				}
 				Card card = new Card(description, attributes);
-				addCard(card);
+				deck.add(card);
 			}
 
 			scanner.close();
@@ -62,13 +62,16 @@ public class Deck extends CardPile {
 		}
 	}
 
-	public Deque<Card> getShuffledDeck() {
-
+	public CardPile getShuffledDeck() {
 		Collections.shuffle(deck);
-		shuffleDeck = new ArrayDeque<Card>(deck);
 
-		return shuffleDeck;
+		pile = new LinkedList<>(deck);
+
+	
+		return this;
 	}
+	
+	
 
 	public String getFileName() {
 		return fileName;
