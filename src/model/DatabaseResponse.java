@@ -53,7 +53,7 @@ public class DatabaseResponse {
 				+ ", Total Human Wins= " + totalHumanWins + ", Acerage Draws per Game = " + averageDrawsPerGame
 				+ ", Largest Number of Rounds = " + largestNumberOfRounds + "]";
 	}
-
+}
 
 	
 	
