@@ -31,5 +31,4 @@ public class TopTrumpsCLIApplication {
 		TopTrumpsContoller controller = new TopTrumpsContoller(model, view);
 		view.run();
 		}
-
 }

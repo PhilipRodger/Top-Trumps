@@ -44,8 +44,7 @@ public class Deck extends CardPile {
 					attributes[i-1] = Integer.parseInt(array[i]);
 				}
 				Card card = new Card(description, attributes);
-				//addCard(card);
-				System.out.println(card);
+				addCard(card);
 			}
 
 			scanner.close();
@@ -61,7 +60,6 @@ public class Deck extends CardPile {
 				}
 			}
 		}
-
 	}
 
 

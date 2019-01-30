@@ -2,8 +2,6 @@ import commandline.TopTrumpsCLIApplication;
 
 import online.TopTrumpsOnlineApplication;
 
-
-
 public class TopTrumps {
 
 	/** This is the main class for the TopTrumps Application */
