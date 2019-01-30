@@ -47,6 +47,7 @@ public class Database {
 		}
 	}
 
+
 	/**
 	 * Writes to the database the number of draws, who won the game, number of
 	 * rounds in the game and how many rounds each player won.
@@ -54,6 +55,7 @@ public class Database {
 	 * @param stats This object holds the statistics of a game of Top Trumps which
 	 *              has completed.
 	 */
+
 	public void writeGameStatistics(GameStatistics gstats) {
 		Player[] players = gstats.getPlayerArray();
 		Player winner = gstats.getWinner();
@@ -238,6 +240,7 @@ public class Database {
 	 * @return contains overall statistics over all the games played.
 	 */
 	public DatabaseResponse getDatabaseStats() {
+
 		DatabaseResponse response = new DatabaseResponse();
 		int totalGamesPlayed = getTotalGamesPlayed();
 		int totalComputerWins = getTotalComputerWins();
@@ -252,6 +255,7 @@ public class Database {
 		response.setLargestNumberOfRounds(largestNumberOfRounds);
 
 		return response;
+
 	}
 
 }

@@ -7,6 +7,7 @@ public class DatabaseResponse {
 	private int averageDrawsPerGame;
 	private int largestNumberOfRounds;
 
+
 	public int getTotalGamesPlayed() {
 		return totalGamesPlayed;
 	}
@@ -53,4 +54,7 @@ public class DatabaseResponse {
 				+ ", Largest Number of Rounds = " + largestNumberOfRounds + "]";
 	}
 
-}
+
+	
+	
+	
