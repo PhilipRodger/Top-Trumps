@@ -19,7 +19,7 @@ public class HumanPlayer extends Player{
 	protected void showCard() {
 		if(userTurnListener != null) {
 			model.setResolveUserTurnPossible(true);
-			userTurnListener.showUserTurn();
+			userTurnListener.showUserTurn(currentCardDrawn);
 		}	
 	}
 }

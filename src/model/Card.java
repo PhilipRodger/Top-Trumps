@@ -47,7 +47,7 @@ public class Card {
 		for (int i = 0; i < categories.length; i++) {
 			toDisplay += String.format("%s: %d, ", categories[i], values[i]);
 		}
-		toDisplay += String.format("Owner: %s", owner);
+		toDisplay += String.format("Owner: %s", owner.getName());
 		return toDisplay;
 	}
 }

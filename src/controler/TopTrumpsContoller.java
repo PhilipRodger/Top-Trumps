@@ -87,7 +87,7 @@ public class TopTrumpsContoller {
 			 */
 			@Override
 			public void nextRound() {
-				// TODO Auto-generated method stub
+				model.startRound();
 
 			}
 		});

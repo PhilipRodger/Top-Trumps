@@ -1,12 +1,15 @@
 package model;
 
-import listeners.ComputerTurnListener;
+import listeners.ShowComputerTurnListener;
 
 public class ComputerPlayer extends Player {
-	ComputerTurnListener computerTurnListener;
+	ShowComputerTurnListener computerTurnListener;
+	private static int nextComputerNumber = 1;
 
 	public ComputerPlayer(TopTrumpsModel model) {
 		super(model);
+		name = "Computer" + nextComputerNumber;
+		nextComputerNumber++;
 	}
 	
 
@@ -14,14 +17,16 @@ public class ComputerPlayer extends Player {
 	protected void showCard() {
 		if (computerTurnListener != null) {
 			model.setResolveComputerTurnPossible(true);
-			computerTurnListener.showComputerTurn();
+			categoryChoice = justMakeARandomChoice();
+			model.setCategoryChoice(categoryChoice);
+			computerTurnListener.showComputerTurn(currentCardDrawn);
 		} else {
 			// It can be assumed that we are to auto resolve this turn so we can shortcut showing the user the turn.
 			chosenCategory(this.justMakeARandomChoice());
 		}
 	}
 	
-	public void addComputerTurnListener(ComputerTurnListener listener) {
+	public void addComputerTurnListener(ShowComputerTurnListener listener) {
 		this.computerTurnListener = listener;
 	}
 }

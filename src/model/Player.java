@@ -7,9 +7,10 @@ public abstract class Player {
 	
 	protected TopTrumpsModel model; // The model this player belongs to.
 	private PlayersCards cards; // A player's deck
-	private int catagoryChoice; // Holds the player's choice
+	protected int categoryChoice; // Holds the player's choice
 	private int roundsWon; // Stored for one game
-	private Card currentCardDrawn;
+	protected Card currentCardDrawn;
+	protected String name = "";
 	
 	
 	
@@ -21,7 +22,7 @@ public abstract class Player {
 	//The way they make decisions should be different.
 	public void chosenCategory(int catagoryChoice) {
 		//User or Computer has made a decision and resolve the round.
-		this.catagoryChoice = catagoryChoice;
+		this.categoryChoice = catagoryChoice;
 		model.resolveRound();
 		
 	}
@@ -29,14 +30,15 @@ public abstract class Player {
 	//Somethings should be done the same for human and AI players:
 	public boolean inGame() {
 		//TODO: if player has more cards in their pile they should be in game, else they have lost and false should be returned.
-		return true;
+		if (cards.hasNextCard()) {
+			return true;
+		}
+		return false;
 	}
 	public Card playersDrawPhase() {
 		currentCardDrawn = cards.drawCard();
 		showCard();
 		return currentCardDrawn;
-
-
 	}
 	
 	protected int justMakeARandomChoice() {
@@ -57,7 +59,7 @@ public abstract class Player {
 	}
 	
 	public int getCatagoryChoice() {
-		return catagoryChoice;
+		return categoryChoice;
 	}
 	
 	public int getRoundsWon() {
@@ -75,6 +77,10 @@ public abstract class Player {
 
 	public void resetNumRoundsWon() {
 		roundsWon = 0;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

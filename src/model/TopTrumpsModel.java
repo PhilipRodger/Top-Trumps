@@ -2,7 +2,7 @@ package model;
 
 import java.util.Random;
 
-import listeners.ComputerTurnListener;
+import listeners.ShowComputerTurnListener;
 import listeners.UserDrewRoundListener;
 import listeners.UserLostGameListener;
 import listeners.UserLostRoundListener;
@@ -33,7 +33,7 @@ public class TopTrumpsModel {
 	// When it is the user's turn
 	private UserTurnListener userTurnListener;
 	// When it is the computer's turn
-	private ComputerTurnListener computerTurnListener;
+	private ShowComputerTurnListener computerTurnListener;
 
 	// Game Specific Variables
 	private CardPile communityPile;
@@ -44,8 +44,9 @@ public class TopTrumpsModel {
 	private int playersTurn;
 	private int nextPlayer;
 	private int numberOfSurvingPlayers;
+	private Card firstCard;
 	private CardPile roundPile;
-	private int chosenCatagory;
+	private int chosenCategory;
 	private Player roundWinner;
 
 	// Potential next actions
@@ -64,6 +65,21 @@ public class TopTrumpsModel {
 		// set up the objects needed to play any number of games
 		this.numberOfPlayers = numberOfPlayers;
 		deck = new Deck(DECK_LOCATION);
+	}
+	
+	
+	
+	// Actions callable by the controller to progress game.
+	public void playGame() {
+		// A single game of Top-Trumps
+		// initialisation for a single game
+		createPlayers(numberOfPlayers);
+		dealDeck();
+
+		stats = new GameStatistics(players);
+		randomlyChoseStartingPlayer();
+		communityPile = new CardPile(); 
+		startRound();
 	}
 
 	// Private Helper Methods
@@ -92,21 +108,19 @@ public class TopTrumpsModel {
 
 		while (shuffled.hasNextCard()) {
 			for (Player player : players) {
-				if (!shuffled.hasNextCard()) {
-					System.out.println("handing out a card");
+				if (shuffled.hasNextCard()) {
 					player.giveCard(shuffled.drawCard());
-
 				}
 			}
-
 		}
 	}
 
-	private void startRound() {
+	public void startRound() {
 		// A single round in a game!
+		nextTurnPossible = false;
 
 		// The player's who's turn this is should pick up their card.
-		Card firstCard = players[playersTurn].playersDrawPhase();
+		firstCard = players[playersTurn].playersDrawPhase();
 
 		// Community pile should persist between rounds in case of a draw
 		communityPile.addCard(firstCard);
@@ -117,6 +131,10 @@ public class TopTrumpsModel {
 		roundPile.addCard(firstCard);
 	}
 
+	public Card getFirstCard() {
+		return firstCard;
+	}
+	
 	private void winnerOfRound() {
 		// sets the round winner to the one who has won the round or null if it was a
 		// draw.
@@ -126,11 +144,11 @@ public class TopTrumpsModel {
 
 		for (int i = 0; i < roundPile.size(); i++) {
 			Card toCompare = roundPile.drawCard();
-			if (toCompare.getValue(chosenCatagory) > maxSeen) {
-				maxSeen = toCompare.getValue(chosenCatagory);
+			if (toCompare.getValue(chosenCategory) > maxSeen) {
+				maxSeen = toCompare.getValue(chosenCategory);
 				draw = false;
 				winner = toCompare.getOwner();
-			} else if (toCompare.getValue(chosenCatagory) == maxSeen) {
+			} else if (toCompare.getValue(chosenCategory) == maxSeen) {
 				draw = true;
 				winner = null;
 			}
@@ -157,6 +175,7 @@ public class TopTrumpsModel {
 		return -1;
 	}
 
+	
 	private void resetGameState() {
 		// Reset potential next actions so that only new game, or view stats are
 		// possible
@@ -175,22 +194,26 @@ public class TopTrumpsModel {
 			resetGameState();
 			db.writeGameStatistics(stats);
 			if (userWonGame()) {
+				userWonGameListener.UserWonGame();
 
 			} else if (userLostGame()) {
-
+				userLostGameListener.UserLostGame();
 			}
 
 		} else if (userOutOfGame()) {
+			userOutOfGameListener.UserOutOfGame();
 		} else {
 			// What to do if game is still ongoing:
 			// Work out if it was a win, loss, or draw for the round
-
+			nextTurnPossible = true;
 			if (userWonRound()) {
+				userWonRoundListener.UserWonRound();
 
 			} else if (userLostRound()) {
-
+				userLostRoundListener.UserLostRound();
 			} else {
 				// draw round
+				userDrewRoundListener.UserDrewRound();
 			}
 
 		}
@@ -266,107 +289,11 @@ public class TopTrumpsModel {
 		return true;
 	}
 
-	// A lot of interfaces to update the view.
-	public void addUserWonGameListener(UserWonGameListener listener) {
-		this.userWonGameListener = listener;
-	}
-
-	public void addUserLostGameListener(UserLostGameListener listener) {
-		this.userLostGameListener = listener;
-	}
-
-	public void addUserOutOfGameListener(UserOutOfGameListener listener) {
-		this.userOutOfGameListener = listener;
-	}
-
-	public void addUserWonRoundListener(UserWonRoundListener listener) {
-		this.userWonRoundListener = listener;
-	}
-
-	public void addUserDrewRoundListener(UserDrewRoundListener listener) {
-		this.userDrewRoundListener = listener;
-	}
-
-	public void addUserLostRoundListener(UserLostRoundListener listener) {
-		this.userLostRoundListener = listener;
-	}
-
-	public void addTurnListners() {
-		for (Player player : players) {
-			if (player instanceof HumanPlayer) {
-				((HumanPlayer) player).addUserTurnListener(userTurnListener);
-			} else if (player instanceof ComputerPlayer) {
-				((ComputerPlayer) player).addComputerTurnListener(computerTurnListener);
-			}
-		}
-	}
-
-	public void addUserTurnListener(UserTurnListener listener) {
-		this.userTurnListener = listener;
-	}
-
-	public void addComputerTurnListener(ComputerTurnListener listener) {
-		this.computerTurnListener = listener;
-	}
-
-	// To communicate valid ways the user can communicate with the game.
-	public boolean newGamePossible() {
-		return newGamePossible;
-	}
-
-	public void setNewGamePossible(boolean newGamePossible) {
-		this.newGamePossible = newGamePossible;
-	}
-
-	public boolean viewStatsPossible() {
-		return viewStatsPossible;
-	}
-
-	public void setViewStatsPossible(boolean viewStatsPossible) {
-		this.viewStatsPossible = viewStatsPossible;
-	}
-
-	public boolean resolveComputerTurnPossible() {
-		return resolveComputerTurnPossible;
-	}
-
-	public void setResolveComputerTurnPossible(boolean resolveComputerTurnPossible) {
-		this.resolveComputerTurnPossible = resolveComputerTurnPossible;
-	}
-
-	public boolean resolveUserTurnPossible() {
-		return resolveUserTurnPossible;
-	}
-
-	public void setResolveUserTurnPossible(boolean resolveUserTurnPossible) {
-		this.resolveUserTurnPossible = resolveUserTurnPossible;
-	}
-
-	public boolean nextTurnPossible() {
-		return nextTurnPossible;
-	}
-
-	public void setNextTurnPossible(boolean nextTurnPossible) {
-		this.nextTurnPossible = nextTurnPossible;
-	}
-
-	// Actions callable by the controller to progress game.
-	public void playGame() {
-		// A single game of Top-Trumps
-		// initialisation for a single game
-		createPlayers(numberOfPlayers);
-		dealDeck();
-
-		stats = new GameStatistics(players);
-		randomlyChoseStartingPlayer();
-		startRound();
-	}
-
 	public void nextCatagory() {
 		// User has confirmed they want the computer to finish it's turn, this will
 		// cause the computer player to chose a random category.
 		resolveComputerTurnPossible = false;
-		players[playersTurn].chosenCategory(players[playersTurn].justMakeARandomChoice());
+		players[playersTurn].chosenCategory(players[playersTurn].getCatagoryChoice());
 
 	}
 
@@ -409,4 +336,101 @@ public class TopTrumpsModel {
 		// If a draw do nothing with community pile, and next player will stay the same.
 		displayTurnResolution();
 	}
+	
+
+	public void setCategoryChoice(int choice) {
+		chosenCategory = choice;
+	}
+	
+	public String getCategoryChoice() {
+		return Card.getCategories()[chosenCategory];
+	}
+	
+	public CardPile getRound() {
+		return roundPile;
+	}
+
+	
+	
+	
+	// To communicate valid ways the user can communicate with the game.
+	public boolean newGamePossible() {
+		return newGamePossible;
+	}
+
+	public void setNewGamePossible(boolean newGamePossible) {
+		this.newGamePossible = newGamePossible;
+	}
+
+	public boolean viewStatsPossible() {
+		return viewStatsPossible;
+	}
+
+	public void setViewStatsPossible(boolean viewStatsPossible) {
+		this.viewStatsPossible = viewStatsPossible;
+	}
+
+	public boolean resolveComputerTurnPossible() {
+		return resolveComputerTurnPossible;
+	}
+
+	public void setResolveComputerTurnPossible(boolean resolveComputerTurnPossible) {
+		this.resolveComputerTurnPossible = resolveComputerTurnPossible;
+	}
+
+	public boolean resolveUserTurnPossible() {
+		return resolveUserTurnPossible;
+	}
+
+	public void setResolveUserTurnPossible(boolean resolveUserTurnPossible) {
+		this.resolveUserTurnPossible = resolveUserTurnPossible;
+	}
+
+	public boolean nextTurnPossible() {
+		return nextTurnPossible;
+	}
+	
+	// A lot of interfaces to update the view.
+	public void addUserWonGameListener(UserWonGameListener listener) {
+		this.userWonGameListener = listener;
+	}
+
+	public void addUserLostGameListener(UserLostGameListener listener) {
+		this.userLostGameListener = listener;
+	}
+
+	public void addUserOutOfGameListener(UserOutOfGameListener listener) {
+		this.userOutOfGameListener = listener;
+	}
+
+	public void addUserWonRoundListener(UserWonRoundListener listener) {
+		this.userWonRoundListener = listener;
+	}
+
+	public void addUserDrewRoundListener(UserDrewRoundListener listener) {
+		this.userDrewRoundListener = listener;
+	}
+
+	public void addUserLostRoundListener(UserLostRoundListener listener) {
+		this.userLostRoundListener = listener;
+	}
+
+	public void addTurnListners() {
+		for (Player player : players) {
+			if (player instanceof HumanPlayer) {
+				((HumanPlayer) player).addUserTurnListener(userTurnListener);
+			} else if (player instanceof ComputerPlayer) {
+				((ComputerPlayer) player).addComputerTurnListener(computerTurnListener);
+			}
+		}
+	}
+
+	public void addUserTurnListener(UserTurnListener listener) {
+		this.userTurnListener = listener;
+	}
+
+	public void addShowComputerTurnListener(ShowComputerTurnListener listener) {
+		this.computerTurnListener = listener;
+	}
+
 }

@@ -2,6 +2,8 @@ package model;
 
 import java.awt.List;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 
 public class CardPile {
@@ -12,7 +14,6 @@ public class CardPile {
 	}
 
 	public Card drawCard() {
-		System.out.println(pile.size());
 		return pile.remove();
 	}
 
@@ -23,6 +24,10 @@ public class CardPile {
 		}
 		return true;
 
+	}
+	
+	public ArrayList<Card> getListRepresentation(){
+		return new ArrayList<>(pile);
 	}
 
 	public int size() {

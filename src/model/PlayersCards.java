@@ -6,7 +6,7 @@ public class PlayersCards extends CardPile{
 	@Override
 	public void addCard(Card c) {
 		c.setOwner(owner); //update the owner of the card whenever a card is added.
-		addCard(c);	
+		pile.add(c);	
 	}
 
 	public PlayersCards(Player owner) {
