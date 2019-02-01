@@ -8,6 +8,7 @@ public class HumanPlayer extends Player{
 	
 	public HumanPlayer(TopTrumpsModel model) {
 		super(model);
+		name = "User(You)";
 	}	
 	
 	

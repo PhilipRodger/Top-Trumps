@@ -15,7 +15,7 @@ public class ComputerPlayer extends Player {
 
 	@Override
 	protected void showCard() {
-		if (computerTurnListener != null) {
+		if (computerTurnListener != null || model.isAutoResolve()) {
 			model.setResolveComputerTurnPossible(true);
 			categoryChoice = justMakeARandomChoice();
 			model.setCategoryChoice(categoryChoice);
@@ -23,6 +23,7 @@ public class ComputerPlayer extends Player {
 		} else {
 			// It can be assumed that we are to auto resolve this turn so we can shortcut showing the user the turn.
 			chosenCategory(this.justMakeARandomChoice());
+			model.startRound();
 		}
 	}
 	

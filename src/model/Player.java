@@ -54,7 +54,7 @@ public abstract class Player {
 		return cards.drawCard();
 	}
 	
-	public void giveCard(Card c) {
+	public void addCardToBottomOfPile(Card c) {
 		cards.addCard(c);
 	}
 	
@@ -69,6 +69,9 @@ public abstract class Player {
 
 	public void addCardPileToBottom(CardPile pileToAdd) {
 		//TODO: code that adds a pile of cards to the players cards, used when a player wins a round
+		while(pileToAdd.hasNextCard()) {
+			addCardToBottomOfPile(pileToAdd.drawCard());
+		}
 	}
 
 	public void incrementRoundsWon() {
@@ -81,6 +84,10 @@ public abstract class Player {
 
 	public String getName() {
 		return name;
+	}
+	
+	public int getNumberOfCards() {
+		return cards.size();
 	}
 
 }

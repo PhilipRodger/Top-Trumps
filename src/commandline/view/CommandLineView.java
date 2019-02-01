@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import commandline.TopTrumpsView;
-import listeners.ShowComputerTurnListener;
+import listeners.AutoResolveModeListener;
 import listeners.NextCategoryListener;
 import listeners.NextRoundListener;
 import listeners.RestartListener;
+import listeners.ShowComputerTurnListener;
 import listeners.StartGameListener;
 import listeners.UserDrewRoundListener;
 import listeners.UserLostGameListener;
@@ -31,6 +32,7 @@ public class CommandLineView implements TopTrumpsView {
 	UserSelectionListener userSelectionListner;
 	NextRoundListener nextRoundListener;
 	RestartListener restartListner;
+	AutoResolveModeListener autoResolveModeListener;
 
 	public CommandLineView(TopTrumpsModel model) {
 		this.model = model;
@@ -42,6 +44,7 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void UserWonGame() {
 				// TODO Display to the user they have won!
+				showCardsInRound(model.getChosenCategory());
 				System.out.println("You won!");
 
 			}
@@ -51,6 +54,7 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void UserLostGame() {
 				// TODO Display to the user they have lost!
+				showCardsInRound(model.getChosenCategory());
 				System.out.println("You Lost!");
 
 			}
@@ -62,6 +66,7 @@ public class CommandLineView implements TopTrumpsView {
 				// TODO Display to the user they have been knocked out of the game and that the
 				// remaining computer controlled players will auto-resolve the rest of the game!
 				System.out.println("You are out of the game, enter anything to resolve the game.");
+				autoResolveModeListener.SetAutoResolve();
 
 			}
 		});
@@ -70,7 +75,7 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void UserWonRound() {
 				// TODO Display to the user they have won this round.
-				showCards();
+				showCardsInRound(model.getChosenCategory());
 				System.out.println("You won this round, enter anything to continue.");
 
 			}
@@ -80,7 +85,7 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void UserDrewRound() {
 				// TODO Display to the user that this round was a draw.
-				showCards();
+				showCardsInRound(model.getChosenCategory());
 				System.out.println("Round Draw, enter anything to continue.");
 
 			}
@@ -90,7 +95,8 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void UserLostRound() {
 				// TODO Display to the user they have lost this round.
-				showCards();
+				showCardsInRound(model.getChosenCategory());
+				System.out.println("And the winner of the round is " + model.getWinner().getName());
 				System.out.println("You lost this round, enter anything to continue.");
 			}
 		});
@@ -99,6 +105,7 @@ public class CommandLineView implements TopTrumpsView {
 			public void showUserTurn(Card currentCardDrawn) {
 				// TODO Display to the user that it is their turn and their card.
 				System.out.println("Your Turn.");
+				System.out.println("Number of cards in community pile: " + model.getCommunityPileSize());
 				System.out.println(currentCardDrawn);
 
 			}
@@ -109,10 +116,12 @@ public class CommandLineView implements TopTrumpsView {
 				System.out.println(computersCard.getOwner().getName() + " turn.");
 				System.out.println("The computer's card is: " + computersCard);
 				System.out.println("They chose:" + model.getCategoryChoice());
+				System.out.println("Number of cards in community pile: " + model.getCommunityPileSize());
 				System.out.println("Enter anything to continue.");
 
 			}
 		});
+		
 	}
 
 	@Override
@@ -121,15 +130,22 @@ public class CommandLineView implements TopTrumpsView {
 
 	}
 	
-	private void showCards() {
+	private void showCardsInRound(int CategoryChoice) {
 		ArrayList<Card> round = model.getRound().getListRepresentation();
-		System.out.println("Number of cards in round: " + round.size());
+		System.out.println("Round:");
 		for (Card card : round) {
-			System.out.println(card);
+			
+			String ownerName = card.getOwner().getName();
+			int numOfCardsInOwnersDeck = card.getOwner().getNumberOfCards();
+			String cardName = card.getName();
+			String categoryName = Card.getCategories()[CategoryChoice];
+			int cardValue = card.getValue(CategoryChoice);
+
+			String playerSummaryText = String.format("%s (%d cards): \t %s  %s %d", ownerName, numOfCardsInOwnersDeck,
+					cardName, categoryName, cardValue);
+			System.out.println(playerSummaryText);
 		}
 	}
-
-	
 
 	// should be a endless loop that will continually seek input from system.in
 	// It is the User--[via-View]---> Controller part.
@@ -165,7 +181,7 @@ public class CommandLineView implements TopTrumpsView {
 						actionTakenThisCycle = true;
 					}
 				} catch (Exception e) {
-					// Not a category, do nothing
+					// Not a category index, do nothing
 				}
 			}
 
@@ -221,5 +237,11 @@ public class CommandLineView implements TopTrumpsView {
 	public void addRestartListener(RestartListener listner) {
 		this.restartListner = listner;
 
+	}
+
+	@Override
+	public void addAutoResolveModeListener(AutoResolveModeListener listener) {
+		this.autoResolveModeListener = listener;
+		
 	}
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import listeners.ShowComputerTurnListener;
@@ -109,7 +110,7 @@ public class TopTrumpsModel {
 		while (shuffled.hasNextCard()) {
 			for (Player player : players) {
 				if (shuffled.hasNextCard()) {
-					player.giveCard(shuffled.drawCard());
+					player.addCardToBottomOfPile(shuffled.drawCard());
 				}
 			}
 		}
@@ -118,6 +119,16 @@ public class TopTrumpsModel {
 	public void startRound() {
 		// A single round in a game!
 		nextTurnPossible = false;
+		
+		if (roundWinner != null) {
+			// If not a draw then add the communal pile to the winners deck
+			for (Player player : players) {
+				if (roundWinner == player) {
+					player.addCardPileToBottom(communityPile);
+					playersTurn = getIndexOfPlayer(roundWinner); // the winner of a round should pick the next round.
+				}
+			}
+		}
 
 		// The player's who's turn this is should pick up their card.
 		firstCard = players[playersTurn].playersDrawPhase();
@@ -141,9 +152,11 @@ public class TopTrumpsModel {
 		int maxSeen = -1;
 		boolean draw = false;
 		Player winner = null;
+		ArrayList<Card> roundPileCopy = roundPile.getListRepresentation();
+		
 
-		for (int i = 0; i < roundPile.size(); i++) {
-			Card toCompare = roundPile.drawCard();
+		for (int i = 0; i < roundPileCopy.size(); i++) {
+			Card toCompare = roundPileCopy.get(i);
 			if (toCompare.getValue(chosenCategory) > maxSeen) {
 				maxSeen = toCompare.getValue(chosenCategory);
 				draw = false;
@@ -322,17 +335,10 @@ public class TopTrumpsModel {
 
 			incrementPlayer();
 		}
+		
 		// All player's cards on pile, need to work out who won.
 		winnerOfRound();
-		if (roundWinner != null) {
-			// If not a draw then add the communal pile to the winners deck
-			for (Player player : players) {
-				if (roundWinner == player) {
-					player.addCardPileToBottom(communityPile);
-					playersTurn = getIndexOfPlayer(roundWinner); // the winner of a round should pick the next round.
-				}
-			}
-		}
+
 		// If a draw do nothing with community pile, and next player will stay the same.
 		displayTurnResolution();
 	}
@@ -348,6 +354,10 @@ public class TopTrumpsModel {
 	
 	public CardPile getRound() {
 		return roundPile;
+	}
+	
+	public int getCommunityPileSize() {
+		return communityPile.size();
 	}
 
 	
@@ -433,4 +443,20 @@ public class TopTrumpsModel {
 		this.computerTurnListener = listener;
 	}
 
+	public int getChosenCategory() {
+		return chosenCategory;
+	}
+	
+	public Player getWinner() {
+		return roundWinner;
+	}
+
+	public void setToAutoResolve() {
+		autoResolveMode = true;
+		
+	}
+
+	public boolean isAutoResolve() {
+		return autoResolveMode;
+	}
 }

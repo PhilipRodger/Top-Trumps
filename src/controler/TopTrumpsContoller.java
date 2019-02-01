@@ -6,6 +6,7 @@ import listeners.NextRoundListener;
 import listeners.RestartListener;
 import listeners.StartGameListener;
 import listeners.UserSelectionListener;
+import listeners.AutoResolveModeListener;
 import listeners.ViewStatisticsListener;
 import model.TopTrumpsModel;
 
@@ -101,6 +102,15 @@ public class TopTrumpsContoller {
 			public void restartGame() {
 				// TODO Auto-generated method stub
 
+			}
+		});
+		
+		view.addAutoResolveModeListener(new AutoResolveModeListener() {
+			
+			@Override
+			public void SetAutoResolve() {
+				model.setToAutoResolve();
+				model.startRound();
 			}
 		});
 	}
