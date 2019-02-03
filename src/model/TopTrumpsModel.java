@@ -1,6 +1,7 @@
 package model;
 
 import displayers.DisplayComputerTurn;
+import displayers.DisplayDatabaseResponce;
 import displayers.DisplayUserDrewRound;
 import displayers.DisplayUserLostGame;
 import displayers.DisplayUserLostRound;
@@ -24,7 +25,7 @@ public class TopTrumpsModel {
 	}
 
 	public void playNewGame(int numOfPlayers) {
-		game = new Game(numOfPlayers);
+		game = new Game(numOfPlayers, db);
 		
 		if (writeToTestFile) game.writeTestFile();
 
@@ -40,8 +41,11 @@ public class TopTrumpsModel {
 		
 		game.startGame();
 	}
-
-
+	
+	public void viewStatistics() {
+		DatabaseResponse response = db.getDatabaseStats();
+		displayDatabaseResponce.showDatabaseResonce(response);
+	}
 
 	// Pass though methods to interact with the game.
 	public void nextCategory() {
@@ -83,6 +87,7 @@ public class TopTrumpsModel {
 	
 	
 	// Displayers that update view.
+	private DisplayDatabaseResponce displayDatabaseResponce;
 	private DisplayUserWonGame displayUserWonGame;
 	private DisplayUserLostGame displayUserLostGame;
 	private DisplayUserOutOfGame displayUserOutOfGame;
@@ -91,6 +96,10 @@ public class TopTrumpsModel {
 	private DisplayUserLostRound displayUserLostRound;
 	private DisplayComputerTurn displayComputerTurn;
 	private DisplayUserTurn displayUserTurn;
+	
+	public void addDisplayDataBaseResponce(DisplayDatabaseResponce displayer) {
+		this.displayDatabaseResponce = displayer;
+	}
 
 	public void addDisplayUserWonGame(DisplayUserWonGame displayer) {
 		this.displayUserWonGame = displayer;

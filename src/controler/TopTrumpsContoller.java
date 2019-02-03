@@ -42,8 +42,7 @@ public class TopTrumpsContoller {
 			 */
 			@Override
 			public void viewStatistics() {
-				// TODO Auto-generated method stub
-
+				model.viewStatistics();
 			}
 		});
 

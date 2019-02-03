@@ -9,16 +9,6 @@ public interface TopTrumpsView {
 	
 	// Things the view will need to display to the user
 	public void showMainMenu();
-//	
-//	public void showStatistics(DatabaseResponse stats);
-//	
-//	public void showStartOfPlayerTurn();
-//	
-//	public void showStartOfComputerTurn();
-//	
-//	public void showTurnResolution();
-//	
-//	public void showEndOfGame();
 	
 	
 	// Below are ways that the view will notify the controller that the user has

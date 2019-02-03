@@ -74,6 +74,8 @@ public class Round {
 					game.setPlayersTurn(game.getIndexOfPlayer(roundWinner)); // the winner of a round should be next
 				}
 			}
+		} else {
+			game.incrementNumOfDraws();
 		}
 	}
 

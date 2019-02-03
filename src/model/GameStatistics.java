@@ -12,9 +12,6 @@ public class GameStatistics {
 		winner = null;
 		numOfRounds = 0;
 		this.players = players;
-		for (Player player : players) {
-			player.resetNumRoundsWon();
-		}
 	}
 	
 	public int getNumOfDraws() {

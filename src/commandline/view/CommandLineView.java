@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import commandline.TopTrumpsView;
 import displayers.DisplayComputerTurn;
+import displayers.DisplayDatabaseResponce;
 import displayers.DisplayUserDrewRound;
 import displayers.DisplayUserLostGame;
 import displayers.DisplayUserLostRound;
@@ -19,9 +20,11 @@ import listeners.StartGameListener;
 import listeners.UserSelectionListener;
 import listeners.ViewStatisticsListener;
 import model.Card;
+import model.DatabaseResponse;
 import model.Game;
 import model.Round;
 import model.TopTrumpsModel;
+import sun.awt.RepaintArea;
 
 public class CommandLineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;
@@ -34,6 +37,19 @@ public class CommandLineView implements TopTrumpsView {
 		// Model ---[UPDATES]---> View
 		// TODO Decisions should be made about how to display certain events to the
 		// user:
+		model.addDisplayDataBaseResponce(new DisplayDatabaseResponce() {
+			
+			@Override
+			public void showDatabaseResonce(DatabaseResponse response) {
+				System.out.println("Game Stats!:");
+				System.out.println("Total games played: " + response.getTotalGamesPlayed());
+				System.out.println("Total games users won: " + response.getTotalHumanWins());
+				System.out.println("Total games computers won: " + response.getTotalComputerWins());
+				System.out.println("Average draws per game: " + response.getAverageDrawsPerGame());
+				System.out.println("Largest Number of rounds in a game: " + response.getLargestNumberOfRounds());
+				
+			}
+		});
 		model.addDisplayUserWonGame(new DisplayUserWonGame() {
 			@Override
 			public void showUserWonGame(Game game) {
@@ -182,6 +198,12 @@ public class CommandLineView implements TopTrumpsView {
 				startGameListner.startNewGame(numOfPlayers);
 
 				// resets ability to take another input
+				actionTakenThisCycle = true;
+			}
+			
+			if(input.toLowerCase().equals("stats") && !actionTakenThisCycle){
+				viewStatisticsListner.viewStatistics();
+				
 				actionTakenThisCycle = true;
 			}
 

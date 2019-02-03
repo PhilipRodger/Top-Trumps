@@ -22,6 +22,7 @@ public class Game {
 	private TestFile testFile;
 	private GameStatistics stats;
 	private Round round;
+	private Database db;
 
 	// Potential next actions
 	private boolean resolveComputerTurnPossible = false;
@@ -31,8 +32,9 @@ public class Game {
 
 	
 	// Create a new game;
-	public Game(int numOfPlayers) {
+	public Game(int numOfPlayers, Database db) {
 		this.numOfPlayers = numOfPlayers;
+		this.db = db;
 	}
 
 	public void writeTestFile() {
@@ -58,6 +60,7 @@ public class Game {
 	public void startRound() {
 		if (nextTurnPossible) {
 			round = new Round(this);
+			stats.incrementRoundCounter();
 
 			round.addDisplayUserWonRound(displayUserWonRound);
 			round.addDisplayUserDrewRound(displayUserDrewRound);
@@ -105,6 +108,10 @@ public class Game {
 		return communityPile.size();
 	}
 
+	public void incrementNumOfDraws() {
+		stats.incrementDrawCounter();
+	}
+	
 	public boolean gameOver() {
 		// if game is over (less than 2 players have cards in their decks) return
 		// true, else false
@@ -122,7 +129,8 @@ public class Game {
 
 	public void displayGameOverScreen() {
 		// Game is over
-		// db.writeGameStatistics(stats);
+		stats.setWinner(getRoundWinner());
+		db.writeGameStatistics(stats);
 		if (userWonGame()) {
 			displayUserWonGame.showUserWonGame(this);
 
