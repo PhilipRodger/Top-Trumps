@@ -1,33 +1,33 @@
 package model;
 
-import listeners.ShowComputerTurnListener;
+import displayers.DisplayComputerTurn;
 
 public class ComputerPlayer extends Player {
-	ShowComputerTurnListener computerTurnListener;
+	DisplayComputerTurn showComputerTurnListener;
 	private static int nextComputerNumber = 1;
 
-	public ComputerPlayer(TopTrumpsModel model) {
-		super(model);
+	public ComputerPlayer(Game game) {
+		super(game);
 		name = "Computer" + nextComputerNumber;
 		nextComputerNumber++;
 	}
 	
 
 	@Override
-	protected void showCard() {
-		if (computerTurnListener != null || model.isAutoResolve()) {
-			model.setResolveComputerTurnPossible(true);
-			categoryChoice = justMakeARandomChoice();
-			model.setCategoryChoice(categoryChoice);
-			computerTurnListener.showComputerTurn(currentCardDrawn);
+	protected void showCard(Round currentRound) {
+		if (showComputerTurnListener != null || game.inAutoResolve()) {
+			game.setResolveComputerTurnPossible(true);
+			int categoryChoice = justMakeARandomChoice();
+			game.setCategoryChoice(categoryChoice);
+			showComputerTurnListener.showComputerTurn(currentRound);
 		} else {
 			// It can be assumed that we are to auto resolve this turn so we can shortcut showing the user the turn.
 			chosenCategory(this.justMakeARandomChoice());
-			model.startRound();
+			game.startRound();
 		}
 	}
 	
-	public void addComputerTurnListener(ShowComputerTurnListener listener) {
-		this.computerTurnListener = listener;
+	public void addDisplayComputerTurn(DisplayComputerTurn listener) {
+		this.showComputerTurnListener = listener;
 	}
 }

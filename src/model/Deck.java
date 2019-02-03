@@ -3,20 +3,17 @@ package model;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class Deck extends CardPile {
 	// The deck is a special pile of cards, it should have the ability to create a
 	// private representation of a cononical deck of cards from a file,
 	// and refresh the it's pile of cards with a shuffled representation.
-	private static List<Card> deck = new ArrayList<>();
+	private List<Card> deck = new ArrayList<>();
 
 	private String fileName = "StarCitizenDeck.txt";
 

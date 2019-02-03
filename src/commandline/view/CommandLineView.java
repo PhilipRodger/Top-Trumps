@@ -4,35 +4,29 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import commandline.TopTrumpsView;
+import displayers.DisplayComputerTurn;
+import displayers.DisplayUserDrewRound;
+import displayers.DisplayUserLostGame;
+import displayers.DisplayUserLostRound;
+import displayers.DisplayUserOutOfGame;
+import displayers.DisplayUserTurn;
+import displayers.DisplayUserWonGame;
+import displayers.DisplayUserWonRound;
 import listeners.AutoResolveModeListener;
 import listeners.NextCategoryListener;
 import listeners.NextRoundListener;
-import listeners.RestartListener;
-import listeners.ShowComputerTurnListener;
 import listeners.StartGameListener;
-import listeners.UserDrewRoundListener;
-import listeners.UserLostGameListener;
-import listeners.UserLostRoundListener;
-import listeners.UserOutOfGameListener;
 import listeners.UserSelectionListener;
-import listeners.UserTurnListener;
-import listeners.UserWonGameListener;
-import listeners.UserWonRoundListener;
 import listeners.ViewStatisticsListener;
 import model.Card;
+import model.Game;
+import model.Round;
 import model.TopTrumpsModel;
 
 public class CommandLineView implements TopTrumpsView {
+	private final int numOfPlayers = 5;
 	TopTrumpsModel model;
-	// Listeners in the command view are not linked to individual elements like the
-	// web version.
-	StartGameListener startGameListner;
-	ViewStatisticsListener viewStatisticsListner;
-	NextCategoryListener nextCatagoryListener;
-	UserSelectionListener userSelectionListner;
-	NextRoundListener nextRoundListener;
-	RestartListener restartListner;
-	AutoResolveModeListener autoResolveModeListener;
+
 
 	public CommandLineView(TopTrumpsModel model) {
 		this.model = model;
@@ -40,29 +34,27 @@ public class CommandLineView implements TopTrumpsView {
 		// Model ---[UPDATES]---> View
 		// TODO Decisions should be made about how to display certain events to the
 		// user:
-		model.addUserWonGameListener(new UserWonGameListener() {
+		model.addDisplayUserWonGame(new DisplayUserWonGame() {
 			@Override
-			public void UserWonGame() {
+			public void showUserWonGame(Game game) {
 				// TODO Display to the user they have won!
-				showCardsInRound(model.getChosenCategory());
 				System.out.println("You won!");
 
 			}
 		});
-		model.addUserLostGameListener(new UserLostGameListener() {
+		model.addDisplayUserLostGame(new DisplayUserLostGame() {
 
 			@Override
-			public void UserLostGame() {
+			public void showUserLostGame(Game game) {
 				// TODO Display to the user they have lost!
-				showCardsInRound(model.getChosenCategory());
 				System.out.println("You Lost!");
 
 			}
 		});
-		model.addUserOutOfGameListener(new UserOutOfGameListener() {
+		model.addDisplayUserOutOfGame(new DisplayUserOutOfGame() {
 
 			@Override
-			public void UserOutOfGame() {
+			public void showUserOutOfGame(Game game) {
 				// TODO Display to the user they have been knocked out of the game and that the
 				// remaining computer controlled players will auto-resolve the rest of the game!
 				System.out.println("You are out of the game, enter anything to resolve the game.");
@@ -70,53 +62,53 @@ public class CommandLineView implements TopTrumpsView {
 
 			}
 		});
-		model.addUserWonRoundListener(new UserWonRoundListener() {
+		model.addDisplayUserOutOfGame(new DisplayUserWonRound() {
 
 			@Override
-			public void UserWonRound() {
+			public void showUserWonRound(Round currentRound) {
 				// TODO Display to the user they have won this round.
-				showCardsInRound(model.getChosenCategory());
+				showCardsInRound(currentRound);
 				System.out.println("You won this round, enter anything to continue.");
 
 			}
 		});
-		model.addUserDrewRoundListener(new UserDrewRoundListener() {
+		model.addDisplayUserDrewRound(new DisplayUserDrewRound() {
 
 			@Override
-			public void UserDrewRound() {
+			public void showUserDrewRound(Round currentRound) {
 				// TODO Display to the user that this round was a draw.
-				showCardsInRound(model.getChosenCategory());
+				showCardsInRound(currentRound);
 				System.out.println("Round Draw, enter anything to continue.");
 
 			}
 		});
-		model.addUserLostRoundListener(new UserLostRoundListener() {
+		model.addDisplayUserLostRound(new DisplayUserLostRound() {
 
 			@Override
-			public void UserLostRound() {
+			public void showUserLostRound(Round currentRound) {
 				// TODO Display to the user they have lost this round.
-				showCardsInRound(model.getChosenCategory());
-				System.out.println("And the winner of the round is " + model.getWinner().getName());
+				showCardsInRound(currentRound);
+				System.out.println("And the winner of the round is " + currentRound.getRoundWinner().getName());
 				System.out.println("You lost this round, enter anything to continue.");
 			}
 		});
-		model.addUserTurnListener(new UserTurnListener() {
+		model.addDisplayUserTurn(new DisplayUserTurn() {
 			@Override
-			public void showUserTurn(Card currentCardDrawn) {
+			public void showUserTurn(Round currentRound) {
 				// TODO Display to the user that it is their turn and their card.
 				System.out.println("Your Turn.");
-				System.out.println("Number of cards in community pile: " + model.getCommunityPileSize());
-				System.out.println(currentCardDrawn);
+				System.out.println("Number of cards in community pile: " + currentRound.getCommunityPileSize());
+				System.out.println(currentRound.getFirstCard());
 
 			}
 		});
-		model.addShowComputerTurnListener(new ShowComputerTurnListener() {
-			public void showComputerTurn(Card computersCard) {
+		model.addDisplayComputerTurn(new DisplayComputerTurn() {
+			public void showComputerTurn(Round currentRound) {
 				// TODO Display to the user that it is an opponent's turn and their card
-				System.out.println(computersCard.getOwner().getName() + " turn.");
-				System.out.println("The computer's card is: " + computersCard);
-				System.out.println("They chose:" + model.getCategoryChoice());
-				System.out.println("Number of cards in community pile: " + model.getCommunityPileSize());
+				System.out.println(currentRound.getFirstCard().getOwner().getName() + " turn.");
+				System.out.println("The computer's card is: " + currentRound.getFirstCard());
+				System.out.println("They chose:" + Card.getCategories()[currentRound.getChosenCategory()]);
+				System.out.println("Number of cards in community pile: " + currentRound.getCommunityPileSize());
 				System.out.println("Enter anything to continue.");
 
 			}
@@ -130,16 +122,16 @@ public class CommandLineView implements TopTrumpsView {
 
 	}
 	
-	private void showCardsInRound(int CategoryChoice) {
-		ArrayList<Card> round = model.getRound().getListRepresentation();
+	private void showCardsInRound(Round currentRound) {
+		ArrayList<Card> round = currentRound.getListOfCardsInRound();
 		System.out.println("Round:");
 		for (Card card : round) {
 			
 			String ownerName = card.getOwner().getName();
 			int numOfCardsInOwnersDeck = card.getOwner().getNumberOfCards();
 			String cardName = card.getName();
-			String categoryName = Card.getCategories()[CategoryChoice];
-			int cardValue = card.getValue(CategoryChoice);
+			String categoryName = Card.getCategories()[currentRound.getChosenCategory()];
+			int cardValue = card.getValue(currentRound.getChosenCategory());
 
 			String playerSummaryText = String.format("%s (%d cards): \t %s  %s %d", ownerName, numOfCardsInOwnersDeck,
 					cardName, categoryName, cardValue);
@@ -163,7 +155,7 @@ public class CommandLineView implements TopTrumpsView {
 			input = s.nextLine();
 
 			if (model.resolveComputerTurnPossible() && !actionTakenThisCycle) {
-				nextCatagoryListener.nextCatagory();
+				nextCatagoryListener.nextCategory();
 				actionTakenThisCycle = true;
 			}
 
@@ -185,9 +177,9 @@ public class CommandLineView implements TopTrumpsView {
 				}
 			}
 
-			if (input.toLowerCase().equals("new") && (startGameListner != null) && model.newGamePossible()
+			if (input.toLowerCase().equals("new") && (startGameListner != null)
 					&& !actionTakenThisCycle) {
-				startGameListner.gameStarted();
+				startGameListner.startNewGame(numOfPlayers);
 
 				// resets ability to take another input
 				actionTakenThisCycle = true;
@@ -201,6 +193,16 @@ public class CommandLineView implements TopTrumpsView {
 		s.close();
 	}
 
+	
+	// Listeners in the command view are not linked to individual elements like the
+	// web version.
+	StartGameListener startGameListner;
+	ViewStatisticsListener viewStatisticsListner;
+	NextCategoryListener nextCatagoryListener;
+	UserSelectionListener userSelectionListner;
+	NextRoundListener nextRoundListener;
+	AutoResolveModeListener autoResolveModeListener;
+	
 	// Below methods just add action listeners to the the view allowing separation
 	// of the view form the controller.
 	@Override
@@ -233,11 +235,6 @@ public class CommandLineView implements TopTrumpsView {
 
 	}
 
-	@Override
-	public void addRestartListener(RestartListener listner) {
-		this.restartListner = listner;
-
-	}
 
 	@Override
 	public void addAutoResolveModeListener(AutoResolveModeListener listener) {

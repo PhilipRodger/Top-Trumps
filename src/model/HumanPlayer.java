@@ -1,26 +1,26 @@
 package model;
 
-import listeners.UserTurnListener;
+import displayers.DisplayUserTurn;
 
 public class HumanPlayer extends Player{
 
-	UserTurnListener userTurnListener;
+	DisplayUserTurn userTurnListener;
 	
-	public HumanPlayer(TopTrumpsModel model) {
-		super(model);
+	public HumanPlayer(Game game) {
+		super(game);
 		name = "User(You)";
 	}	
 	
 	
-	public void addUserTurnListener(UserTurnListener listner) {
+	public void addDisplayUserTurn(DisplayUserTurn listner) {
 		this.userTurnListener = listner;
 	}
 
 	@Override
-	protected void showCard() {
+	protected void showCard(Round currentRound) {
 		if(userTurnListener != null) {
-			model.setResolveUserTurnPossible(true);
-			userTurnListener.showUserTurn(currentCardDrawn);
+			game.setResolveUserTurnPossible(true);
+			userTurnListener.showUserTurn(currentRound);
 		}	
 	}
 }

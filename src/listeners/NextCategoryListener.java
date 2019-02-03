@@ -1,5 +1,5 @@
 package listeners;
 
 public interface NextCategoryListener {
-	public void nextCatagory();
+	public void nextCategory();
 }

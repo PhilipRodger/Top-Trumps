@@ -23,10 +23,7 @@ public class TopTrumpsCLIApplication {
 		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
 		
 		
-		TopTrumpsModel model = new TopTrumpsModel(numberOfPlayers);
-		if(writeGameLogsToFile) {
-			model.setTestFile(new TestFile(testFileName));		
-			}
+		TopTrumpsModel model = new TopTrumpsModel(writeGameLogsToFile);
 		CommandLineView view = new CommandLineView(model);
 		TopTrumpsContoller controller = new TopTrumpsContoller(model, view);
 		view.run();

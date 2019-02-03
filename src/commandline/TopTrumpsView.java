@@ -33,8 +33,6 @@ public interface TopTrumpsView {
 
 	public void addNextRoundListener(NextRoundListener listener);
 
-	public void addRestartListener(RestartListener listener);
-
 	public void addAutoResolveModeListener(AutoResolveModeListener userWantsToAutoResolveGameListner);
 	
 	

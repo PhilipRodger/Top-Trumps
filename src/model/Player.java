@@ -5,25 +5,23 @@ import java.util.Random;
 public abstract class Player {
 	// player can be a human player or an AI.
 	
-	protected TopTrumpsModel model; // The model this player belongs to.
 	private PlayersCards cards; // A player's deck
-	protected int categoryChoice; // Holds the player's choice
 	private int roundsWon; // Stored for one game
 	protected Card currentCardDrawn;
 	protected String name = "";
+	protected Game game;
 	
 	
 	
-	public Player(TopTrumpsModel model) {
+	public Player(Game game) {
 		cards = new PlayersCards(this);
-		this.model = model;
+		this.game = game;
 	}
 
 	//The way they make decisions should be different.
-	public void chosenCategory(int catagoryChoice) {
+	public void chosenCategory(int categoryChoice) {
 		//User or Computer has made a decision and resolve the round.
-		this.categoryChoice = catagoryChoice;
-		model.resolveRound();
+		game.setCategoryChoice(categoryChoice);
 		
 	}
 	
@@ -37,7 +35,6 @@ public abstract class Player {
 	}
 	public Card playersDrawPhase() {
 		currentCardDrawn = cards.drawCard();
-		showCard();
 		return currentCardDrawn;
 	}
 	
@@ -47,7 +44,7 @@ public abstract class Player {
 	}
 	
 
-	protected abstract void showCard();
+	protected abstract void showCard(Round currentRound);
 
 
 	public Card drawCard() {
@@ -58,9 +55,6 @@ public abstract class Player {
 		cards.addCard(c);
 	}
 	
-	public int getCatagoryChoice() {
-		return categoryChoice;
-	}
 	
 	public int getRoundsWon() {
 		return roundsWon;

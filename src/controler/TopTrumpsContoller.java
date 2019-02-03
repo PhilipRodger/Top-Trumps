@@ -1,12 +1,11 @@
 package controler;
 
 import commandline.TopTrumpsView;
+import listeners.AutoResolveModeListener;
 import listeners.NextCategoryListener;
 import listeners.NextRoundListener;
-import listeners.RestartListener;
 import listeners.StartGameListener;
 import listeners.UserSelectionListener;
-import listeners.AutoResolveModeListener;
 import listeners.ViewStatisticsListener;
 import model.TopTrumpsModel;
 
@@ -29,8 +28,8 @@ public class TopTrumpsContoller {
 			 * viewing statistics. It causes the model to start up a new game.
 			 */
 			@Override
-			public void gameStarted() {
-				model.playGame();
+			public void startNewGame(int numOfPlayers) {
+				model.playNewGame(numOfPlayers);
 
 			}
 		});
@@ -57,9 +56,9 @@ public class TopTrumpsContoller {
 			 * chose their category and the round will resolve.
 			 */
 			@Override
-			public void nextCatagory() {
+			public void nextCategory() {
 				if(model.resolveComputerTurnPossible()) {
-					model.nextCatagory();
+					model.nextCategory();
 				}
 			}
 		});
@@ -93,17 +92,6 @@ public class TopTrumpsContoller {
 			}
 		});
 
-		view.addRestartListener(new RestartListener() {
-			/**
-			 * This will be called at the end of a game after the user has decided that they
-			 * want to go back to the main menu.
-			 */
-			@Override
-			public void restartGame() {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		
 		view.addAutoResolveModeListener(new AutoResolveModeListener() {
 			

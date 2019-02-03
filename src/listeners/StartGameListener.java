@@ -1,5 +1,5 @@
 package listeners;
 
 public interface StartGameListener {
-	public void gameStarted();
+	public void startNewGame(int numOfPlayers);
 }
