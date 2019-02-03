@@ -130,6 +130,7 @@ public class Game {
 	public void displayGameOverScreen() {
 		// Game is over
 		stats.setWinner(getRoundWinner());
+		db.connectToDB();
 		db.writeGameStatistics(stats);
 		if (userWonGame()) {
 			displayUserWonGame.showUserWonGame(this);
