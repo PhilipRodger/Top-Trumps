@@ -3,10 +3,10 @@ package model;
 import java.sql.*;
 
 public class Database {
-	private Connection c = null; // connection attribute for connecting to database
+	private static Connection c = null; // connection attribute for connecting to database
 
 	public Database() { // default constructor
-		
+
 	}
 
 	/*
@@ -20,11 +20,14 @@ public class Database {
 		final String dbName = "jdbc:postgresql:topTrumps";
 
 		try {
+			Class.forName("org.postgresql.Driver");
 			c = DriverManager.getConnection(dbName, username, password);
-
+			
 		} catch (SQLException e) {
 			System.out.println("Failed to connect to database.");
 			e.printStackTrace();
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
 		}
 		if (c != null) {
 			System.out.println("Successfully connected to database.");
@@ -46,7 +49,6 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
-
 
 	/**
 	 * Writes to the database the number of draws, who won the game, number of
@@ -240,7 +242,6 @@ public class Database {
 	 * @return contains overall statistics over all the games played.
 	 */
 	public DatabaseResponse getDatabaseStats() {
-
 		DatabaseResponse response = new DatabaseResponse();
 		int totalGamesPlayed = getTotalGamesPlayed();
 		int totalComputerWins = getTotalComputerWins();

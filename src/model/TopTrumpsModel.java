@@ -43,8 +43,10 @@ public class TopTrumpsModel {
 	}
 	
 	public void viewStatistics() {
+		db.connectToDB();
 		DatabaseResponse response = db.getDatabaseStats();
 		displayDatabaseResponce.showDatabaseResonce(response);
+		db.disconnectDB();
 	}
 
 	// Pass though methods to interact with the game.

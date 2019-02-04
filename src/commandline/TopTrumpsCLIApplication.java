@@ -22,7 +22,6 @@ public class TopTrumpsCLIApplication {
 		boolean writeGameLogsToFile = false; // Should we write game logs to file?
 		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
 		
-		
 		TopTrumpsModel model = new TopTrumpsModel(writeGameLogsToFile);
 		CommandLineView view = new CommandLineView(model);
 		TopTrumpsContoller controller = new TopTrumpsContoller(model, view);
