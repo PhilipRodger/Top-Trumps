@@ -138,6 +138,7 @@ public class Game {
 		} else if (userLostGame()) {
 			displayUserLostGame.showUserLostGame(this);
 		}
+		db.disconnectDB();
 	}
 
 	public void displayUserOutOfGameScreen() {
