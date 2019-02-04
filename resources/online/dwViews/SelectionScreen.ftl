@@ -25,6 +25,53 @@
     	<div class="container">
 
 			<!-- Add your HTML Here -->
+			
+
+      <div class="container">
+        <p class="lead"><h1>Top trumps Game</h1></p>
+      </div>
+
+    
+		<div class="container">
+  <div class="row">
+    <div class="col-sm-9">
+    New Game
+    <div class="row">
+    
+    <div class="col-8 col-sm-6">
+    <button type="button" class="btn btn-lg btn-light" id="startGame">Start a new Top Trumps Game</button>
+    </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  
+  
+  <div class="container">
+  <div class="row">
+    <div class="col-sm-9">
+    Game Statistics
+    <div class="row">
+    
+    <div class="col-8 col-sm-6">
+    <button type="button" class="btn btn-lg btn-light" id="startGame">Get statistics from previous games</button>
+    </div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+        
+
+    
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
 		
 		</div>
 		
@@ -38,8 +85,8 @@
 				// --------------------------------------------------------------------------
 				
 				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
+				// helloJSONList();
+				// helloWord("Student");
 				
 			}
 			
