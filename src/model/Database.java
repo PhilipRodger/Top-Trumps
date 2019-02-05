@@ -6,7 +6,7 @@ public class Database {
 	private Connection c = null; // connection attribute for connecting to database
 
 	public Database() { // default constructor
-
+		
 	}
 
 	/*

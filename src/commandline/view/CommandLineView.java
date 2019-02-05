@@ -24,7 +24,6 @@ import model.DatabaseResponse;
 import model.Game;
 import model.Round;
 import model.TopTrumpsModel;
-import sun.awt.RepaintArea;
 
 public class CommandLineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;

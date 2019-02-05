@@ -130,6 +130,7 @@ public class Game {
 	public void displayGameOverScreen() {
 		// Game is over
 		stats.setWinner(getRoundWinner());
+		db.connectToDB();
 		db.writeGameStatistics(stats);
 		if (userWonGame()) {
 			displayUserWonGame.showUserWonGame(this);
@@ -137,6 +138,7 @@ public class Game {
 		} else if (userLostGame()) {
 			displayUserLostGame.showUserLostGame(this);
 		}
+		db.disconnectDB();
 	}
 
 	public void displayUserOutOfGameScreen() {
