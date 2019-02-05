@@ -156,7 +156,7 @@ public class CommandLineView implements TopTrumpsView {
 
 	// should be a endless loop that will continually seek input from system.in
 	// It is the User--[via-View]---> Controller part.
-	@Override
+	
 	public void run() {
 		showMainMenu();
 		Scanner s = new Scanner(System.in);

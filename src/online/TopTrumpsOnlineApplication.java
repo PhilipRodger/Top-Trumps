@@ -12,26 +12,46 @@ import online.dwResources.TopTrumpsRESTAPI;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
+import commandline.TopTrumpsView;
+import commandline.view.CommandLineView;
+import controler.TopTrumpsContoller;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import listeners.AutoResolveModeListener;
+import listeners.NextCategoryListener;
+import listeners.NextRoundListener;
+import listeners.StartGameListener;
+import listeners.UserSelectionListener;
+import listeners.ViewStatisticsListener;
+import model.TopTrumpsModel;
 
 /**
  * Top Trumps Web Application. This class is complete, you do not need to edit it, you
  * instead need to complete TopTrumpsRESTAPI and the HTML/Javascript views.
  */
-public class TopTrumpsOnlineApplication extends Application<TopTrumpsJSONConfiguration> {
-
+public class TopTrumpsOnlineApplication extends Application<TopTrumpsJSONConfiguration> implements TopTrumpsView {
 	/**
 	 * This is the main class for the Top Trumps Web application. It is called by TopTrumps.java
 	 * when the user specifies that they want to run in online mode. 
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		boolean writeGameLogsToFile = false; // Online Version should never write a log file
+		
+		TopTrumpsModel model = new TopTrumpsModel(writeGameLogsToFile);
+		TopTrumpsOnlineApplication view = new TopTrumpsOnlineApplication(model);
+		TopTrumpsContoller controller = new TopTrumpsContoller(model, view);
+		
 		try {
-			new TopTrumpsOnlineApplication().run(args); // Create a new online application and run it
+			view.run(args); // Create a new online application and run it
 		} catch (Exception e) {e.printStackTrace();}
+	}
+	
+	TopTrumpsModel model;
+	public TopTrumpsOnlineApplication(TopTrumpsModel model) {
+		this.model = model;
 	}
 	
 	@Override
@@ -67,7 +87,6 @@ public class TopTrumpsOnlineApplication extends Application<TopTrumpsJSONConfigu
 		environment.jersey().register(gameScreen);
 	}
 
-    
     /**
      * Get the name of the application
      */
@@ -84,4 +103,48 @@ public class TopTrumpsOnlineApplication extends Application<TopTrumpsJSONConfigu
     public void initialize(Bootstrap<TopTrumpsJSONConfiguration> bootstrap) {
     	bootstrap.addBundle(new ViewBundle<TopTrumpsJSONConfiguration>());
     }
+
+	
+	//Listeners to trigger when the user does something 
+	@Override
+	public void showMainMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addStartGameListener(StartGameListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addViewStatisticsListener(ViewStatisticsListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNextCategoryListener(NextCategoryListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addUserSelectionListener(UserSelectionListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNextRoundListener(NextRoundListener listener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addAutoResolveModeListener(AutoResolveModeListener userWantsToAutoResolveGameListner) {
+		// TODO Auto-generated method stub
+		
+	}
 }

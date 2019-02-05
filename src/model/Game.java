@@ -19,7 +19,7 @@ public class Game {
 	private Player[] players;
 	private Deck deck;
 	private CardPile communityPile;
-	private TestFile testFile;
+	private LogFile testFile;
 	private GameStatistics stats;
 	private Round round;
 	private Database db;
@@ -38,7 +38,7 @@ public class Game {
 	}
 
 	public void writeTestFile() {
-		testFile = new TestFile("LogFile.txt");
+		testFile = new LogFile("LogFile.txt");
 	}
 
 	

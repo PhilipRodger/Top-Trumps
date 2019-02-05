@@ -2,7 +2,7 @@ package commandline;
 
 import commandline.view.CommandLineView;
 import controler.TopTrumpsContoller;
-import model.TestFile;
+import model.LogFile;
 import model.TopTrumpsModel;
 
 /**
