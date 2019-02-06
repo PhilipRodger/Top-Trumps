@@ -26,7 +26,20 @@
     	<div class="container">
 
 			<!-- Add your HTML Here -->
-		
+		<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Number of Games</th>
+      <th scope="col">Number of Human Wins</th>
+      <th scope="col">Number of AI Wins</th>
+      <th scope="col">Average Draws Per Game</th>
+      <th scope="col">Longest Game</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
 		</div>
 		
 		<script type="text/javascript">
@@ -39,8 +52,6 @@
 				// --------------------------------------------------------------------------
 				
 				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
 				
 			}
 			
