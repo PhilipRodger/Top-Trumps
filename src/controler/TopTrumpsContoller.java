@@ -90,15 +90,5 @@ public class TopTrumpsContoller {
 
 			}
 		});
-
-		
-		view.addAutoResolveModeListener(new AutoResolveModeListener() {
-			
-			@Override
-			public void SetAutoResolve() {
-				model.setToAutoResolve();
-				model.startRound();
-			}
-		});
 	}
 }

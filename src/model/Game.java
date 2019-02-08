@@ -28,7 +28,6 @@ public class Game {
 	private boolean resolveComputerTurnPossible = false;
 	private boolean resolveUserTurnPossible = false;
 	private boolean nextTurnPossible = true;
-	private boolean autoResolveMode = false;
 
 	
 	// Create a new game;
@@ -153,14 +152,6 @@ public class Game {
 		return round.getRoundWinner();
 	}
 
-	public void setToAutoResolve() {
-		autoResolveMode = true;
-
-	}
-
-	public boolean inAutoResolve() {
-		return autoResolveMode;
-	}
 
 	public Player[] getPlayers() {
 		return players;

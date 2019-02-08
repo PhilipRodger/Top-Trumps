@@ -15,7 +15,7 @@ public class ComputerPlayer extends Player {
 
 	@Override
 	protected void showCard(Round currentRound) {
-		if (showComputerTurnListener != null || game.inAutoResolve()) {
+		if (showComputerTurnListener != null) {
 			game.setResolveComputerTurnPossible(true);
 			int categoryChoice = justMakeARandomChoice();
 			game.setCategoryChoice(categoryChoice);
@@ -29,5 +29,10 @@ public class ComputerPlayer extends Player {
 	
 	public void addDisplayComputerTurn(DisplayComputerTurn listener) {
 		this.showComputerTurnListener = listener;
+	}
+
+
+	public static void resetPlayerCounter() {
+		nextComputerNumber = 1;
 	}
 }

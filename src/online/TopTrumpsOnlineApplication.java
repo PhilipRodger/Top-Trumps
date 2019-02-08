@@ -141,10 +141,4 @@ public class TopTrumpsOnlineApplication extends Application<TopTrumpsJSONConfigu
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void addAutoResolveModeListener(AutoResolveModeListener userWantsToAutoResolveGameListner) {
-		// TODO Auto-generated method stub
-		
-	}
 }

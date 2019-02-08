@@ -18,13 +18,11 @@ public class Round {
 	private Player roundWinner;
 	private Game game;
 
-
 	public Round(Game game) {
 		this.game = game;
 		roundPile = new CardPile();
 	}
 
-	
 	// Interactions to progress round
 	public void startRound(Player playersTurn) {
 		// A single round in a game!
@@ -65,7 +63,7 @@ public class Round {
 
 		// If a draw do nothing with community pile, and next player will stay the same.
 		displayTurnResolution();
-		
+
 		if (roundWinner != null) {
 			// If not a draw then add the communal pile to the winners deck
 			for (Player player : game.getPlayers()) {
@@ -104,14 +102,14 @@ public class Round {
 		return roundWinner;
 	}
 
-	public ArrayList<Card> getListOfCardsInRound(){
+	public ArrayList<Card> getListOfCardsInRound() {
 		return roundPile.getListRepresentation();
 	}
-	
+
 	public int getCommunityPileSize() {
 		return game.getCommunityPileSize();
 	}
-	
+
 	// Private Helper functions
 	private void winnerOfRound() {
 		// sets the round winner to the one who has won the round or null if it was a
@@ -141,17 +139,21 @@ public class Round {
 
 		if (game.gameOver()) {
 			game.displayGameOverScreen();
-		} else if (game.userOutOfGame()) {
-			game.displayUserOutOfGameScreen();
 		} else {
 			// What to do if game is still ongoing:
+
 			// Work out if it was a win, loss, or draw for the round
 			game.setNextTurnPossible(true);
 			if (userWonRound()) {
 				displayUserWonRound.showUserWonRound(this);
 
+			} else if (game.userOutOfGame()) {
+				game.displayUserOutOfGameScreen();
+				
 			} else if (userLostRound()) {
+				
 				displayUserLostRound.showUserLostRound(this);
+				
 			} else {
 				// draw round
 				displayUserDrewRound.showUserDrewRound(this);

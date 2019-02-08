@@ -38,6 +38,7 @@ public class TopTrumpsModel {
 		game.addDisplayUserLostRound(displayUserLostRound);
 		game.addDisplayComputerTurn(displayComputerTurn);
 		game.addDisplayUserTurn(displayUserTurn);
+		ComputerPlayer.resetPlayerCounter();
 		
 		game.startGame();
 	}
@@ -62,9 +63,6 @@ public class TopTrumpsModel {
 		game.startRound();
 	}
 
-	public void setToAutoResolve() {
-		game.setToAutoResolve();
-	}
 	
 
 	

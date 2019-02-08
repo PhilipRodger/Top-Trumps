@@ -25,9 +25,9 @@ public class Database {
 			
 		} catch (SQLException e) {
 			System.out.println("Failed to connect to database.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 		}
 		if (c != null) {
 			System.out.println("Successfully connected to database.");
@@ -44,9 +44,9 @@ public class Database {
 		try {
 			c.close();
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println("You could not disconnect from the database.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

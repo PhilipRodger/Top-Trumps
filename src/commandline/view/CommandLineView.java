@@ -13,7 +13,6 @@ import displayers.DisplayUserOutOfGame;
 import displayers.DisplayUserTurn;
 import displayers.DisplayUserWonGame;
 import displayers.DisplayUserWonRound;
-import listeners.AutoResolveModeListener;
 import listeners.NextCategoryListener;
 import listeners.NextRoundListener;
 import listeners.StartGameListener;
@@ -28,6 +27,7 @@ import model.TopTrumpsModel;
 public class CommandLineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;
 	TopTrumpsModel model;
+	boolean autoResolve = false;
 
 
 	public CommandLineView(TopTrumpsModel model) {
@@ -54,6 +54,7 @@ public class CommandLineView implements TopTrumpsView {
 			public void showUserWonGame(Game game) {
 				// TODO Display to the user they have won!
 				System.out.println("You won!");
+				autoResolve = false;
 
 			}
 		});
@@ -63,7 +64,7 @@ public class CommandLineView implements TopTrumpsView {
 			public void showUserLostGame(Game game) {
 				// TODO Display to the user they have lost!
 				System.out.println("You Lost!");
-
+				autoResolve = false;
 			}
 		});
 		model.addDisplayUserOutOfGame(new DisplayUserOutOfGame() {
@@ -73,8 +74,7 @@ public class CommandLineView implements TopTrumpsView {
 				// TODO Display to the user they have been knocked out of the game and that the
 				// remaining computer controlled players will auto-resolve the rest of the game!
 				System.out.println("You are out of the game, enter anything to resolve the game.");
-				autoResolveModeListener.SetAutoResolve();
-
+				autoResolve = true;
 			}
 		});
 		model.addDisplayUserOutOfGame(new DisplayUserWonRound() {
@@ -92,9 +92,10 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void showUserDrewRound(Round currentRound) {
 				// TODO Display to the user that this round was a draw.
-				showCardsInRound(currentRound);
-				System.out.println("Round Draw, enter anything to continue.");
-
+				if (!autoResolve) {
+					showCardsInRound(currentRound);
+					System.out.println("Round Draw, enter anything to continue.");	
+				}
 			}
 		});
 		model.addDisplayUserLostRound(new DisplayUserLostRound() {
@@ -102,9 +103,11 @@ public class CommandLineView implements TopTrumpsView {
 			@Override
 			public void showUserLostRound(Round currentRound) {
 				// TODO Display to the user they have lost this round.
-				showCardsInRound(currentRound);
-				System.out.println("And the winner of the round is " + currentRound.getRoundWinner().getName());
-				System.out.println("You lost this round, enter anything to continue.");
+				if (!autoResolve) {
+					showCardsInRound(currentRound);
+					System.out.println("And the winner of the round is " + currentRound.getRoundWinner().getName());
+					System.out.println("You lost this round, enter anything to continue.");	
+				}
 			}
 		});
 		model.addDisplayUserTurn(new DisplayUserTurn() {
@@ -166,8 +169,10 @@ public class CommandLineView implements TopTrumpsView {
 		boolean actionTakenThisCycle = false;
 
 		while (!input.toLowerCase().equals("quit")) {
-			System.out.println("Type 'quit' to exit.");
-			input = s.nextLine();
+			if(!autoResolve) {
+				System.out.println("Type 'quit' to exit.");
+				input = s.nextLine();	
+			}
 
 			if (model.resolveComputerTurnPossible() && !actionTakenThisCycle) {
 				nextCatagoryListener.nextCategory();
@@ -222,7 +227,6 @@ public class CommandLineView implements TopTrumpsView {
 	NextCategoryListener nextCatagoryListener;
 	UserSelectionListener userSelectionListner;
 	NextRoundListener nextRoundListener;
-	AutoResolveModeListener autoResolveModeListener;
 	
 	// Below methods just add action listeners to the the view allowing separation
 	// of the view form the controller.
@@ -254,12 +258,5 @@ public class CommandLineView implements TopTrumpsView {
 	public void addNextRoundListener(NextRoundListener listner) {
 		this.nextRoundListener = listner;
 
-	}
-
-
-	@Override
-	public void addAutoResolveModeListener(AutoResolveModeListener listener) {
-		this.autoResolveModeListener = listener;
-		
 	}
 }

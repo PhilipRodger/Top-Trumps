@@ -23,7 +23,6 @@ public interface TopTrumpsView {
 
 	public void addNextRoundListener(NextRoundListener listener);
 
-	public void addAutoResolveModeListener(AutoResolveModeListener userWantsToAutoResolveGameListner);
 	
 	
 	// Start the action->controller->model->view loop, this is called once the MVC objects have been initialised.
