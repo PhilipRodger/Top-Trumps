@@ -11,26 +11,19 @@ public class ComputerPlayer extends Player {
 		name = "Computer" + nextComputerNumber;
 		nextComputerNumber++;
 	}
-	
 
 	@Override
 	protected void showCard(Round currentRound) {
-		if (showComputerTurnListener != null) {
-			game.setResolveComputerTurnPossible(true);
-			int categoryChoice = justMakeARandomChoice();
-			game.setCategoryChoice(categoryChoice);
-			showComputerTurnListener.showComputerTurn(currentRound);
-		} else {
-			// It can be assumed that we are to auto resolve this turn so we can shortcut showing the user the turn.
-			chosenCategory(this.justMakeARandomChoice());
-			game.startRound();
-		}
+		game.setResolveComputerTurnPossible(true);
+		int categoryChoice = justMakeARandomChoice();
+		game.setCategoryChoice(categoryChoice);
+		showComputerTurnListener.showComputerTurn(currentRound);
+
 	}
-	
+
 	public void addDisplayComputerTurn(DisplayComputerTurn listener) {
 		this.showComputerTurnListener = listener;
 	}
-
 
 	public static void resetPlayerCounter() {
 		nextComputerNumber = 1;

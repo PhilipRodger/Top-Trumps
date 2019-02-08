@@ -86,13 +86,6 @@ public class Round {
 		this.chosenCategory = chosenCategory;
 	}
 
-	public String getCategoryChoiceString() {
-		return Card.getCategories()[chosenCategory];
-	}
-
-	public CardPile getRound() {
-		return roundPile;
-	}
 
 	public int getChosenCategory() {
 		return chosenCategory;

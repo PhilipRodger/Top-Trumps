@@ -144,9 +144,6 @@ public class Game {
 		displayUserOutOfGame.showUserOutOfGame(this);
 	}
 
-	public int getChosenCategory() {
-		return round.getChosenCategory();
-	}
 
 	public Player getRoundWinner() {
 		return round.getRoundWinner();

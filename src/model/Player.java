@@ -18,21 +18,16 @@ public abstract class Player {
 		this.game = game;
 	}
 
-	//The way they make decisions should be different.
-	public void chosenCategory(int categoryChoice) {
-		//User or Computer has made a decision and resolve the round.
-		game.setCategoryChoice(categoryChoice);
-		
-	}
 	
 	//Somethings should be done the same for human and AI players:
 	public boolean inGame() {
-		//TODO: if player has more cards in their pile they should be in game, else they have lost and false should be returned.
+		// If player has more cards in their pile they should be in game, else they have lost and false should be returned.
 		if (cards.hasNextCard()) {
 			return true;
 		}
 		return false;
 	}
+	
 	public Card playersDrawPhase() {
 		currentCardDrawn = cards.drawCard();
 		return currentCardDrawn;
@@ -70,10 +65,6 @@ public abstract class Player {
 
 	public void incrementRoundsWon() {
 		roundsWon++;
-	}
-
-	public void resetNumRoundsWon() {
-		roundsWon = 0;
 	}
 
 	public String getName() {
