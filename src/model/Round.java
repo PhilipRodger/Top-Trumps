@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import displayers.DisplayComputerTurn;
-import displayers.DisplayUserDrewRound;
+import displayers.DisplayDrewRound;
 import displayers.DisplayUserLostRound;
 import displayers.DisplayUserTurn;
 import displayers.DisplayUserWonRound;
@@ -172,14 +172,14 @@ public class Round {
 
 	// Adds displayers to update the view.
 	private DisplayUserWonRound displayUserWonRound;
-	private DisplayUserDrewRound displayUserDrewRound;
+	private DisplayDrewRound displayUserDrewRound;
 	private DisplayUserLostRound displayUserLostRound;
 
 	public void addDisplayUserWonRound(DisplayUserWonRound displayer) {
 		this.displayUserWonRound = displayer;
 	}
 
-	public void addDisplayUserDrewRound(DisplayUserDrewRound displayer) {
+	public void addDisplayUserDrewRound(DisplayDrewRound displayer) {
 		this.displayUserDrewRound = displayer;
 	}
 

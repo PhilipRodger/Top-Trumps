@@ -1,12 +1,11 @@
-package commandline.view;
+package view;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import commandline.TopTrumpsView;
 import displayers.DisplayComputerTurn;
 import displayers.DisplayDatabaseResponce;
-import displayers.DisplayUserDrewRound;
+import displayers.DisplayDrewRound;
 import displayers.DisplayUserLostGame;
 import displayers.DisplayUserLostRound;
 import displayers.DisplayUserOutOfGame;
@@ -87,7 +86,7 @@ public class CommandLineView implements TopTrumpsView {
 
 			}
 		});
-		model.addDisplayUserDrewRound(new DisplayUserDrewRound() {
+		model.addDisplayUserDrewRound(new DisplayDrewRound() {
 
 			@Override
 			public void showUserDrewRound(Round currentRound) {

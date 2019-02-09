@@ -5,6 +5,11 @@ public class Card {
 	// Same for all the cards:
 	private static String[] categories; // Contains the names of categories/attributes for all the cards.
 
+	/**
+	 * Returns the categories for the attributes of the cards.
+	 * 
+	 * @return categories
+	 */
 	public static String[] getCategories() {
 		return categories;
 	}
@@ -40,7 +45,7 @@ public class Card {
 		// gives back the value a category i, where i is the index of the property.
 		return values[i];
 	}
-	
+
 	@Override
 	public String toString() {
 		String toDisplay = name + " ";

@@ -1,20 +1,29 @@
 package controler;
 
-import commandline.TopTrumpsView;
-import listeners.AutoResolveModeListener;
 import listeners.NextCategoryListener;
 import listeners.NextRoundListener;
 import listeners.StartGameListener;
 import listeners.UserSelectionListener;
 import listeners.ViewStatisticsListener;
 import model.TopTrumpsModel;
+import view.TopTrumpsView;
 
-// The controller takes actions from the User. Then triggers the model to update to reflect the action.
-// User ---[Interacts]----> Controller ---[Manipulates]----> Model 
-
+/**
+ * The controller takes actions from the User. Then triggers the model to update
+ * to reflect the action. 
+ * 
+ * User ---[Interacts]---->Controller---[Manipulates]----> Model
+ */
 public class TopTrumpsContoller {
 	TopTrumpsModel model;
 	TopTrumpsView view;
+
+	/**
+	 * The controller takes a model and a view so that it can update the model when
+	 * the view is interacted with.
+	 * @param model
+	 * @param view
+	 */
 
 	public TopTrumpsContoller(TopTrumpsModel model, TopTrumpsView view) {
 		this.model = model;
@@ -56,7 +65,7 @@ public class TopTrumpsContoller {
 			 */
 			@Override
 			public void nextCategory() {
-				if(model.resolveComputerTurnPossible()) {
+				if (model.resolveComputerTurnPossible()) {
 					model.nextCategory();
 				}
 			}
@@ -72,7 +81,7 @@ public class TopTrumpsContoller {
 			 */
 			@Override
 			public void userSelection(int selectedCategory) {
-				if(model.resolveUserTurnPossible()) {
+				if (model.resolveUserTurnPossible()) {
 					model.userSelection(selectedCategory);
 				}
 

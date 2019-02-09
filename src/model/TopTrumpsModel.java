@@ -2,7 +2,7 @@ package model;
 
 import displayers.DisplayComputerTurn;
 import displayers.DisplayDatabaseResponce;
-import displayers.DisplayUserDrewRound;
+import displayers.DisplayDrewRound;
 import displayers.DisplayUserLostGame;
 import displayers.DisplayUserLostRound;
 import displayers.DisplayUserOutOfGame;
@@ -92,7 +92,7 @@ public class TopTrumpsModel {
 	private DisplayUserLostGame displayUserLostGame;
 	private DisplayUserOutOfGame displayUserOutOfGame;
 	private DisplayUserWonRound displayUserWonRound;
-	private DisplayUserDrewRound displayUserDrewRound;
+	private DisplayDrewRound displayUserDrewRound;
 	private DisplayUserLostRound displayUserLostRound;
 	private DisplayComputerTurn displayComputerTurn;
 	private DisplayUserTurn displayUserTurn;
@@ -117,7 +117,7 @@ public class TopTrumpsModel {
 		this.displayUserWonRound = displayer;
 	}
 
-	public void addDisplayUserDrewRound(DisplayUserDrewRound displayer) {
+	public void addDisplayUserDrewRound(DisplayDrewRound displayer) {
 		this.displayUserDrewRound = displayer;
 	}
 

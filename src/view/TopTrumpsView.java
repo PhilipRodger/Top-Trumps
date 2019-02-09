@@ -1,4 +1,4 @@
-package commandline;
+package view;
 
 import listeners.*;
 import model.*;

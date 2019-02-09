@@ -3,7 +3,7 @@ package model;
 import java.util.Random;
 
 import displayers.DisplayComputerTurn;
-import displayers.DisplayUserDrewRound;
+import displayers.DisplayDrewRound;
 import displayers.DisplayUserLostGame;
 import displayers.DisplayUserLostRound;
 import displayers.DisplayUserOutOfGame;
@@ -278,7 +278,7 @@ public class Game {
 	private DisplayUserLostGame displayUserLostGame;
 	private DisplayUserOutOfGame displayUserOutOfGame;
 	private DisplayUserWonRound displayUserWonRound;
-	private DisplayUserDrewRound displayUserDrewRound;
+	private DisplayDrewRound displayUserDrewRound;
 	private DisplayUserLostRound displayUserLostRound;
 	private DisplayComputerTurn displayComputerTurn;
 	private DisplayUserTurn displayUserTurn;
@@ -299,7 +299,7 @@ public class Game {
 		this.displayUserWonRound = displayer;
 	}
 
-	public void addDisplayUserDrewRound(DisplayUserDrewRound displayer) {
+	public void addDisplayUserDrewRound(DisplayDrewRound displayer) {
 		this.displayUserDrewRound = displayer;
 	}
 

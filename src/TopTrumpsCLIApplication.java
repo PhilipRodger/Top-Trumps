@@ -1,9 +1,9 @@
-package commandline;
 
-import commandline.view.CommandLineView;
+
 import controler.TopTrumpsContoller;
 import model.LogFile;
 import model.TopTrumpsModel;
+import view.CommandLineView;
 
 /**
  * Top Trumps command line application
@@ -24,7 +24,7 @@ public class TopTrumpsCLIApplication {
 		
 		TopTrumpsModel model = new TopTrumpsModel(writeGameLogsToFile);
 		CommandLineView view = new CommandLineView(model);
-		TopTrumpsContoller controller = new TopTrumpsContoller(model, view);
+		new TopTrumpsContoller(model, view);
 		view.run();
 		}
 }

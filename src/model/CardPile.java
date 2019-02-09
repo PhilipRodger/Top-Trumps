@@ -1,11 +1,12 @@
 package model;
 
-import java.awt.List;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Deque;
 
+/**
+ * General class for non specific piles of cards.
+ */
 public class CardPile {
 	protected Deque<Card> pile = new ArrayDeque<Card>();
 
@@ -18,12 +19,8 @@ public class CardPile {
 	}
 
 	public boolean hasNextCard() {
-		if (pile.isEmpty()) {
-			return false;
-
-		}
+		if (pile.isEmpty())  return false;
 		return true;
-
 	}
 	
 	public ArrayList<Card> getListRepresentation(){

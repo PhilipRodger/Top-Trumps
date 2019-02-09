@@ -2,6 +2,7 @@ package model;
 
 import displayers.DisplayComputerTurn;
 
+
 public class ComputerPlayer extends Player {
 	DisplayComputerTurn showComputerTurnListener;
 	private static int nextComputerNumber = 1;

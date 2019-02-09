@@ -1,4 +1,4 @@
-package online;
+package view;
 
 
 import java.util.EnumSet;
@@ -12,14 +12,11 @@ import online.dwResources.TopTrumpsRESTAPI;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-import commandline.TopTrumpsView;
-import commandline.view.CommandLineView;
 import controler.TopTrumpsContoller;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
-import listeners.AutoResolveModeListener;
 import listeners.NextCategoryListener;
 import listeners.NextRoundListener;
 import listeners.StartGameListener;
