@@ -63,7 +63,7 @@ public class Database {
 		Player winner = gstats.getWinner();
 
 		int gameID = getTotalGamesPlayed() + 1; // game stats to be added to database each game, first game in database has
-						// gameID of 0
+						// gameID of 1
 		int nDraws = gstats.getNumOfDraws(); // number of draws in the game
 		int nRounds = gstats.getNumOfRounds(); // number of rounds in the game
 		int gWinner = 0; // integer denoting which player won the game. if 1, human player wins, beyond 1

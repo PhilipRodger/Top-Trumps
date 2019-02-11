@@ -39,7 +39,7 @@
     <div class="row">
     
     <div class="col-8 col-sm-6">
-    <button type="button" class="btn btn-lg btn-light" id="startGame">Start a new Top Trumps Game</button>
+    <a class="btn btn-lg btn-light" href="/toptrumps/game" id="startGame">Start a new Top Trumps Game</a>
     </div>
     </div>
   </div>
@@ -54,7 +54,7 @@
     <div class="row">
     
     <div class="col-8 col-sm-6">
-    <button type="button" class="btn btn-lg btn-light" id="startGame">Get statistics from previous games</button>
+    <a class="btn btn-lg btn-light" href="/toptrumps/stats" id="statsLink">Get statistics from previous games</a>
     </div>
     </div>
   </div>

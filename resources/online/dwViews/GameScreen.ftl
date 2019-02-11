@@ -23,8 +23,125 @@
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
     	
     	<div class="container">
+<br/>
+		<div id="playing-cards" class="container">
+<div class="card-deck">
+        <div class="card border-success" style="width: 18rem;">
+            <div class="card-header text-center text-white bg-success mb-3" style="max-width: 18rem;">
+                <h5>Player (Number of cards)</h5>
+            </div>
+            <div class="card-name text-center">
+                    <h5>Card Name</h5>
+                </div>
+                <div class="card-body">
+                  
+                  <p class="card-attributes">
+                      <ul>
+                          <li>Speed:</li>
+                          <li>Cargo:</li>
+                          <li>Size:</li>
+                          <li>Range:</li>
+                          <li>Firepower:</li>
+                      </ul>
+                  </p>
+                </div>
+              </div>
 
-			<!-- Add your HTML Here -->
+              <div class="card border-danger" style="width: 18rem;">
+                    <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                        <h5>AI Player 1 (Number of cards)</h5>
+                    </div>
+                    <div class="card-name text-center">
+                            <h5>Card Name</h5>
+                        </div>
+                        <div class="card-body">
+                          
+                          <p class="card-attributes">
+                              <ul>
+                                  <li>Speed:</li>
+                                  <li>Cargo:</li>
+                                  <li>Size:</li>
+                                  <li>Range:</li>
+                                  <li>Firepower:</li>
+                              </ul>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="card border-danger" style="width: 18rem;">
+                            <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                <h5>AI Player 2 (Number of cards)</h5>
+                            </div>
+                            <div class="card-name text-center">
+                                    <h5>Card Name</h5>
+                                </div>
+                                <div class="card-body">
+                                  
+                                  <p class="card-attributes">
+                                      <ul>
+                                          <li>Speed:</li>
+                                          <li>Cargo:</li>
+                                          <li>Size:</li>
+                                          <li>Range:</li>
+                                          <li>Firepower:</li>
+                                      </ul>
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div class="card border-danger" style="width: 18rem;">
+                                    <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                        <h5>AI Player 3 (Number of cards)</h5>
+                                    </div>
+                                    <div class="card-name text-center">
+                                            <h5>Card Name</h5>
+                                        </div>
+                                        <div class="card-body">
+                                          
+                                          <p class="card-attributes">
+                                              <ul>
+                                                  <li>Speed:</li>
+                                                  <li>Cargo:</li>
+                                                  <li>Size:</li>
+                                                  <li>Range:</li>
+                                                  <li>Firepower:</li>
+                                              </ul>
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div class="card border-danger" style="width: 18rem;">
+                                            <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                                <h5>AI Player 4 (Number of cards)</h5>
+                                            </div>
+                                            <div class="card-name text-center">
+                                                    <h5>Card Name</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                  
+                                                  <p class="card-attributes">
+                                                      <ul>
+                                                          <li>Speed:</li>
+                                                          <li>Cargo:</li>
+                                                          <li>Size:</li>
+                                                          <li>Range:</li>
+                                                          <li>Firepower:</li>
+                                                      </ul>
+                                                  </p>
+                                                </div>
+                                              </div>
+</div>
+</div><br/><br/><br/>
+<div class="mx-auto" style="width: 200px;">
+        <div class="card border-primary mb-3" style="width: 18rem;">
+                <div class="card-header text-center text-white bg-primary mb-3" style="max-width: 18rem;">
+                    <h5>The active player is </h5>
+                </div>
+                <div class="card-body text-center">
+                        <h5>Game Announcement</h5>
+                    </div>
+                  </div><br/><br/>
+      </div>	
 		
 		</div>
 		
@@ -38,8 +155,8 @@
 				// --------------------------------------------------------------------------
 				
 				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
+			//	helloJSONList();
+			//	helloWord("Student");
 				
 			}
 			
