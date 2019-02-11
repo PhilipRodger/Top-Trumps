@@ -66,6 +66,7 @@ public class Round {
 
 		if (roundWinner != null) {
 			// If not a draw then add the communal pile to the winners deck
+			roundWinner.incrementRoundsWon();
 			for (Player player : game.getPlayers()) {
 				if (roundWinner == player) {
 					player.addCardPileToBottom(game.getCommunityPile());

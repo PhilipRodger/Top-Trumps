@@ -3,7 +3,7 @@ package model;
 import java.sql.*;
 
 public class Database {
-	private static Connection c = null; // connection attribute for connecting to database
+	private Connection c = null; // connection attribute for connecting to database
 
 	public Database() { // default constructor
 
@@ -62,7 +62,7 @@ public class Database {
 		Player[] players = gstats.getPlayerArray();
 		Player winner = gstats.getWinner();
 
-		int gameID = 0; // game stats to be added to database each game, first game in database has
+		int gameID = getTotalGamesPlayed() + 1; // game stats to be added to database each game, first game in database has
 						// gameID of 0
 		int nDraws = gstats.getNumOfDraws(); // number of draws in the game
 		int nRounds = gstats.getNumOfRounds(); // number of rounds in the game
@@ -90,7 +90,6 @@ public class Database {
 				+ p1RW + ", " + p2RW + ", " + p3RW + ", " + p4RW + ", " + p5RW + ");";
 
 		insertStats(gameStats);
-		gameID++;
 	}
 
 	/**
@@ -105,7 +104,7 @@ public class Database {
 		if (c != null) {
 			try {
 				stmt = c.createStatement();
-				stmt.executeQuery(stats);
+				stmt.executeUpdate(stats);
 				stmt.close();
 
 			} catch (SQLException e) {
