@@ -198,7 +198,7 @@ public class CommandLineView implements TopTrumpsView {
 
 			if (input.toLowerCase().equals("new") && (startGameListner != null)
 					&& !actionTakenThisCycle) {
-				startGameListner.startNewGame(numOfPlayers);
+				startGameListner.startNewGame(getNumOfPlayers());
 
 				// resets ability to take another input
 				actionTakenThisCycle = true;
@@ -257,5 +257,9 @@ public class CommandLineView implements TopTrumpsView {
 	public void addNextRoundListener(NextRoundListener listner) {
 		this.nextRoundListener = listner;
 
+	}
+
+	public int getNumOfPlayers() {
+		return numOfPlayers;
 	}
 }

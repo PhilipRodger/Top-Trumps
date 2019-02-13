@@ -8,7 +8,7 @@ import java.util.Deque;
  * General class for non specific piles of cards.
  */
 public class CardPile {
-	protected Deque<Card> pile = new ArrayDeque<Card>();
+	protected static Deque<Card> pile = new ArrayDeque<Card>();
 
 	public void addCard(Card c) {
 		pile.add(c);
@@ -30,4 +30,6 @@ public class CardPile {
 	public int size() {
 		return pile.size();
 	}
+
+	
 }
