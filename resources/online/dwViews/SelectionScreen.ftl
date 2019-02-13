@@ -21,15 +21,21 @@
 	</head>
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
-    	
+        <!--CSS for game selection screen-->
+    	<style>
+            .footer {
+                position: absolute;
+            right: 0;
+            bottom: 50;
+            left: 0;
+                font: italic;
+                text-align: center;
+            }
+        </style>
     	<div class="container">
-
-			<!-- Add your HTML Here -->
-			
-
-      <div class="container">
-        <p class="lead"><h1>Top trumps Game</h1></p>
-      </div>
+			    <div class="container">
+        			<p class="lead"><h1>Top trumps!</h1></p>
+      			</div>
 
     
 		<div class="container">
@@ -39,7 +45,7 @@
     <div class="row">
     
     <div class="col-8 col-sm-6">
-    <a class="btn btn-lg btn-light" href="/toptrumps/game" id="startGame">Start a new Top Trumps Game</a>
+    <a class="btn btn-lg btn-light" href="/toptrumps/game" id="startGameButton">Start a new Top Trumps Game</a>
     </div>
     </div>
   </div>
@@ -54,12 +60,15 @@
     <div class="row">
     
     <div class="col-8 col-sm-6">
-    <a class="btn btn-lg btn-light" href="/toptrumps/stats" id="statsLink">Get statistics from previous games</a>
+    <a class="btn btn-lg btn-light" href="/toptrumps/stats" id="showStatsButton">Get statistics from previous games</a>
     </div>
     </div>
   </div>
   </div>
   </div>
+  
+  <div class="footer">Designed and Engineered by The Dabbin' Cavern in Glasgow, Scotland
+    </div>
 
         
 

@@ -21,7 +21,17 @@
 	</head>
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
-    	
+    	  <!--CSS for Game Screen-->
+            <style>
+                    .footer {
+                        position: absolute;
+                    right: 0;
+                    bottom: 10;
+                    left: 0;
+                        font: italic;
+                        text-align: center;
+                    }
+                </style>
     	<div class="container">
 <br/>
 		<div id="playing-cards" class="container">
@@ -144,6 +154,9 @@
       </div>	
 		
 		</div>
+		
+		<div class="footer">Designed and Engineered by The Dabbin' Cavern in Glasgow, Scotland
+        </div>
 		
 		<script type="text/javascript">
 		

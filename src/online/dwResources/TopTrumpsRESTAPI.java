@@ -1,5 +1,6 @@
 package online.dwResources;
-
+import displayers.*;
+import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +84,101 @@ public class TopTrumpsRESTAPI {
 	public String helloWord(@QueryParam("Word") String Word) throws IOException {
 		return "Hello "+Word;
 	}
+	
+	//methods to display to statistics view
+	
+	@GET
+	@Path("/totalGames")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String totalGames() throws IOException {
+		Database db = new Database();
+		db.connectToDB();
+		DatabaseResponse response = db.getDatabaseStats();
+		int totalGames = response.getTotalGamesPlayed();
+		String stringTotalGames = String.valueOf(totalGames);
+		String asJSONString = oWriter.writeValueAsString(stringTotalGames);
+		db.disconnectDB();
+		return asJSONString;
+	}
+	
+	@GET
+	@Path("/humanWins")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String humanWins() throws IOException {
+		Database db = new Database();
+		db.connectToDB();
+		DatabaseResponse response = db.getDatabaseStats();
+		int humanWins = response.getTotalHumanWins();
+		String stringHumanWins = String.valueOf(humanWins);
+		String asJSONString = oWriter.writeValueAsString(stringHumanWins);
+		db.disconnectDB();
+		return asJSONString;
+	}
+	
+	@GET
+	@Path("/AIWins")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String AIWins() throws IOException {
+		Database db = new Database();
+		db.connectToDB();
+		DatabaseResponse response = db.getDatabaseStats();
+		int aiWins = response.getTotalComputerWins();
+		String stringAIWins = String.valueOf(aiWins);
+		String asJSONString = oWriter.writeValueAsString(stringAIWins);
+		db.disconnectDB();
+		return asJSONString;
+	}
+	
+	@GET
+	@Path("/averageDraws")
+	/**
+	 * Get average draws per game played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String averageDraws() throws IOException {
+		Database db = new Database();
+		db.connectToDB();
+		DatabaseResponse response = db.getDatabaseStats();
+		int averageDraws = response.getAverageDrawsPerGame();
+		String stringAverageDraws = String.valueOf(averageDraws);
+		String asJSONString = oWriter.writeValueAsString(stringAverageDraws);
+		db.disconnectDB();
+		return asJSONString;
+	}
+	
+	
+	
+	@GET
+	@Path("/longestGame")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String longestGame() throws IOException {
+		Database db = new Database();
+		db.connectToDB();
+		DatabaseResponse response = db.getDatabaseStats();
+		int longestGame = response.getLargestNumberOfRounds();
+		String stringLongestGame = String.valueOf(longestGame);
+		String asJSONString = oWriter.writeValueAsString(stringLongestGame);
+		db.disconnectDB();
+		return asJSONString;
+	}
+	
+	
 	
 }
