@@ -50,7 +50,8 @@ public class TopTrumpsRESTAPI {
 	private Player[] players;
 	private CardPile communityPile;
 	private Game game;
-	
+	private Database db;
+	private DatabaseResponse response;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -108,21 +109,17 @@ public class TopTrumpsRESTAPI {
 	}
 	@GET
 	@Path("/startGame")
-	/**
-	 * Setting up the game when game launched
-	 */
-	public String startGame() throws IOException{
+	
+	public void startGame() { 
 		game.startGame();
-		return deckFile;
-		
-		
+	
 	}
 	
 	@GET
 	@Path("/startARound")
 	
 	public void startARound() throws IOException{
-		Game game = new Game(currentRoundNumber, null);
+		Game game = new Game(currentRoundNumber, db);
 	    game.startRound();
 		
 		
@@ -157,7 +154,7 @@ public class TopTrumpsRESTAPI {
 	
 	
 	
-	@GET
+	/*@GET
 	@Path("/dealCards")
 	
 	
@@ -172,9 +169,9 @@ public class TopTrumpsRESTAPI {
 				}
 			}
 		}
-		return null ;
+		return deckFile;
 	}
-	
+	*/
 	
 	
 	
@@ -198,95 +195,70 @@ public class TopTrumpsRESTAPI {
 	
 	
 	
+	/*
 	@GET
+	 
 	@Path("/userChoice")
 	
 	public void userChoice () {
 		
-		game.userSelection(game.setCategoryChoice(categoryChoice));
 	}
 	
 	
+	*/
 	
-	public void setCategoryChoice(int categoryChoice) {
-		
-		Round round = new Round (null);
-		round.setCategoryChoice(categoryChoice);
-	}
 	
-	public int getIndexOfPlayer(Player p) {
-		for (int i = 0; i < players.length; i++) {
-			if (p == players[i]) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	private void createPlayers(int numOfPlayers) {
-		// initialised players first player is the human the rest are AI
-
-		players = new Player[numOfPlayers];
-
-		// Make first player the human player.
-		if (numOfPlayers > 0) {
-			players[0] = new HumanPlayer(null);
-		}
-
-		// Make the rest Computer controlled players.
-		for (int i = 1; i < numOfPlayers; i++) {
-			players[i] = new ComputerPlayer(null);
-		}
-		
-	}
 	
 	
 	///******** Database API methods ********///
 	@GET
 	@Path("/getTotalGames")
 	public String getTotalGames() throws IOException {
-		
-		int games = 6;
-		return ""+games;
+		db.getTotalGamesPlayed();
+		db.connectToDB();
+		String totalGames= oWriter.writeValueAsString(this.db);
+		return totalGames;
 	}
 	
 	@GET
 	@Path("/getCompWins")
 	public String getCompWins() throws IOException {
+		db.getTotalComputerWins();
+		db.connectToDB();
+		String compWins = oWriter.writeValueAsString(this.db);
+		return compWins;
 		
-		int AIwins = 7;
-		return ""+AIwins;
 	}
 	
 	@GET
 	@Path("/getHumanWins")
 	public String getHumanWins() throws IOException {
 		
-		int humanWins = 8;
-		return ""+humanWins;
+		db.getTotalHumanWins();
+		db.connectToDB();
+		String humanWins = oWriter.writeValueAsString(this.db);
+		return humanWins;
 	}
+	
 	
 	@GET
 	@Path("/getAveDraws")
 	public String getAveDraws() throws IOException {
-		
-		double drawAvg = 9;
-		return ""+drawAvg;
+		db.getAverageDrawsPerGame();
+		db.connectToDB();
+		String aveDraws = oWriter.writeValueAsString(this.db);
+		return aveDraws;
 	}
 	
 	@GET
 	@Path("/getBigRound")
 	public String getBigRound() throws IOException {
-		
-		int roundMax = 10;
-		return ""+roundMax;
+		db.getLargestNumberOfRounds();
+		db.connectToDB();
+		String lroundNumber = oWriter.writeValueAsString(this.db);
+		return lroundNumber;
 	}
 	
-	@GET
-	@Path("/wipeDatabase")
-	public void wipeDatabase() throws IOException {
-		
-	}
 	
 
 }
