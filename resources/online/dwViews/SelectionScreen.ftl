@@ -34,7 +34,7 @@
         </style>
     	<div class="container">
 			    <div class="container">
-        			<p class="lead"><h1>Top trumps!</h1></p>
+        			<p class="lead" id="p1"><h1>Top trumps!</h1></p>
       			</div>
 
     
@@ -93,9 +93,9 @@
 				// You can call other methods you want to run when the page first loads here
 				// --------------------------------------------------------------------------
 				
-				// For example, lets call our sample methods
-				// helloJSONList();
-				// helloWord("Student");
+				
+				
+				
 				
 			}
 			

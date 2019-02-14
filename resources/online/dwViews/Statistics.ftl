@@ -45,7 +45,7 @@
             
         </style>
     	<div class="container">
-		<table class="table">
+		<table class="table" id="table1">
   <thead>
     <tr>
       <th scope="col">Number of Games</th>
@@ -85,12 +85,13 @@
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
 				// --------------------------------------------------------------------------
+				$("#table1").hide().fadeToggle(1000);
 				totalGames();
                 humanWins();
                 AIWins();
                 averageDraws();
                 longestGame();
-
+				
 				
 			}
 			
@@ -114,7 +115,7 @@
         }
 
          /**
-            * Method for getting total games played from database
+            * Method for getting total human wins from database
             **/
 		function humanWins() {
             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/humanWins");
@@ -129,7 +130,7 @@
         }
 
          /**
-            * Method for getting total games played from database
+            * Method for getting total AI wins from database
             **/
 		function AIWins() {
             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AIWins");
@@ -144,7 +145,7 @@
         }
 
          /**
-            * Method for getting total games played from database
+            * Method for getting average draws per game from database
             **/
 		function averageDraws() {
             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/averageDraws");
@@ -159,7 +160,7 @@
         }
 
          /**
-            * Method for getting total games played from database
+            * Method for getting longest game played from database
             **/
 		function longestGame() {
             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/longestGame");
