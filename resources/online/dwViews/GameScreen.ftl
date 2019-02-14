@@ -32,6 +32,7 @@
 		
 			// Method that is called on page load
 			function initalize() {
+				startGame ();
 			
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
@@ -46,6 +47,13 @@
 			// -----------------------------------------
 			// Add your other Javascript methods Here
 			// -----------------------------------------
+			
+			//----Global Variables----//
+			
+			
+			var current_round_num;
+			var num_of_players;
+			var category_selected;
 		
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
@@ -71,7 +79,81 @@
   				 }
   				 return xhr;
 			}
+			
+			
+			
+			
+			function startRound () {
+				
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/startRound")
+						if(!xhr){
+					  		alert("CORS not supported");
+						}
+						xhr.send();
+				
+			
+			}
+			
+			function getRoundNumber(){
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getRoundNumber");
+				if(!xhr){
+			  		alert("CORS not supported");
+		  		}
+				xhr.send();
+				xhr.onload = function(e){
+			  		current_round_num =  xhr.response;
+			  	} 
+				
+				
+			function getRoundWinner(){
+					//  create a CORS request, this is the message we are going to send (a get request in this case)
+					var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getRoundWinner"); // Request type and URL+parameters
+					// Message is not sent yet, but we can check that the browser supports CORS
+					if (!xhr) {
+						alert("CORS not supported");
+					}
+					
+					// We have done everything we need to prepare the CORS request, so send it
+					xhr.send()
+					
+					xhr.onload = function(e){
+				  		document.getElementById("").innerHTML = "" + current_round_num + ":  " + xhr.response;
+				  	} 
+				
+					
+			function activePlayer() {
+		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/activePlayer"); // Request type and URL
+		                if (!xhr) {
+		                    alert("CORS not supported");
+		                }
+		                xhr.onload = function(e) {
+		                    var responseText = JSON.parse(xhr.response); // the text of the response
+		                    $("p").parent().removeClass("active");
+		                    console.log("response old active player: " + activePlayerVar);
+		                    activePlayerVar = responseText;
+		                    $("p:contains('"+ activePlayerVar +"')").parent().toggleClass("active");
+		                    console.log("response active player: " + activePlayerVar);
+				
 		
+		                    
+		   function setCategory(clicked_id) {
+		            	document.getElementById('btn-submit')
+		            	category_selected = clicked_id;
+		            	console.log("this clicked id is: " + category_selected);
+		
+		   function getchosenCategory() {
+		                var xhr = createCORSRequest('PUT', "http://localhost:7777/toptrumps/categorySelection"); // Request type and URL+parameters
+		                if (!xhr) {
+		                        alert("CORS not supported");
+		                    }
+		                    xhr.onload = function(e) {
+		                        var responseText = xhr.response; // the text of the response
+		                        $('#chosenCategory').text(responseText); //change user interface with chosen category
+		                    };
+		                    xhr.send();
+		                }        	
+		            	
+		            	
 		</script>
 		
 		<!-- Here are examples of how to call REST API Methods -->

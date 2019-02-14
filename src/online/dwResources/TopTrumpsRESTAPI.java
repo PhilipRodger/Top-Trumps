@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import online.configuration.TopTrumpsJSONConfiguration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -42,16 +43,17 @@ public class TopTrumpsRESTAPI {
 	/** A Jackson Object writer. It allows us to turn Java objects
 	 * into JSON strings easily. */
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
-	private String deckFile;
 	private static final String DECK_LOCATION = "StarCitizenDeck.txt";
-	private int numberofPlayers;
 	private int currentRoundNumber = 0;
+	private int numOfPlayers;
 	private static Deck deck;
 	private Player[] players;
-	private CardPile communityPile;
+	private GameStatistics stats;
 	private Game game;
 	private Database db;
-	private DatabaseResponse response;
+	private Round round;
+	private TopTrumpsModel model;
+	private CommandLineView command;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -63,8 +65,8 @@ public class TopTrumpsRESTAPI {
 		// ----------------------------------------------------
 		// Add relevant initalization here
 		// ----------------------------------------------------
-		deckFile = conf.getDeckFile();
-		numberofPlayers = conf.getNumAIPlayers() + 1;
+		
+		
 		
 	}
 	
@@ -116,19 +118,24 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	@GET
-	@Path("/startARound")
+	@Path("/startRound")
 	
-	public void startARound() throws IOException{
+	public void startRound() throws IOException{
 		Game game = new Game(currentRoundNumber, db);
 	    game.startRound();
-		
-		
-		
+	    round.resolveRound();   
 	}
+		
+		
+		
+	
 	@GET
 	@Path("/getRoundNumber")
 	public String getRoundNumber() throws IOException {
-		return ""+currentRoundNumber;
+		
+		String roundNumber = oWriter.writeValueAsString (stats.getNumOfRounds());
+		return roundNumber;
+		
 	}
 	
 	
@@ -137,8 +144,7 @@ public class TopTrumpsRESTAPI {
 	@Path("/getDeck")
 	// Method that will return deck 
 	public Deck getDeck()throws IOException{
-		Deck deck = new Deck (deckFile);
-		
+		Deck deck = new Deck (DECK_LOCATION);
 		deck.getShuffledDeck();
 		return deck;
 	}
@@ -152,15 +158,51 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	
+	@GET
+	@Path("/activePlayer")
+	public String activePlayer () throws IOException{
+		String activePlayer = oWriter.writeValueAsString(game.getPlayersTurn());
+		return activePlayer;
+	
+	}
+	
+	@GET
+	@Path("/getRoundWinner")
+	
+	public String getRoundWinner() throws IOException {
+		String roundwinner = oWriter.writeValueAsString(round.getRoundWinner());
+		
+		return roundwinner;
+		
+	}
 	
 	
-	/*@GET
-	@Path("/dealCards")
+	
+	@GET
+	@Path("categorySelection/")
+	
+	public String categorySelection () throws IOException {
+		
+		String categorySelection = oWriter.writeValueAsString (round.getChosenCategory());
+		
+		return categorySelection;
+	}
 	
 	
-	private String dealDeck() {
-		Deck deck1 = new Deck (deckFile);
-		CardPile shuffled = deck1.getShuffledDeck();
+	@GET
+	@Path("createPlayers/")
+	
+	public void createPlayers () {
+		
+		game.createPlayers(numOfPlayers);
+	}
+	
+	
+	
+	///***** relevant methods ******///
+	
+	private void dealDeckAPI() {
+		CardPile shuffled = deck.getShuffledDeck();
 
 		while (shuffled.hasNextCard()) {
 			for (Player player : players) {
@@ -169,98 +211,108 @@ public class TopTrumpsRESTAPI {
 				}
 			}
 		}
-		return deckFile;
-	}
-	*/
-	
-	
-	
-	@GET
-	@Path("/getRoundWinner")
-	
-	public Player getRoundWinner() {
-		Round round = new Round (null);
-		return round.getRoundWinner();
 	}
 	
 	
-	
-	@GET
-	@Path("/gameOver")
-	
-	public boolean gameOver () {
-	
-		return game.gameOver();
-	}
-	
-	
-	
-	/*
-	@GET
-	 
-	@Path("/userChoice")
-	
-	public void userChoice () {
-		
-	}
-	
-	
-	*/
 	
 	
 	
 	
 	///******** Database API methods ********///
 	@GET
-	@Path("/getTotalGames")
-	public String getTotalGames() throws IOException {
-		db.getTotalGamesPlayed();
+	@Path("/totalGames")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String totalGames() throws IOException {
+		Database db = new Database();
 		db.connectToDB();
-		String totalGames= oWriter.writeValueAsString(this.db);
-		return totalGames;
+		DatabaseResponse response = db.getDatabaseStats();
+		int totalGames = response.getTotalGamesPlayed();
+		String stringTotalGames = String.valueOf(totalGames);
+		String asJSONString = oWriter.writeValueAsString(stringTotalGames);
+		db.disconnectDB();
+		return asJSONString;
 	}
 	
 	@GET
-	@Path("/getCompWins")
-	public String getCompWins() throws IOException {
-		db.getTotalComputerWins();
+	@Path("/humanWins")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String humanWins() throws IOException {
+		Database db = new Database();
 		db.connectToDB();
-		String compWins = oWriter.writeValueAsString(this.db);
-		return compWins;
-		
+		DatabaseResponse response = db.getDatabaseStats();
+		int humanWins = response.getTotalHumanWins();
+		String stringHumanWins = String.valueOf(humanWins);
+		String asJSONString = oWriter.writeValueAsString(stringHumanWins);
+		db.disconnectDB();
+		return asJSONString;
 	}
 	
 	@GET
-	@Path("/getHumanWins")
-	public String getHumanWins() throws IOException {
-		
-		db.getTotalHumanWins();
+	@Path("/AIWins")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String AIWins() throws IOException {
+		Database db = new Database();
 		db.connectToDB();
-		String humanWins = oWriter.writeValueAsString(this.db);
-		return humanWins;
-	}
-	
-	
-	@GET
-	@Path("/getAveDraws")
-	public String getAveDraws() throws IOException {
-		db.getAverageDrawsPerGame();
-		db.connectToDB();
-		String aveDraws = oWriter.writeValueAsString(this.db);
-		return aveDraws;
+		DatabaseResponse response = db.getDatabaseStats();
+		int aiWins = response.getTotalComputerWins();
+		String stringAIWins = String.valueOf(aiWins);
+		String asJSONString = oWriter.writeValueAsString(stringAIWins);
+		db.disconnectDB();
+		return asJSONString;
 	}
 	
 	@GET
-	@Path("/getBigRound")
-	public String getBigRound() throws IOException {
-		db.getLargestNumberOfRounds();
+	@Path("/averageDraws")
+	/**
+	 * Get average draws per game played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String averageDraws() throws IOException {
+		Database db = new Database();
 		db.connectToDB();
-		String lroundNumber = oWriter.writeValueAsString(this.db);
-		return lroundNumber;
+		DatabaseResponse response = db.getDatabaseStats();
+		int averageDraws = response.getAverageDrawsPerGame();
+		String stringAverageDraws = String.valueOf(averageDraws);
+		String asJSONString = oWriter.writeValueAsString(stringAverageDraws);
+		db.disconnectDB();
+		return asJSONString;
 	}
 	
 	
-
+	
+	@GET
+	@Path("/longestGame")
+	/**
+	 * Get total games played from the database
+	 * @return total games played
+	 * @throws IOException
+	 */
+	public String longestGame() throws IOException {
+		Database db = new Database();
+		db.connectToDB();
+		DatabaseResponse response = db.getDatabaseStats();
+		int longestGame = response.getLargestNumberOfRounds();
+		String stringLongestGame = String.valueOf(longestGame);
+		String asJSONString = oWriter.writeValueAsString(stringLongestGame);
+		db.disconnectDB();
+		return asJSONString;
+	}
+	
+	
+	
 }
 
 	
