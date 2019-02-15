@@ -21,12 +21,142 @@
 	</head>
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
-    	
+    	  <!--CSS for Game Screen-->
+            <style>
+                    .footer {
+                        position: absolute;
+                    right: 0;
+                    bottom: 10;
+                    left: 0;
+                        font: italic;
+                        text-align: center;
+                    }
+                </style>
     	<div class="container">
+<br/>
+		<div id="playing-cards" class="container">
+<div class="card-deck">
+        <div class="card border-success" style="width: 18rem;">
+            <div class="card-header text-center text-white bg-success mb-3" style="max-width: 18rem;">
+                <h5>Player (Number of cards)</h5>
+            </div>
+            <div class="card-name text-center">
+                    <h5>Card Name</h5>
+                </div>
+                <div class="card-body">
+                  
+                  <p class="card-attributes">
+                      <ul>
+                          <li>Speed:</li>
+                          <li>Cargo:</li>
+                          <li>Size:</li>
+                          <li>Range:</li>
+                          <li>Firepower:</li>
+                      </ul>
+                  </p>
+                </div>
+              </div>
 
-			<!-- Add your HTML Here -->
+              <div class="card border-danger" style="width: 18rem;">
+                    <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                        <h5>AI Player 1 (Number of cards)</h5>
+                    </div>
+                    <div class="card-name text-center">
+                            <h5>Card Name</h5>
+                        </div>
+                        <div class="card-body">
+                          
+                          <p class="card-attributes">
+                              <ul>
+                                  <li>Speed:</li>
+                                  <li>Cargo:</li>
+                                  <li>Size:</li>
+                                  <li>Range:</li>
+                                  <li>Firepower:</li>
+                              </ul>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="card border-danger" style="width: 18rem;">
+                            <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                <h5>AI Player 2 (Number of cards)</h5>
+                            </div>
+                            <div class="card-name text-center">
+                                    <h5>Card Name</h5>
+                                </div>
+                                <div class="card-body">
+                                  
+                                  <p class="card-attributes">
+                                      <ul>
+                                          <li>Speed:</li>
+                                          <li>Cargo:</li>
+                                          <li>Size:</li>
+                                          <li>Range:</li>
+                                          <li>Firepower:</li>
+                                      </ul>
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div class="card border-danger" style="width: 18rem;">
+                                    <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                        <h5>AI Player 3 (Number of cards)</h5>
+                                    </div>
+                                    <div class="card-name text-center">
+                                            <h5>Card Name</h5>
+                                        </div>
+                                        <div class="card-body">
+                                          
+                                          <p class="card-attributes">
+                                              <ul>
+                                                  <li>Speed:</li>
+                                                  <li>Cargo:</li>
+                                                  <li>Size:</li>
+                                                  <li>Range:</li>
+                                                  <li>Firepower:</li>
+                                              </ul>
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      <div class="card border-danger" style="width: 18rem;">
+                                            <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                                <h5>AI Player 4 (Number of cards)</h5>
+                                            </div>
+                                            <div class="card-name text-center">
+                                                    <h5>Card Name</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                  
+                                                  <p class="card-attributes">
+                                                      <ul>
+                                                          <li>Speed:</li>
+                                                          <li>Cargo:</li>
+                                                          <li>Size:</li>
+                                                          <li>Range:</li>
+                                                          <li>Firepower:</li>
+                                                      </ul>
+                                                  </p>
+                                                </div>
+                                              </div>
+</div>
+</div><br/><br/><br/>
+<div class="mx-auto" style="width: 200px;">
+        <div class="card border-primary mb-3" style="width: 18rem;">
+                <div class="card-header text-center text-white bg-primary mb-3" style="max-width: 18rem;">
+                    <h5>The active player is </h5>
+                </div>
+                <div class="card-body text-center">
+                        <h5>Game Announcement</h5>
+                    </div>
+                  </div><br/><br/>
+      </div>	
 		
 		</div>
+		
+		<div class="footer">Designed and Engineered by The Dabbin' Cavern in Glasgow, Scotland
+        </div>
 		
 		<script type="text/javascript">
 		
@@ -51,9 +181,9 @@
 			//----Global Variables----//
 			
 			
-			var current_round_num;
-			var num_of_players;
-			var category_selected;
+			var roundNum;
+			var numOfPlayers;
+			var categorySelected;
 		
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
@@ -91,6 +221,15 @@
 						}
 						xhr.send();
 				
+						
+						
+			function resolveRound () {
+							
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/resolveRound")
+						if(!xhr){
+							alert("CORS not supported");
+									}
+					xhr.send();
 			
 			}
 			
@@ -101,7 +240,7 @@
 		  		}
 				xhr.send();
 				xhr.onload = function(e){
-			  		current_round_num =  xhr.response;
+			  		roundNumber =  xhr.response;
 			  	} 
 				
 				
@@ -120,6 +259,14 @@
 				  		document.getElementById("").innerHTML = "" + current_round_num + ":  " + xhr.response;
 				  	} 
 				
+			function numberOfPlayers() {
+		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/numOfPlayers"); // Request type and URL
+		                if (!xhr) {
+		                    alert("CORS not supported");
+		                }
+		                xhr.onload = function(e) {
+		                    var responseText = JSON.parse(xhr.response); // the text of the response
+		                    numOfPlayers = parseInt(responseText[0]);
 					
 			function activePlayer() {
 		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/activePlayer"); // Request type and URL
@@ -134,14 +281,15 @@
 		                    $("p:contains('"+ activePlayerVar +"')").parent().toggleClass("active");
 		                    console.log("response active player: " + activePlayerVar);
 				
-		
-		                    
+		                
 		   function setCategory(clicked_id) {
 		            	document.getElementById('btn-submit')
-		            	category_selected = clicked_id;
-		            	console.log("this clicked id is: " + category_selected);
+		            	categorySelected = clicked_id;
+		            	console.log("this clicked id is: " + categorySelected);
 		
-		   function getchosenCategory() {
+		   
+		            	
+		    function getchosenCategory() {
 		                var xhr = createCORSRequest('PUT', "http://localhost:7777/toptrumps/categorySelection"); // Request type and URL+parameters
 		                if (!xhr) {
 		                        alert("CORS not supported");
@@ -153,6 +301,29 @@
 		                    xhr.send();
 		                }        	
 		            	
+		    
+		    function communityPileSize() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/communityPileSize"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    $('#').text(parseInt(responseText[0]));
+                };
+                xhr.send();
+                
+                
+                function getCardName(){
+        		  	var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getCardName	");
+        			xhr.send();
+        			xhr.onload = function(e){
+        		  		var responseText = xhr.response;
+        		  		document.getElementById("cardName").innerHTML = responseText;
+        		  	} 
+        	  	}
+                
+            }
 		            	
 		</script>
 		

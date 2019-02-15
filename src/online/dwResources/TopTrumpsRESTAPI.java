@@ -54,6 +54,7 @@ public class TopTrumpsRESTAPI {
 	private Round round;
 	private TopTrumpsModel model;
 	private CommandLineView command;
+	private Card card;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -121,13 +122,15 @@ public class TopTrumpsRESTAPI {
 	@Path("/startRound")
 	
 	public void startRound() throws IOException{
-		Game game = new Game(currentRoundNumber, db);
 	    game.startRound();
-	    round.resolveRound();   
+	      
 	}
 		
-		
-		
+	@GET
+	@Path("/resolveRound")	
+	public void resolveRound() throws IOException{
+		round.resolveRound();
+	}
 	
 	@GET
 	@Path("/getRoundNumber")
@@ -177,6 +180,35 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	
+	@GET
+	@Path("communityPileSize/")
+	
+	public String communityPileSize () throws IOException {
+		
+		String comPileSize = oWriter.writeValueAsString (game.getCommunityPile().size());
+		
+		return comPileSize;
+	
+	
+	}
+	
+	
+	@GET
+	@Path("getCardName/")
+	
+	public String getCardName () throws IOException {
+		
+		String cardName = oWriter.writeValueAsString (card.getName());
+		
+		
+		return cardName;
+		
+		
+		
+		
+	}
+	
+	
 	
 	@GET
 	@Path("categorySelection/")
@@ -196,6 +228,13 @@ public class TopTrumpsRESTAPI {
 		
 		game.createPlayers(numOfPlayers);
 	}
+	
+	@GET
+	@Path("numOfPlayers/")
+	public String numOfPlayers() throws IOException {
+		return oWriter.writeValueAsString(game.getPlayers().length);
+	}
+	
 	
 	
 	
