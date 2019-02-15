@@ -1,16 +1,17 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import displayers.DisplayComputerTurn;
 import displayers.DisplayDrewRound;
 import displayers.DisplayUserLostRound;
-import displayers.DisplayUserTurn;
 import displayers.DisplayUserWonRound;
 
 public class Round {
+	// Round Number (Persistent)
+	private static int roundNumber = 0;
+
 	// Round Specific Variables
+	private Player playersTurn;
 	private int nextPlayer;
 	private Card firstCard;
 	private CardPile roundPile;
@@ -20,13 +21,14 @@ public class Round {
 
 	public Round(Game game) {
 		this.game = game;
+		roundNumber++;
 		roundPile = new CardPile();
 	}
 
 	// Interactions to progress round
 	public void startRound(Player playersTurn) {
 		// A single round in a game!
-		System.out.println("started Round");
+		this.playersTurn = playersTurn;
 		game.setNextTurnPossible(false);
 
 		// The player's who's turn this is should pick up their card.
@@ -61,8 +63,11 @@ public class Round {
 		// All player's cards on pile, need to work out who won.
 		winnerOfRound();
 
+		displayTurnResolution(); // Here because if after community pile has been added to a players deck we
+									// can't see who added that card
+		game.writeRound(this);
+		
 		// If a draw do nothing with community pile, and next player will stay the same.
-		displayTurnResolution();
 
 		if (roundWinner != null) {
 			// If not a draw then add the communal pile to the winners deck
@@ -70,23 +75,50 @@ public class Round {
 			for (Player player : game.getPlayers()) {
 				if (roundWinner == player) {
 					player.addCardPileToBottom(game.getCommunityPile());
+
 					game.setPlayersTurn(game.getIndexOfPlayer(roundWinner)); // the winner of a round should be next
 				}
 			}
 		} else {
 			game.incrementNumOfDraws();
 		}
+		
+		game.writeDecksAtEndOfRound(this);
+		
+		
+		if (game.gameOver()) {
+			game.displayGameOverScreen();
+		}
 	}
 
 	// Get info about a round.
+	public Player getPlayersTurn() {
+		return playersTurn;
+	}
+
 	public Card getFirstCard() {
 		return firstCard;
+	}
+
+	public Player[] getPlayers() {
+		return game.getPlayers();
 	}
 
 	public void setCategoryChoice(int chosenCategory) {
 		this.chosenCategory = chosenCategory;
 	}
 
+	public CardPile getCommunityPile() {
+		return game.getCommunityPile();
+	}
+
+	public static int getRoundNumber() {
+		return roundNumber;
+	}
+
+	public static void setRoundNumber(int roundNumber) {
+		Round.roundNumber = roundNumber;
+	}
 
 	public int getChosenCategory() {
 		return chosenCategory;
@@ -129,29 +161,27 @@ public class Round {
 	}
 
 	private void displayTurnResolution() {
+
 		// Communicates to the view what the result of the round was.
 
-		if (game.gameOver()) {
-			game.displayGameOverScreen();
+		// What to do if game is still ongoing:
+
+		// Work out if it was a win, loss, or draw for the round
+		game.setNextTurnPossible(true);
+		if (userWonRound()) {
+			displayUserWonRound.showUserWonRound(this);
+
+		} else if (game.userOutOfGame()) {
+			game.displayUserOutOfGameScreen();
+
+		} else if (userLostRound()) {
+
+			displayUserLostRound.showUserLostRound(this);
+
 		} else {
-			// What to do if game is still ongoing:
+			// draw round
+			displayUserDrewRound.showUserDrewRound(this);
 
-			// Work out if it was a win, loss, or draw for the round
-			game.setNextTurnPossible(true);
-			if (userWonRound()) {
-				displayUserWonRound.showUserWonRound(this);
-
-			} else if (game.userOutOfGame()) {
-				game.displayUserOutOfGameScreen();
-				
-			} else if (userLostRound()) {
-				
-				displayUserLostRound.showUserLostRound(this);
-				
-			} else {
-				// draw round
-				displayUserDrewRound.showUserDrewRound(this);
-			}
 		}
 	}
 

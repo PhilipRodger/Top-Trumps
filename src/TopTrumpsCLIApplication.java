@@ -10,7 +10,6 @@ import view.CommandLineView;
  */
 public class TopTrumpsCLIApplication {
 	final static int numberOfPlayers = 5;
-	final static String testFileName = "log.txt";
 
 	/**
 	 * This main method is called by TopTrumps.java when the user specifies that they want to run in

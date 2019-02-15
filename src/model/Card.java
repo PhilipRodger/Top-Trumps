@@ -48,11 +48,13 @@ public class Card {
 
 	@Override
 	public String toString() {
-		String toDisplay = name + " ";
+		String toDisplay = String.format("%-15s|", name);
 		for (int i = 0; i < categories.length; i++) {
-			toDisplay += String.format("%s: %d, ", categories[i], values[i]);
+			toDisplay += String.format(" %s: %2d |", categories[i], values[i]);
 		}
-		toDisplay += String.format("Owner: %s", owner.getName());
+		if (owner != null) {
+			toDisplay += String.format(" Owner: %10.10s |", owner.getName());
+		}
 		return toDisplay;
 	}
 }

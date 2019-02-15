@@ -58,14 +58,16 @@ public class Deck extends CardPile {
 			}
 		}
 	}
-
-	public CardPile getShuffledDeck() {
-		Collections.shuffle(deck);
-
-		pile = new LinkedList<>(deck);
-
 	
-		return this;
+	public void shuffleDeck() {
+		ArrayList<Card> copyForShuffling = new ArrayList<>(deck); 
+		Collections.shuffle(copyForShuffling);
+
+		pile = new LinkedList<>(copyForShuffling);
+	}
+	
+	public List<Card> getUnshuffledDeck() {
+		return deck;
 	}
 	
 	
