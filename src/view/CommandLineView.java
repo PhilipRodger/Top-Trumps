@@ -27,6 +27,7 @@ public class CommandLineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;
 	TopTrumpsModel model;
 	boolean autoResolve = false;
+	boolean mainMenu = true;
 
 	public CommandLineView(TopTrumpsModel model) {
 		this.model = model;
@@ -45,13 +46,17 @@ public class CommandLineView implements TopTrumpsView {
 				System.out.println("Average draws per game: " + response.getAverageDrawsPerGame());
 				System.out.println("Largest Number of rounds in a game: " + response.getLargestNumberOfRounds());
 
+				System.out.println("\n\n");
+				showMainMenu();
 			}
 		});
 		model.addDisplayUserWonGame(new DisplayUserWonGame() {
 			@Override
 			public void showUserWonGame(Game game) {
-				// TODO Display to the user they have won!
+				// Display to the user they have won!
 				System.out.println("You won!");
+				System.out.println(String.format("After only %d rounds!\n\n", Round.getRoundNumber()));
+				showMainMenu();
 				autoResolve = false;
 
 			}
@@ -60,8 +65,10 @@ public class CommandLineView implements TopTrumpsView {
 
 			@Override
 			public void showUserLostGame(Game game) {
-				// TODO Display to the user they have lost!
-				System.out.println("You Lost!");
+				// Display to the user they have lost!
+				System.out.println(String.format("You lost, the winner was %s.", game.getGameWinner().getName()));
+				System.out.println(String.format("After only %d rounds!\n\n", Round.getRoundNumber()));
+				showMainMenu();
 				autoResolve = false;
 			}
 		});
@@ -73,6 +80,8 @@ public class CommandLineView implements TopTrumpsView {
 				// remaining computer controlled players will auto-resolve the rest of the game!
 				if (!autoResolve) {
 					System.out.println("You are out of the game, enter anything to resolve the game.");
+					System.out.println("This may take a while if you wanted a log file.");
+
 					autoResolve = true;
 				}
 			}
@@ -116,9 +125,10 @@ public class CommandLineView implements TopTrumpsView {
 			public void showUserTurn(Round currentRound) {
 				// TODO Display to the user that it is their turn and their card.
 				if (!autoResolve) {
+					System.out.println(String.format("\n\n--- Round %d ---", Round.getRoundNumber()));
 					System.out.println("Your Turn.");
 					System.out.println("Number of cards in community pile: " + currentRound.getCommunityPileSize());
-					System.out.println(currentRound.getFirstCard());
+					showUsersCard(currentRound.getFirstCard());
 				}
 			}
 		});
@@ -126,21 +136,25 @@ public class CommandLineView implements TopTrumpsView {
 			public void showComputerTurn(Round currentRound) {
 				// TODO Display to the user that it is an opponent's turn and their card
 				if (!autoResolve) {
+					System.out.println(String.format("\n\n--- Round %d ---", Round.getRoundNumber()));
 					System.out.println(currentRound.getFirstCard().getOwner().getName() + " turn.");
-					System.out.println("The computer's card is: " + currentRound.getFirstCard());
+					System.out.println("The computer's card is:\n" + currentRound.getFirstCard());
 					System.out.println("They chose:" + Card.getCategories()[currentRound.getChosenCategory()]);
 					System.out.println("Number of cards in community pile: " + currentRound.getCommunityPileSize());
-					System.out.println("Enter anything to continue.");
+					System.out.println("Enter anything to resolve the round.");
 				}
 			}
 		});
 
 	}
 
-	@Override
-	public void showMainMenu() {
-		System.out.println("Welcome to Top Trumps! Type 'new' to start a new game or 'stats' to view statistics.");
-
+	// Display the card a user drew to prompt them to make a choice.
+	private void showUsersCard(Card usersCard) {
+		System.out.println(String.format("      %s", usersCard.getName()));
+		for (int i = 0; i < Card.getCategories().length; i++) {
+			System.out.println(String.format("%d |%-10s: %2d|", i + 1, Card.getCategories()[i], usersCard.getValue(i)));
+		}
+		System.out.println("Enter the index for the category you want to pick:");
 	}
 
 	private void showCardsInRound(Round currentRound) {
@@ -154,10 +168,20 @@ public class CommandLineView implements TopTrumpsView {
 			String categoryName = Card.getCategories()[currentRound.getChosenCategory()];
 			int cardValue = card.getValue(currentRound.getChosenCategory());
 
-			String playerSummaryText = String.format("%s (%d cards): \t %s  %s %d", ownerName, numOfCardsInOwnersDeck,
-					cardName, categoryName, cardValue);
+			String playerSummaryText = String.format("%s (%d cards)\t| %-15s| %s: %2d |", ownerName,
+					numOfCardsInOwnersDeck, cardName, categoryName, cardValue);
 			System.out.println(playerSummaryText);
 		}
+	}
+
+	@Override
+	public void showMainMenu() {
+		mainMenu = true;
+		System.out.println("Welcome to Top Trumps!");
+		System.out.println("Do you want to see past results or play a game?");
+		System.out.println("\t1: Print Game Statistics");
+		System.out.println("\t2: Play game");
+		System.out.println("Enter the number for your selection:");
 	}
 
 	// should be a endless loop that will continually seek input from system.in
@@ -173,12 +197,30 @@ public class CommandLineView implements TopTrumpsView {
 
 		while (!input.toLowerCase().equals("quit")) {
 			if (!autoResolve) {
-				System.out.println("Type 'quit' to exit.");
+				System.out
+						.println("...Type 'quit' to exit or 'autoresolve' to complete the current game automatically.");
 				input = s.nextLine();
 			}
-			
-			if (input.toLowerCase().equals("autoresolve")) {
+
+			if (mainMenu && !actionTakenThisCycle) {
+				if (input.equals("1")) {
+					viewStatisticsListner.viewStatistics();
+
+					actionTakenThisCycle = true;
+				}
+
+				if (input.equals("2")) {
+					startGameListner.startNewGame(numOfPlayers);
+
+					// resets ability to take another input
+					actionTakenThisCycle = true;
+					mainMenu = false;
+				}
+			}
+
+			if (input.toLowerCase().equals("autoresolve") && !autoResolve) {
 				autoResolve = true;
+				System.out.println("This may take a while if you wanted a log file.");
 			}
 
 			if (model.resolveComputerTurnPossible() && !actionTakenThisCycle) {
@@ -194,6 +236,7 @@ public class CommandLineView implements TopTrumpsView {
 			if (model.resolveUserTurnPossible() && !actionTakenThisCycle) {
 				try {
 					int categoryChosen = Integer.parseInt(input);
+					categoryChosen--; // To match the indexes starting at one.
 					if (categoryChosen < Card.getCategories().length && categoryChosen >= 0) {
 						// User has selected a category
 						userSelectionListner.userSelection(categoryChosen);
@@ -207,19 +250,6 @@ public class CommandLineView implements TopTrumpsView {
 			if (model.resolveUserTurnPossible() && !actionTakenThisCycle && autoResolve) {
 				// I got sick of typing and made an auto resolve mode
 				userSelectionListner.userSelection(0);
-			}
-
-			if (input.toLowerCase().equals("new") && (startGameListner != null) && !actionTakenThisCycle) {
-				startGameListner.startNewGame(numOfPlayers);
-
-				// resets ability to take another input
-				actionTakenThisCycle = true;
-			}
-
-			if (input.toLowerCase().equals("stats") && !actionTakenThisCycle) {
-				viewStatisticsListner.viewStatistics();
-
-				actionTakenThisCycle = true;
 			}
 
 			// TODO More statements calling actions on the Controller, see Controller for

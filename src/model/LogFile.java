@@ -71,7 +71,7 @@ public class LogFile {
 		appendLogFile(seperator);
 		appendLogFile("Printing Players Decks: \n");
 		for (Player player : players) {
-			appendLogFile(String.format("\n%s's deck (%d cards)\n", player.getName(), player.getNumberOfCards()));
+			appendLogFile(String.format("\n%s's deck (%d cards):\n", player.getName(), player.getNumberOfCards()));
 			writeCardList(player.getCardList());
 		}
 	}
@@ -89,17 +89,6 @@ public class LogFile {
 			sb.append(card.toString() + "\n");
 		}
 		appendLogFile(sb.toString());
-	}
-
-	/**
-	 * Opens the output file and writes the currently selected category for the
-	 * round
-	 *
-	 * @param cardPile  is the current cards in play.
-	 * @param selection is the selected category for the round.
-	 */
-	public void writeCurrentCatagory(CardPile cardPile, int selection) {
-		// TODO
 	}
 
 	/**
@@ -128,7 +117,7 @@ public class LogFile {
 		appendLogFile(String.format("\nPrinting Cards in Round (size %d):\n", round.getListOfCardsInRound().size()));
 		writeCardList(round.getListOfCardsInRound());
 
-		appendLogFile(String.format("\nIt was %s's turn, they selected %s and the winner was %s:\n",
+		appendLogFile(String.format("\nIt was %s's turn, they selected %s and the winner was %s.\n",
 				round.getPlayersTurn().getName(), Card.getCategories()[round.getChosenCategory()], winnerName));		
 	}
 	public void writeDecksAtEndOfRound(Round round) {

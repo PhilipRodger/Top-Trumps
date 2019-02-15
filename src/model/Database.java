@@ -242,12 +242,22 @@ public class Database {
 	 */
 	public DatabaseResponse getDatabaseStats() {
 		DatabaseResponse response = new DatabaseResponse();
-		int totalGamesPlayed = getTotalGamesPlayed();
-		int totalComputerWins = getTotalComputerWins();
-		int totalHumanWins = getTotalHumanWins();
-		int averageDrawsPerGame = getAverageDrawsPerGame();
-		int largestNumberOfRounds = getLargestNumberOfRounds();
-
+		
+		int totalGamesPlayed = 0;
+		int totalComputerWins = 0;
+		int totalHumanWins = 0;
+		int averageDrawsPerGame = 0;
+		int largestNumberOfRounds = 0;
+		
+		try {
+		totalGamesPlayed = getTotalGamesPlayed();
+		totalComputerWins = getTotalComputerWins();
+		totalHumanWins = getTotalHumanWins();
+		averageDrawsPerGame = getAverageDrawsPerGame();
+		largestNumberOfRounds = getLargestNumberOfRounds();
+		} catch(Exception e) {
+			System.out.println("Unable to get statistics from Database, default 0 values returned.\n\n");
+		}
 		response.setTotalGamesPlayed(totalGamesPlayed);
 		response.setTotalComputerWins(totalComputerWins);
 		response.setTotalHumanWins(totalHumanWins);

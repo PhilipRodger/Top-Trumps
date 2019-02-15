@@ -1,7 +1,6 @@
 
 
 import controler.TopTrumpsContoller;
-import model.LogFile;
 import model.TopTrumpsModel;
 import view.CommandLineView;
 
@@ -9,7 +8,6 @@ import view.CommandLineView;
  * Top Trumps command line application
  */
 public class TopTrumpsCLIApplication {
-	final static int numberOfPlayers = 5;
 
 	/**
 	 * This main method is called by TopTrumps.java when the user specifies that they want to run in

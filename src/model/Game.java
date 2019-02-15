@@ -129,7 +129,7 @@ public class Game {
 	}
 	
 	// Should only be called after it has been established that the game is over.
-	private Player getGameWinner() {
+	public Player getGameWinner() {
 		for (Player player : players) {
 			//If a player is in the game it is assumed they are the winner.
 			if(player.inGame()) {
@@ -149,23 +149,24 @@ public class Game {
 
 	public void displayGameOverScreen() {
 		// Game is over
-		if (testFile != null) {
-			testFile.writeWinner(getGameWinner());
-		}
 		stats.setWinner(getGameWinner());
-
-		if (userWonGame()) {
-			displayUserWonGame.showUserWonGame(this);
-
-		} else if (userLostGame()) {
-			displayUserLostGame.showUserLostGame(this);
-		}
 		try {
 			db.connectToDB();
 			db.writeGameStatistics(stats);
 			db.disconnectDB();	
 		} catch(Exception e) {
 			System.out.println("Unable to write to database.");
+		}
+		
+		if (testFile != null) {
+			testFile.writeWinner(getGameWinner());
+		}
+
+		if (userWonGame()) {
+			displayUserWonGame.showUserWonGame(this);
+
+		} else if (userLostGame()) {
+			displayUserLostGame.showUserLostGame(this);
 		}
 	}
 
