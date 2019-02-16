@@ -22,11 +22,30 @@
 	</head>
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
-    	
+        <!--CSS for statistics screen-->
+    	<style>
+                .footer {
+                    position: absolute;
+                right: 0;
+                bottom: 50;
+                left: 0;
+                    font: italic;
+                    text-align: center;
+                }
+                .row.bottom {
+				
+                position:absolute;
+                right: 0;
+                bottom: 100;
+                left: 150;
+			}
+            table, th, td {
+                    text-align: center;
+            }
+            
+        </style>
     	<div class="container">
-
-			<!-- Add your HTML Here -->
-		<table class="table">
+		<table class="table" id="table1">
   <thead>
     <tr>
       <th scope="col">Number of Games</th>
@@ -37,10 +56,26 @@
     </tr>
   </thead>
   <tbody>
-    
+    <tr>
+        <td><strong id="totalGames"></strong></td>
+        <td><strong id="humanWins"></strong></td>
+        <td><strong id="AIWins"></strong></td>
+        <td><strong id="averageDraws"></strong></td>
+        <td><strong id="longestGame"></strong></td>
+    </tr>
   </tbody>
 </table>
-		</div>
+        </div>
+        <div class="row bottom">
+                <div class="col"></div>
+                <div class="col centerButtons">
+                    <a class="btn btn-lg btn-light" href="/toptrumps/" id="homeButton">Back to Game Selection Screen</a>
+                </div>
+                <div class="col"></div>
+            </div>
+        
+        <div class="footer">Designed and Engineered by The Dabbin' Cavern in Glasgow, Scotland
+            </div>
 		
 		<script type="text/javascript">
 		
@@ -50,15 +85,94 @@
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
 				// --------------------------------------------------------------------------
+				$("#table1").hide().fadeToggle(1000);
+				totalGames();
+                humanWins();
+                AIWins();
+                averageDraws();
+                longestGame();
 				
-				// For example, lets call our sample methods
 				
 			}
 			
 			// -----------------------------------------
 			// Add your other Javascript methods Here
 			// -----------------------------------------
-		
+
+            /**
+            * Method for getting total games played from database
+            **/
+		function totalGames() {
+            var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/totalGames");
+            if (!xhr) {
+                alert("CORS is not supported");
+            }
+            xhr.onload = function(e) {
+                var responseText = JSON.parse(xhr.response);
+                $('#totalGames').text(parseInt(responseText));
+            };
+            xhr.send();
+        }
+
+         /**
+            * Method for getting total human wins from database
+            **/
+		function humanWins() {
+            var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/humanWins");
+            if (!xhr) {
+                alert("CORS is not supported");
+            }
+            xhr.onload = function(e) {
+                var responseText = JSON.parse(xhr.response);
+                $('#humanWins').text(parseInt(responseText));
+            };
+            xhr.send();
+        }
+
+         /**
+            * Method for getting total AI wins from database
+            **/
+		function AIWins() {
+            var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AIWins");
+            if (!xhr) {
+                alert("CORS is not supported");
+            }
+            xhr.onload = function(e) {
+                var responseText = JSON.parse(xhr.response);
+                $('#AIWins').text(parseInt(responseText));
+            };
+            xhr.send();
+        }
+
+         /**
+            * Method for getting average draws per game from database
+            **/
+		function averageDraws() {
+            var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/averageDraws");
+            if (!xhr) {
+                alert("CORS is not supported");
+            }
+            xhr.onload = function(e) {
+                var responseText = JSON.parse(xhr.response);
+                $('#averageDraws').text(parseInt(responseText));
+            };
+            xhr.send();
+        }
+
+         /**
+            * Method for getting longest game played from database
+            **/
+		function longestGame() {
+            var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/longestGame");
+            if (!xhr) {
+                alert("CORS is not supported");
+            }
+            xhr.onload = function(e) {
+                var responseText = JSON.parse(xhr.response);
+                $('#longestGame').text(parseInt(responseText));
+            };
+            xhr.send();
+        }
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
   				var xhr = new XMLHttpRequest();
@@ -88,6 +202,7 @@
 		
 		<!-- Here are examples of how to call REST API Methods -->
 		<script type="text/javascript">
+		
 		
 			// This calls the helloJSONList REST method from TopTrumpsRESTAPI
 			function helloJSONList() {

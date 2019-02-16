@@ -3,7 +3,7 @@ package model;
 import java.sql.*;
 
 public class Database {
-	private static Connection c = null; // connection attribute for connecting to database
+	private Connection c = null; // connection attribute for connecting to database
 
 	public Database() { // default constructor
 
@@ -62,8 +62,8 @@ public class Database {
 		Player[] players = gstats.getPlayerArray();
 		Player winner = gstats.getWinner();
 
-		int gameID = 0; // game stats to be added to database each game, first game in database has
-						// gameID of 0
+		int gameID = getTotalGamesPlayed() + 1; // game stats to be added to database each game, first game in database has
+						// gameID of 1
 		int nDraws = gstats.getNumOfDraws(); // number of draws in the game
 		int nRounds = gstats.getNumOfRounds(); // number of rounds in the game
 		int gWinner = 0; // integer denoting which player won the game. if 1, human player wins, beyond 1
@@ -90,7 +90,6 @@ public class Database {
 				+ p1RW + ", " + p2RW + ", " + p3RW + ", " + p4RW + ", " + p5RW + ");";
 
 		insertStats(gameStats);
-		gameID++;
 	}
 
 	/**
@@ -105,7 +104,7 @@ public class Database {
 		if (c != null) {
 			try {
 				stmt = c.createStatement();
-				stmt.executeQuery(stats);
+				stmt.executeUpdate(stats);
 				stmt.close();
 
 			} catch (SQLException e) {
@@ -243,12 +242,22 @@ public class Database {
 	 */
 	public DatabaseResponse getDatabaseStats() {
 		DatabaseResponse response = new DatabaseResponse();
-		int totalGamesPlayed = getTotalGamesPlayed();
-		int totalComputerWins = getTotalComputerWins();
-		int totalHumanWins = getTotalHumanWins();
-		int averageDrawsPerGame = getAverageDrawsPerGame();
-		int largestNumberOfRounds = getLargestNumberOfRounds();
-
+		
+		int totalGamesPlayed = 0;
+		int totalComputerWins = 0;
+		int totalHumanWins = 0;
+		int averageDrawsPerGame = 0;
+		int largestNumberOfRounds = 0;
+		
+		try {
+		totalGamesPlayed = getTotalGamesPlayed();
+		totalComputerWins = getTotalComputerWins();
+		totalHumanWins = getTotalHumanWins();
+		averageDrawsPerGame = getAverageDrawsPerGame();
+		largestNumberOfRounds = getLargestNumberOfRounds();
+		} catch(Exception e) {
+			System.out.println("Unable to get statistics from Database, default 0 values returned.\n\n");
+		}
 		response.setTotalGamesPlayed(totalGamesPlayed);
 		response.setTotalComputerWins(totalComputerWins);
 		response.setTotalHumanWins(totalHumanWins);

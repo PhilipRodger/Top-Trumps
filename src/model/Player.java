@@ -1,5 +1,6 @@
 package model;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class Player {
@@ -73,6 +74,10 @@ public abstract class Player {
 	
 	public int getNumberOfCards() {
 		return cards.size();
+	}
+	
+	public List<Card> getCardList(){
+		return cards.getListRepresentation();
 	}
 
 }

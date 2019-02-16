@@ -1,5 +1,6 @@
 package online.dwResources;
-
+import displayers.*;
+import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -223,7 +224,6 @@ public class TopTrumpsRESTAPI {
 		return categorySelection;
 	}
 	
-	
 	@GET
 	@Path("createPlayers/")
 	
@@ -238,8 +238,6 @@ public class TopTrumpsRESTAPI {
 		return oWriter.writeValueAsString(players.length);
 	
 	}
-	
-
 	
 	@GET
 	@Path("getplayerName/")
@@ -261,9 +259,6 @@ public class TopTrumpsRESTAPI {
 		return cardvals;
 	}
 	
-	
-	
-	
 	@GET
 	@Path("getCategoryNames/")
 	
@@ -273,11 +268,7 @@ public class TopTrumpsRESTAPI {
 		return catName;
 		
 		
-	}
-	
-		
-
-		
+	}	
 	
 	
 	///***** relevant methods ******///
@@ -286,6 +277,7 @@ public class TopTrumpsRESTAPI {
 	
 	///******** Database API methods ********///
 	@GET
+
 	@Path("/totalGames")
 	/**
 	 * Get total games played from the database

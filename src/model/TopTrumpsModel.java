@@ -26,8 +26,10 @@ public class TopTrumpsModel {
 
 	public void playNewGame(int numOfPlayers) {
 		game = new Game(numOfPlayers, db);
-		
-		if (writeToTestFile) game.writeTestFile();
+
+		if (writeToTestFile) {
+			game.writeTestFile();
+		}
 
 		// Add Displayers to interact update the view
 		game.addDisplayUserWonGame(displayUserWonGame);
@@ -39,10 +41,10 @@ public class TopTrumpsModel {
 		game.addDisplayComputerTurn(displayComputerTurn);
 		game.addDisplayUserTurn(displayUserTurn);
 		ComputerPlayer.resetPlayerCounter();
-		
+
 		game.startGame();
 	}
-	
+
 	public void viewStatistics() {
 		db.connectToDB();
 		DatabaseResponse response = db.getDatabaseStats();
@@ -63,29 +65,26 @@ public class TopTrumpsModel {
 		game.startRound();
 	}
 
-	
-
-	
-
 	// Pass through methods to get info about the game.
 	// To communicate valid ways the user can interact.
 	public boolean nextTurnPossible() {
-		if (game == null) return false;
+		if (game == null)
+			return false;
 		return game.nextTurnPossible();
 	}
 
 	public boolean resolveUserTurnPossible() {
-		if (game == null) return false;
+		if (game == null)
+			return false;
 		return game.resolveUserTurnPossible();
 	}
 
 	public boolean resolveComputerTurnPossible() {
-		if (game == null) return false;
+		if (game == null)
+			return false;
 		return game.resolveComputerTurnPossible();
 	}
-	
-	
-	
+
 	// Displayers that update view.
 	private DisplayDatabaseResponce displayDatabaseResponce;
 	private DisplayUserWonGame displayUserWonGame;
@@ -96,7 +95,7 @@ public class TopTrumpsModel {
 	private DisplayUserLostRound displayUserLostRound;
 	private DisplayComputerTurn displayComputerTurn;
 	private DisplayUserTurn displayUserTurn;
-	
+
 	public void addDisplayDataBaseResponce(DisplayDatabaseResponce displayer) {
 		this.displayDatabaseResponce = displayer;
 	}

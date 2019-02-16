@@ -37,7 +37,7 @@ public class Game {
 	}
 
 	public void writeTestFile() {
-		testFile = new LogFile("LogFile.txt");
+		testFile = new LogFile("LogFile");
 	}
 
 	
@@ -45,6 +45,7 @@ public class Game {
 	public void startGame() {
 		// A single game of Top-Trumps
 		// initialisation for a single game
+		Round.setRoundNumber(0);// reset round number
 		deck = new Deck(DECK_LOCATION);
 
 		createPlayers(numOfPlayers);
@@ -121,24 +122,54 @@ public class Game {
 			}
 		}
 		if (numberOfActivePlayers < 2) {
+			nextTurnPossible = false;
 			return true;
 		}
 		return false;
 	}
+	
+	// Should only be called after it has been established that the game is over.
+	public Player getGameWinner() {
+		for (Player player : players) {
+			//If a player is in the game it is assumed they are the winner.
+			if(player.inGame()) {
+				return player;
+			}
+		}
+		return players[0]; // Default winner, should only happen if game was a draw
+	}
+	
+	
+	
+	public void writeWinner() {
+		if(testFile != null) {
+			testFile.writeWinner(getGameWinner());
+		}
+	}
 
 	public void displayGameOverScreen() {
 		// Game is over
-		stats.setWinner(getRoundWinner());
-		db.connectToDB();
-		db.writeGameStatistics(stats);
+		stats.setWinner(getGameWinner());
+		try {
+			db.connectToDB();
+			db.writeGameStatistics(stats);
+			db.disconnectDB();	
+		} catch(Exception e) {
+			System.out.println("Unable to write to database.");
+		}
+		
+		if (testFile != null) {
+			testFile.writeWinner(getGameWinner());
+		}
+
 		if (userWonGame()) {
 			displayUserWonGame.showUserWonGame(this);
 
 		} else if (userLostGame()) {
 			displayUserLostGame.showUserLostGame(this);
 		}
-		db.disconnectDB();
 	}
+
 
 	public void displayUserOutOfGameScreen() {
 		displayUserOutOfGame.showUserOutOfGame(this);
@@ -213,7 +244,11 @@ public class Game {
 	}
 
 	private void dealDeck() {
-		CardPile shuffled = deck.getShuffledDeck();
+		deck.shuffleDeck();
+		if(testFile != null) {
+			testFile.writeDeck(deck);
+		}
+		CardPile shuffled = deck;
 
 		while (shuffled.hasNextCard()) {
 			for (Player player : players) {
@@ -221,6 +256,9 @@ public class Game {
 					player.addCardToBottomOfPile(shuffled.drawCard());
 				}
 			}
+		}
+		if(testFile != null) {
+			testFile.writePlayersDecks(players);
 		}
 	}
 
@@ -272,6 +310,14 @@ public class Game {
 		// Unable to find a human player still in the game so user must have lost.
 		return true;
 	}
+
+	public void writeRound(Round round) {
+		if (testFile != null) {
+			testFile.writeRound(round);
+		}
+	}
+	
+
 
 	// Displayers that update view.
 	private DisplayUserWonGame displayUserWonGame;
@@ -325,5 +371,9 @@ public class Game {
 		}
 	}
 
-
+	public void writeDecksAtEndOfRound(Round round) {
+		if(testFile != null) {
+			testFile.writeDecksAtEndOfRound(round);
+		}
+	}
 }
