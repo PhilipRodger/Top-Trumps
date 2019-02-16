@@ -149,7 +149,7 @@ public class TopTrumpsRESTAPI {
 	@Path("/getDeck")
 	// Method that will return deck 
 	public Deck getDeck()throws IOException{
-		deck.getShuffledDeck();
+		deck.shuffleDeck();
 		return deck;
 	}
 	
@@ -224,13 +224,13 @@ public class TopTrumpsRESTAPI {
 		return categorySelection;
 	}
 	
-	@GET
-	@Path("createPlayers/")
-	
-	public void createPlayers () {
-		
-		game.createPlayers(numOfPlayers);
-	}
+//	@GET
+//	@Path("createPlayers/")
+//	
+//	public void createPlayers () {
+//		
+//		game.createPlayers(numOfPlayers);
+//	}
 	
 	@GET
 	@Path("numOfPlayers/")

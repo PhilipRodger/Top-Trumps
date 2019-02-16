@@ -22,7 +22,5 @@ public class HumanPlayer extends Player{
 			game.setResolveUserTurnPossible(true);
 			userTurnListener.showUserTurn(currentRound);
 		}
-		
-	
 	}
 }

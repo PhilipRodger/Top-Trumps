@@ -224,7 +224,7 @@ public class Game {
 	}
 
 	// Helper methods
-	public void createPlayers(int numOfPlayers) {
+	private void createPlayers(int numOfPlayers) {
 		// initialised players first player is the human the rest are AI
 
 		players = new Player[numOfPlayers];

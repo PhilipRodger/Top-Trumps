@@ -299,8 +299,4 @@ public class CommandLineView implements TopTrumpsView {
 		this.nextRoundListener = listner;
 
 	}
-
-	public int getNumOfPlayers() {
-		return numOfPlayers;
-	}
 }
