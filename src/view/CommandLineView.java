@@ -33,7 +33,7 @@ public class CommandLineView implements TopTrumpsView {
 		this.model = model;
 
 		// Model ---[UPDATES]---> View
-		// TODO Decisions should be made about how to display certain events to the
+		// Decisions should be made about how to display certain events to the
 		// user:
 		model.addDisplayDataBaseResponce(new DisplayDatabaseResponce() {
 
