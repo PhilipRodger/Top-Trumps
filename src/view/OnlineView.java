@@ -20,10 +20,12 @@ import listeners.ViewStatisticsListener;
 import model.Card;
 import model.DatabaseResponse;
 import model.Game;
+import model.HumanPlayer;
 import model.Round;
 import model.TopTrumpsModel;
+import online.dwResources.TopTrumpsRESTAPI;
 
-public class OnlineView implements TopTrumpsView{
+public class OnlineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;
 	TopTrumpsModel model;
 	boolean autoResolve = false;
@@ -108,6 +110,47 @@ public class OnlineView implements TopTrumpsView{
 					showCardsInRound(currentRound);
 					System.out.println("And the winner of the round is " + currentRound.getRoundWinner().getName());
 					System.out.println("You lost this round, enter anything to continue.");
+
+					RoundObjectToJson response = new RoundObjectToJson();
+					response.gameFinished = false;
+					response.roundNumber = Round.getRoundNumber();
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+							response.playersTurnIndex = i;
+							break;
+						}
+					}
+					response.roundHasBeenResolved = true;
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						if (currentRound.getPlayers()[i] == currentRound.getRoundWinner()) {
+							response.roundWinnerIndex = i;
+							break;
+						}
+					
+					}
+					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						response.playersToJson[i] = new PlayerToJson();
+						response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
+						if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
+							response.playersToJson[i].humanPlayer = true;
+						} else {
+							response.playersToJson[i].humanPlayer = false;
+						}
+						response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
+						for (Card card : currentRound.getCommunityPile().getListRepresentation()) {
+							if(card.getOwner() == currentRound.getPlayers()[i]) {
+								response.playersToJson[i].cardName = card.getName();
+								response.playersToJson[i].size = card.getValue(0);
+								response.playersToJson[i].speed = card.getValue(1);
+								response.playersToJson[i].range = card.getValue(2);
+								response.playersToJson[i].firepower = card.getValue(3);
+								response.playersToJson[i].cargo = card.getValue(4);
+								break;
+							}
+						}
+					}
+					setResponse(response);
 				}
 			}
 		});
@@ -120,6 +163,37 @@ public class OnlineView implements TopTrumpsView{
 					System.out.println("Your Turn.");
 					System.out.println("Number of cards in community pile: " + currentRound.getCommunityPileSize());
 					showUsersCard(currentRound.getFirstCard());
+
+					RoundObjectToJson response = new RoundObjectToJson();
+					response.gameFinished = false;
+					response.roundNumber = Round.getRoundNumber();
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+							response.playersTurnIndex = i;
+							break;
+						}
+					}
+					response.roundHasBeenResolved = false;
+					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						response.playersToJson[i] = new PlayerToJson();
+						response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
+						if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
+							response.playersToJson[i].humanPlayer = true;
+						} else {
+							response.playersToJson[i].humanPlayer = false;
+						}
+						response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
+						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+							response.playersToJson[i].cardName = currentRound.getFirstCard().getName();
+							response.playersToJson[i].size = currentRound.getFirstCard().getValue(0);
+							response.playersToJson[i].speed = currentRound.getFirstCard().getValue(1);
+							response.playersToJson[i].range = currentRound.getFirstCard().getValue(2);
+							response.playersToJson[i].firepower = currentRound.getFirstCard().getValue(3);
+							response.playersToJson[i].cargo = currentRound.getFirstCard().getValue(4);
+						}
+					}
+					setResponse(response);
 				}
 			}
 		});
@@ -133,6 +207,38 @@ public class OnlineView implements TopTrumpsView{
 					System.out.println("They chose:" + Card.getCategories()[currentRound.getChosenCategory()]);
 					System.out.println("Number of cards in community pile: " + currentRound.getCommunityPileSize());
 					System.out.println("Enter anything to resolve the round.");
+
+					RoundObjectToJson response = new RoundObjectToJson();
+					response.gameFinished = false;
+					response.roundNumber = Round.getRoundNumber();
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+							response.playersTurnIndex = i;
+							break;
+						}
+					}
+					response.roundHasBeenResolved = false;
+					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
+					for (int i = 0; i < currentRound.getPlayers().length; i++) {
+						response.playersToJson[i] = new PlayerToJson();
+						response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
+						if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
+							response.playersToJson[i].humanPlayer = true;
+						} else {
+							response.playersToJson[i].humanPlayer = false;
+						}
+						response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
+						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+							response.playersToJson[i].cardName = currentRound.getFirstCard().getName();
+							response.playersToJson[i].size = currentRound.getFirstCard().getValue(0);
+							response.playersToJson[i].speed = currentRound.getFirstCard().getValue(1);
+							response.playersToJson[i].range = currentRound.getFirstCard().getValue(2);
+							response.playersToJson[i].firepower = currentRound.getFirstCard().getValue(3);
+							response.playersToJson[i].cargo = currentRound.getFirstCard().getValue(4);
+						}
+					}
+					setResponse(response);
+
 				}
 			}
 		});
@@ -251,13 +357,23 @@ public class OnlineView implements TopTrumpsView{
 		s.close();
 	}
 
+	TopTrumpsRESTAPI rest;
+
+	public void setTopTrumpsRESTAPI(TopTrumpsRESTAPI rest) {
+		this.rest = rest;
+	}
+
+	public void setResponse(RoundObjectToJson responce) {
+		rest.setRoundResponce(responce);
+	}
+
 	// Listeners in the command view are not linked to individual elements like the
 	// web version.
-	StartGameListener startGameListner;
-	ViewStatisticsListener viewStatisticsListner;
-	NextCategoryListener nextCatagoryListener;
-	UserSelectionListener userSelectionListner;
-	NextRoundListener nextRoundListener;
+	public StartGameListener startGameListner;
+	public ViewStatisticsListener viewStatisticsListner;
+	public NextCategoryListener nextCatagoryListener;
+	public UserSelectionListener userSelectionListner;
+	public NextRoundListener nextRoundListener;
 
 	// Below methods just add action listeners to the the view allowing separation
 	// of the view form the controller.
