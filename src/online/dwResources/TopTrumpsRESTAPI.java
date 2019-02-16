@@ -4,6 +4,8 @@ import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,8 +16,15 @@ import javax.ws.rs.core.MediaType;
 
 import online.configuration.TopTrumpsJSONConfiguration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+
+import model.*;
+import controler.*;
+import view.*;
+import listeners.*;
+
 
 @Path("/toptrumps") // Resources specified here should be hosted at http://localhost:7777/toptrumps
 @Produces(MediaType.APPLICATION_JSON) // This resource returns JSON content
@@ -35,6 +44,19 @@ public class TopTrumpsRESTAPI {
 	/** A Jackson Object writer. It allows us to turn Java objects
 	 * into JSON strings easily. */
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
+	private static final String DECK_LOCATION = "StarCitizenDeck.txt";
+	private int currentRoundNumber = 0;
+	private int numOfPlayers;
+	private static Deck deck;
+	private Player play;
+	private Player[] players;
+	private GameStatistics stats;
+	private Game game;
+	private Database db;
+	private Round round;
+	private TopTrumpsModel model;
+	private CommandLineView command;
+	private Card card;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -46,7 +68,11 @@ public class TopTrumpsRESTAPI {
 		// ----------------------------------------------------
 		// Add relevant initalization here
 		// ----------------------------------------------------
+		
+		
+		
 	}
+	
 	
 	// ----------------------------------------------------
 	// Add relevant API methods here
@@ -82,12 +108,176 @@ public class TopTrumpsRESTAPI {
 	 * @throws IOException
 	 */
 	public String helloWord(@QueryParam("Word") String Word) throws IOException {
-		return "Hello "+Word;
+		return "Hello "+Word;	
+		
+	
+	}
+	@GET
+	@Path("/startGame")
+	
+	public void startGame() { 
+		game.startGame();
+	
 	}
 	
-	//methods to display to statistics view
+	@GET
+	@Path("/startRound")
+	
+	public void startRound() throws IOException{
+	    game.startRound();
+	      
+	}
+		
+	@GET
+	@Path("/resolveRound")	
+	public void resolveRound() throws IOException{
+		round.resolveRound();
+	}
 	
 	@GET
+	@Path("/getRoundNumber")
+	public String getRoundNumber() throws IOException {
+		
+		String roundNumber = oWriter.writeValueAsString (stats.getNumOfRounds());
+		return roundNumber;
+		
+	}
+	
+	
+
+	@GET
+	@Path("/getDeck")
+	// Method that will return deck 
+	public Deck getDeck()throws IOException{
+		deck.getShuffledDeck();
+		return deck;
+	}
+	
+	
+	@GET
+	@Path("/getPlayers")
+	
+	public Player[] getPlayers() throws IOException{
+		return players;
+		
+		
+		
+	}
+	
+	
+	@GET
+	@Path("/activePlayer")
+	public String activePlayer () throws IOException{
+		String activePlayer = oWriter.writeValueAsString(game.getPlayersTurn());
+		return activePlayer;
+	
+	}
+	
+	@GET
+	@Path("/getRoundWinner")
+	
+	public String getRoundWinner() throws IOException {
+		String roundwinner = oWriter.writeValueAsString(round.getRoundWinner());
+		
+		return roundwinner;
+		
+	}
+	
+	
+	@GET
+	@Path("communityPileSize/")
+	
+	public String communityPileSize () throws IOException {
+		
+		String comPileSize = oWriter.writeValueAsString (game.getCommunityPile().size());
+		
+		return comPileSize;
+	
+	
+	}
+	
+	
+	@GET
+	@Path("getCardName/")
+	
+	public String getCardName () throws IOException {
+		
+		String cardName = oWriter.writeValueAsString (card.getName());
+		
+		
+		return cardName;
+		
+		
+		
+		
+	}
+	
+	
+	
+	@GET
+	@Path("categorySelection/")
+	
+	public String categorySelection () throws IOException {
+		
+		String categorySelection = oWriter.writeValueAsString (round.getChosenCategory());
+		
+		return categorySelection;
+	}
+	
+	@GET
+	@Path("createPlayers/")
+	
+	public void createPlayers () {
+		
+		game.createPlayers(numOfPlayers);
+	}
+	
+	@GET
+	@Path("numOfPlayers/")
+	public String numOfPlayers() throws IOException {
+		return oWriter.writeValueAsString(players.length);
+	
+	}
+	
+	@GET
+	@Path("getplayerName/")
+	
+	public String playerName () throws IOException {
+	
+		String pname = oWriter.writeValueAsString(play.getName());
+		
+		return pname;
+	}
+	
+	@GET
+	@Path("getCardValues/")
+	
+	public String getCardValues (int i) throws IOException  {
+		
+		String cardvals = oWriter.writeValueAsString (card.getValue(i));
+		
+		return cardvals;
+	}
+	
+	@GET
+	@Path("getCategoryNames/")
+	
+	public String categoryNames () throws IOException {
+		
+		String catName = oWriter.writeValueAsString (Card.getCategories());
+		return catName;
+		
+		
+	}	
+	
+	
+	///***** relevant methods ******///
+	
+	
+	
+	///******** Database API methods ********///
+	@GET
+
 	@Path("/totalGames")
 	/**
 	 * Get total games played from the database
@@ -182,3 +372,9 @@ public class TopTrumpsRESTAPI {
 	
 	
 }
+
+	
+	
+
+
+	
