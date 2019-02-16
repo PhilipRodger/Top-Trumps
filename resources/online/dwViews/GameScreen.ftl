@@ -256,7 +256,7 @@
 					xhr.send()
 					
 					xhr.onload = function(e){
-				  		document.getElementById("").innerHTML = "" + current_round_num + ":  " + xhr.response;
+				  		document.getElementById("(insert element you want)").innerHTML = "" + roundNum + ":  " + xhr.response;
 				  	} 
 				
 			function numberOfPlayers() {
@@ -267,8 +267,25 @@
 		                xhr.onload = function(e) {
 		                    var responseText = JSON.parse(xhr.response); // the text of the response
 		                    numOfPlayers = parseInt(responseText[0]);
+		                    
+		                    
+		                    
+		     function namesOfPlayers() {
+		              var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/namesOfPlayers"); // Request type and URL
+		                    if (!xhr) {
+		                            alert("CORS not supported");
+		                        }
+		                    xhr.onload = function() {
+		                           var  responseText = JSON.parse(xhr.response); // the text of the response
+		                            var n = parseInt(responseText[0]); //number of players
+		                            for (var i=1; i<(n+1); i++) {
+		                                $(".nameOfPlayer"+i).text(responseText[i]);
+		                            }
+		                        };
+		                        xhr.send();
+		                    }
 					
-			function activePlayer() {
+		    function activePlayer() {
 		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/activePlayer"); // Request type and URL
 		                if (!xhr) {
 		                    alert("CORS not supported");
@@ -280,17 +297,47 @@
 		                    activePlayerVar = responseText;
 		                    $("p:contains('"+ activePlayerVar +"')").parent().toggleClass("active");
 		                    console.log("response active player: " + activePlayerVar);
+		                    
+		                    
+		    function cardCatNames() {
+		                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/cardCat"); // Request type and URL
+		                 if (!xhr) {
+		                 alert("CORS not supported");
+		                        }
+		                 xhr.onload = function(e) {
+		                 var responseText = JSON.parse(xhr.response); // the text of the response
+		                 for(var i=0; i<responseText.length; i++) {
+		                 $("#nameOfCat"+(i+1)).text(responseText[i]);
+		                 $("#nameOfCat"+(i+1)+"Btn").text(responseText[i]);
+		                            }
+		                        };
+		                        xhr.send();
+		                    }
+		        		   
+		      function getCardValues() {
+		                       var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getCardValues"); // Request type and URL
+		                       if (!xhr) {
+		                           alert("CORS not supported");
+		                       }
+		                       xhr.onload = function(e) {
+		                           var responseText = JSON.parse(xhr.response); // the text of the response
+		                           for (var i=0; i<responseText.length; i++) {
+		                               $("#cat"+(i+1)+"Value").text(parseInt(responseText[i]));
+		                           }
+		                       };
+		                       xhr.send();
+		                   }
 				
 		                
-		   function setCategory(clicked_id) {
-		            	document.getElementById('btn-submit')
-		            	categorySelected = clicked_id;
-		            	console.log("this clicked id is: " + categorySelected);
+		    function setCategory(clicked_id) {
+				      document.getElementById('Btn')
+				        categorySelected = clicked_id;
+				          console.log("this clicked id is: " + categorySelected);
 		
 		   
 		            	
 		    function getchosenCategory() {
-		                var xhr = createCORSRequest('PUT', "http://localhost:7777/toptrumps/categorySelection"); // Request type and URL+parameters
+		         var xhr = createCORSRequest('PUT', "http://localhost:7777/toptrumps/categorySelection"); // Request type and URL+parameters
 		                if (!xhr) {
 		                        alert("CORS not supported");
 		                    }
@@ -304,17 +351,17 @@
 		    
 		    function communityPileSize() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/communityPileSize"); // Request type and URL
-                if (!xhr) {
-                    alert("CORS not supported");
+                	if (!xhr) {
+                		alert("CORS not supported");
                 }
                 xhr.onload = function(e) {
                     var responseText = JSON.parse(xhr.response); // the text of the response
-                    $('#').text(parseInt(responseText[0]));
+                    $('#communityPileSize').text(parseInt(responseText[0]));
                 };
                 xhr.send();
                 
                 
-                function getCardName(){
+            function getCardName(){
         		  	var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getCardName	");
         			xhr.send();
         			xhr.onload = function(e){
@@ -324,6 +371,9 @@
         	  	}
                 
             }
+		    
+		   
+		    
 		            	
 		</script>
 		

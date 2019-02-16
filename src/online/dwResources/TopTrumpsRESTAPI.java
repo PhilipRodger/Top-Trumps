@@ -47,6 +47,7 @@ public class TopTrumpsRESTAPI {
 	private int currentRoundNumber = 0;
 	private int numOfPlayers;
 	private static Deck deck;
+	private Player play;
 	private Player[] players;
 	private GameStatistics stats;
 	private Game game;
@@ -147,7 +148,6 @@ public class TopTrumpsRESTAPI {
 	@Path("/getDeck")
 	// Method that will return deck 
 	public Deck getDeck()throws IOException{
-		Deck deck = new Deck (DECK_LOCATION);
 		deck.getShuffledDeck();
 		return deck;
 	}
@@ -158,6 +158,9 @@ public class TopTrumpsRESTAPI {
 	
 	public Player[] getPlayers() throws IOException{
 		return players;
+		
+		
+		
 	}
 	
 	
@@ -232,28 +235,52 @@ public class TopTrumpsRESTAPI {
 	@GET
 	@Path("numOfPlayers/")
 	public String numOfPlayers() throws IOException {
-		return oWriter.writeValueAsString(game.getPlayers().length);
+		return oWriter.writeValueAsString(players.length);
+	
+	}
+	
+
+	
+	@GET
+	@Path("getplayerName/")
+	
+	public String playerName () throws IOException {
+	
+		String pname = oWriter.writeValueAsString(play.getName());
+		
+		return pname;
+	}
+	
+	@GET
+	@Path("getCardValues/")
+	
+	public String getCardValues (int i) throws IOException  {
+		
+		String cardvals = oWriter.writeValueAsString (card.getValue(i));
+		
+		return cardvals;
 	}
 	
 	
+	
+	
+	@GET
+	@Path("getCategoryNames/")
+	
+	public String categoryNames () throws IOException {
+		
+		String catName = oWriter.writeValueAsString (Card.getCategories());
+		return catName;
+		
+		
+	}
+	
+		
+
+		
 	
 	
 	///***** relevant methods ******///
-	
-	private void dealDeckAPI() {
-		CardPile shuffled = deck.getShuffledDeck();
-
-		while (shuffled.hasNextCard()) {
-			for (Player player : players) {
-				if (shuffled.hasNextCard()) {
-					player.addCardToBottomOfPile(shuffled.drawCard());
-				}
-			}
-		}
-	}
-	
-	
-	
 	
 	
 	
