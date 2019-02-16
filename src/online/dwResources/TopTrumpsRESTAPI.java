@@ -45,18 +45,9 @@ public class TopTrumpsRESTAPI {
 	 * into JSON strings easily. */
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
 	private static final String DECK_LOCATION = "StarCitizenDeck.txt";
-	private int currentRoundNumber = 0;
-	private int numOfPlayers;
-	private static Deck deck;
-	private Player play;
-	private Player[] players;
-	private GameStatistics stats;
-	private Game game;
-	private Database db;
-	private Round round;
 	private TopTrumpsModel model;
 	private CommandLineView command;
-	private Card card;
+	
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -69,8 +60,10 @@ public class TopTrumpsRESTAPI {
 		// Add relevant initalization here
 		// ----------------------------------------------------
 		
-		
-		
+		boolean writeGameLogsToFile = false; // Should always be false
+		TopTrumpsModel model = new TopTrumpsModel(writeGameLogsToFile);
+		CommandLineView view = new CommandLineView(model);
+		new TopTrumpsContoller(model, view);
 	}
 	
 	
@@ -102,7 +95,7 @@ public class TopTrumpsRESTAPI {
 	@Path("/helloWord")
 	/**
 	 * Here is an example of how to read parameters provided in an HTML Get request.
-	 * @param Word - A word
+	 * @param Word - A word ?Word=
 	 * @return - A String
 	 * @throws IOException
 	 */
@@ -111,165 +104,13 @@ public class TopTrumpsRESTAPI {
 		
 	
 	}
-	@GET
-	@Path("/startGame")
-	
-	public void startGame() { 
-		game.startGame();
-	
-	}
 	
 	@GET
-	@Path("/startRound")
-	
-	public void startRound() throws IOException{
-	    game.startRound();
-	      
+	@Path("/game")
+	public String game() {
+		return "test";
 	}
-		
-	@GET
-	@Path("/resolveRound")	
-	public void resolveRound() throws IOException{
-		round.resolveRound();
-	}
-	
-	@GET
-	@Path("/getRoundNumber")
-	public String getRoundNumber() throws IOException {
-		
-		String roundNumber = oWriter.writeValueAsString (stats.getNumOfRounds());
-		return roundNumber;
-		
-	}
-	
-	
 
-	@GET
-	@Path("/getDeck")
-	// Method that will return deck 
-	public Deck getDeck()throws IOException{
-		deck.shuffleDeck();
-		return deck;
-	}
-	
-	
-	@GET
-	@Path("/getPlayers")
-	
-	public Player[] getPlayers() throws IOException{
-		return players;
-		
-		
-		
-	}
-	
-	
-	@GET
-	@Path("/activePlayer")
-	public String activePlayer () throws IOException{
-		String activePlayer = oWriter.writeValueAsString(game.getPlayersTurn());
-		return activePlayer;
-	
-	}
-	
-	@GET
-	@Path("/getRoundWinner")
-	
-	public String getRoundWinner() throws IOException {
-		String roundwinner = oWriter.writeValueAsString(round.getRoundWinner());
-		
-		return roundwinner;
-		
-	}
-	
-	
-	@GET
-	@Path("communityPileSize/")
-	
-	public String communityPileSize () throws IOException {
-		
-		String comPileSize = oWriter.writeValueAsString (game.getCommunityPile().size());
-		
-		return comPileSize;
-	
-	
-	}
-	
-	
-	@GET
-	@Path("getCardName/")
-	
-	public String getCardName () throws IOException {
-		
-		String cardName = oWriter.writeValueAsString (card.getName());
-		
-		
-		return cardName;
-		
-		
-		
-		
-	}
-	
-	
-	
-	@GET
-	@Path("categorySelection/")
-	
-	public String categorySelection () throws IOException {
-		
-		String categorySelection = oWriter.writeValueAsString (round.getChosenCategory());
-		
-		return categorySelection;
-	}
-	
-//	@GET
-//	@Path("createPlayers/")
-//	
-//	public void createPlayers () {
-//		
-//		game.createPlayers(numOfPlayers);
-//	}
-	
-	@GET
-	@Path("numOfPlayers/")
-	public String numOfPlayers() throws IOException {
-		return oWriter.writeValueAsString(players.length);
-	
-	}
-	
-	@GET
-	@Path("getplayerName/")
-	
-	public String playerName () throws IOException {
-	
-		String pname = oWriter.writeValueAsString(play.getName());
-		
-		return pname;
-	}
-	
-	@GET
-	@Path("getCardValues/")
-	
-	public String getCardValues (int i) throws IOException  {
-		
-		String cardvals = oWriter.writeValueAsString (card.getValue(i));
-		
-		return cardvals;
-	}
-	
-	@GET
-	@Path("getCategoryNames/")
-	
-	public String categoryNames () throws IOException {
-		
-		String catName = oWriter.writeValueAsString (Card.getCategories());
-		return catName;
-		
-		
-	}	
-	
-	
 	///***** relevant methods ******///
 	
 	
