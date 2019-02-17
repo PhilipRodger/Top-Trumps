@@ -38,20 +38,21 @@
 <div class="card-deck">
         <div class="card border-success" style="width: 18rem;">
             <div class="card-header text-center text-white bg-success mb-3" style="max-width: 18rem;">
-                <h5>Player (Number of cards)</h5>
+                <h5>Player</h5>
+                <p id="numCard1"></p>
             </div>
             <div class="card-name text-center">
-                    <h5>Card Name</h5>
+                    <h5 id="cardName1"></h5>
                 </div>
                 <div class="card-body">
                   
                   <p class="card-attributes">
                       <ul>
-                          <li>Speed:</li>
-                          <li>Cargo:</li>
-                          <li>Size:</li>
-                          <li>Range:</li>
-                          <li>Firepower:</li>
+                        <li id="attributeA1"></li>
+                        <li id="attributeA2"></li>
+                        <li id="attributeA3"></li>
+                        <li id="attributeA4"></li>
+                        <li id="attributeA5"></li>
                       </ul>
                   </p>
                 </div>
@@ -59,20 +60,22 @@
 
               <div class="card border-danger" style="width: 18rem;">
                     <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
-                        <h5>AI Player 1 (Number of cards)</h5>
+                        <h5>AI Player 1</h5>
+                        <p id="numCard2"></p>
                     </div>
                     <div class="card-name text-center">
-                            <h5>Card Name</h5>
+                        <h5 id="cardName2"></h5>
+       
                         </div>
                         <div class="card-body">
                           
                           <p class="card-attributes">
                               <ul>
-                                  <li>Speed:</li>
-                                  <li>Cargo:</li>
-                                  <li>Size:</li>
-                                  <li>Range:</li>
-                                  <li>Firepower:</li>
+                                  <li id="attributeB1"></li>
+                        <li id="attributeB2"></li>
+                        <li id="attributeB3"></li>
+                        <li id="attributeB4"></li>
+                        <li id="attributeB5"></li>
                               </ul>
                           </p>
                         </div>
@@ -80,20 +83,21 @@
 
                       <div class="card border-danger" style="width: 18rem;">
                             <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
-                                <h5>AI Player 2 (Number of cards)</h5>
+                                <h5>AI Player 2</h5>
+                                <p id="numCard3"></p>
                             </div>
                             <div class="card-name text-center">
-                                    <h5>Card Name</h5>
+                                <h5 id="cardName3"></h5>
                                 </div>
                                 <div class="card-body">
                                   
                                   <p class="card-attributes">
                                       <ul>
-                                          <li>Speed:</li>
-                                          <li>Cargo:</li>
-                                          <li>Size:</li>
-                                          <li>Range:</li>
-                                          <li>Firepower:</li>
+                                         <li id="attributeC1"></li>
+                        <li id="attributeC2"></li>
+                        <li id="attributeC3"></li>
+                        <li id="attributeC4"></li>
+                        <li id="attributeC5"></li>
                                       </ul>
                                   </p>
                                 </div>
@@ -101,20 +105,21 @@
 
                               <div class="card border-danger" style="width: 18rem;">
                                     <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
-                                        <h5>AI Player 3 (Number of cards)</h5>
+                                        <h5>AI Player 3</h5>
+                                        <p id="numCard4"></p>
                                     </div>
                                     <div class="card-name text-center">
-                                            <h5>Card Name</h5>
+                                        <h5 id="cardName4"></h5>
                                         </div>
                                         <div class="card-body">
                                           
                                           <p class="card-attributes">
                                               <ul>
-                                                  <li>Speed:</li>
-                                                  <li>Cargo:</li>
-                                                  <li>Size:</li>
-                                                  <li>Range:</li>
-                                                  <li>Firepower:</li>
+                                                <li id="attributeD1"></li>
+                        <li id="attributeD2"></li>
+                        <li id="attributeD3"></li>
+                        <li id="attributeD4"></li>
+                        <li id="attributeD5"></li>
                                               </ul>
                                           </p>
                                         </div>
@@ -122,20 +127,21 @@
 
                                       <div class="card border-danger" style="width: 18rem;">
                                             <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
-                                                <h5>AI Player 4 (Number of cards)</h5>
+                                                <h5>AI Player 4</h5>
+                                                <p id="numCard5"></p>
                                             </div>
                                             <div class="card-name text-center">
-                                                    <h5>Card Name</h5>
+                                                    <h5 id="cardName5"></h5>
                                                 </div>
                                                 <div class="card-body">
                                                   
                                                   <p class="card-attributes">
                                                       <ul>
-                                                          <li>Speed:</li>
-                                                          <li>Cargo:</li>
-                                                          <li>Size:</li>
-                                                          <li>Range:</li>
-                                                          <li>Firepower:</li>
+                                                          <li id="attributeE1"></li>
+                        <li id="attributeE2"></li>
+                        <li id="attributeE3"></li>
+                        <li id="attributeE4"></li>
+                        <li id="attributeE5"></li>
                                                       </ul>
                                                   </p>
                                                 </div>
@@ -155,14 +161,17 @@
 		
 		</div>
 		
-		<div class="footer">Designed and Engineered by The Dabbin' Cavern in Glasgow, Scotland
-        </div>
-		
 		<script type="text/javascript">
 		
 			// Method that is called on page load
 			function initalize() {
-				startGame ();
+				newGame();
+                player1Card();
+                player2Card();
+                player3Card();
+                player4Card();
+                player5Card();
+                
 			
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
@@ -184,6 +193,7 @@
 			var roundNum;
 			var numOfPlayers;
 			var categorySelected;
+			
 		
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
@@ -210,6 +220,110 @@
   				 return xhr;
 			}
 			
+			 /**
+             * start the game data request
+             * */
+            function newGame() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/newGame"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                };
+                xhr.send();
+            }
+                  
+                  function player1Card() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('numCard1').innerHTML="Cards: " +JSON.stringify(responseText.playersToJson[0].numberOfCards);
+                    document.getElementById('cardName1').innerHTML = JSON.stringify(responseText.playersToJson[0].cardName);
+                    document.getElementById('attributeA1').innerHTML ="Size: "+ JSON.stringify(responseText.playersToJson[0].size);
+                    document.getElementById('attributeA2').innerHTML ="Speed: "+ JSON.stringify(responseText.playersToJson[0].speed);
+                    document.getElementById('attributeA3').innerHTML ="Range: "+ JSON.stringify(responseText.playersToJson[0].range);
+                    document.getElementById('attributeA4').innerHTML ="Firepower: "+ JSON.stringify(responseText.playersToJson[0].firepower);
+                    document.getElementById('attributeA5').innerHTML ="Cargo: "+ JSON.stringify(responseText.playersToJson[0].cargo);
+                };
+                xhr.send();
+            }
+
+            function player2Card() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('numCard2').innerHTML="Cards: " +JSON.stringify(responseText.playersToJson[1].numberOfCards);
+                    document.getElementById('cardName2').innerHTML = JSON.stringify(responseText.playersToJson[1].cardName);
+                    document.getElementById('attributeB1').innerHTML ="Size: "+ JSON.stringify(responseText.playersToJson[1].size);
+                    document.getElementById('attributeB2').innerHTML ="Speed: "+ JSON.stringify(responseText.playersToJson[1].speed);
+                    document.getElementById('attributeB3').innerHTML ="Range: "+ JSON.stringify(responseText.playersToJson[1].range);
+                    document.getElementById('attributeB4').innerHTML ="Firepower: "+ JSON.stringify(responseText.playersToJson[1].firepower);
+                    document.getElementById('attributeB5').innerHTML ="Cargo: "+ JSON.stringify(responseText.playersToJson[1].cargo);
+                };
+                xhr.send();
+            }
+
+            function player3Card() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('numCard3').innerHTML="Cards: " +JSON.stringify(responseText.playersToJson[2].numberOfCards);
+                    document.getElementById('cardName3').innerHTML = JSON.stringify(responseText.playersToJson[2].cardName);
+                    document.getElementById('attributeC1').innerHTML ="Size: "+ JSON.stringify(responseText.playersToJson[2].size);
+                    document.getElementById('attributeC2').innerHTML ="Speed: "+ JSON.stringify(responseText.playersToJson[2].speed);
+                    document.getElementById('attributeC3').innerHTML ="Range: "+ JSON.stringify(responseText.playersToJson[2].range);
+                    document.getElementById('attributeC4').innerHTML ="Firepower: "+ JSON.stringify(responseText.playersToJson[2].firepower);
+                    document.getElementById('attributeC5').innerHTML ="Cargo: "+ JSON.stringify(responseText.playersToJson[2].cargo);
+                };
+                xhr.send();
+            }
+
+            function player4Card() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('numCard4').innerHTML="Cards: " +JSON.stringify(responseText.playersToJson[3].numberOfCards);
+                    document.getElementById('cardName4').innerHTML = JSON.stringify(responseText.playersToJson[3].cardName);
+                    document.getElementById('attributeD1').innerHTML ="Size: "+ JSON.stringify(responseText.playersToJson[3].size);
+                    document.getElementById('attributeD2').innerHTML ="Speed: "+ JSON.stringify(responseText.playersToJson[3].speed);
+                    document.getElementById('attributeD3').innerHTML ="Range: "+ JSON.stringify(responseText.playersToJson[3].range);
+                    document.getElementById('attributeD4').innerHTML ="Firepower: "+ JSON.stringify(responseText.playersToJson[3].firepower);
+                    document.getElementById('attributeD5').innerHTML ="Cargo: "+ JSON.stringify(responseText.playersToJson[3].cargo);
+                };
+                xhr.send();
+            }
+
+            function player5Card() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('numCard5').innerHTML="Cards: " +JSON.stringify(responseText.playersToJson[4].numberOfCards);
+                    document.getElementById('cardName5').innerHTML = JSON.stringify(responseText.playersToJson[4].cardName);
+                    document.getElementById('attributeE1').innerHTML ="Size: "+ JSON.stringify(responseText.playersToJson[4].size);
+                    document.getElementById('attributeE2').innerHTML ="Speed: "+ JSON.stringify(responseText.playersToJson[4].speed);
+                    document.getElementById('attributeE3').innerHTML ="Range: "+ JSON.stringify(responseText.playersToJson[4].range);
+                    document.getElementById('attributeE4').innerHTML ="Firepower: "+ JSON.stringify(responseText.playersToJson[4].firepower);
+                    document.getElementById('attributeE5').innerHTML ="Cargo: "+ JSON.stringify(responseText.playersToJson[4].cargo);
+                };
+                xhr.send();
+            }
+
 			
 			
 			
@@ -220,6 +334,7 @@
 					  		alert("CORS not supported");
 						}
 						xhr.send();
+			}
 				
 						
 						
@@ -241,7 +356,8 @@
 				xhr.send();
 				xhr.onload = function(e){
 			  		roundNumber =  xhr.response;
-			  	} 
+			  	}
+			} 
 				
 				
 			function getRoundWinner(){
@@ -257,7 +373,8 @@
 					
 					xhr.onload = function(e){
 				  		document.getElementById("(insert element you want)").innerHTML = "" + roundNum + ":  " + xhr.response;
-				  	} 
+				  	}
+			} 
 				
 			function numberOfPlayers() {
 		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/numOfPlayers"); // Request type and URL
@@ -267,6 +384,8 @@
 		                xhr.onload = function(e) {
 		                    var responseText = JSON.parse(xhr.response); // the text of the response
 		                    numOfPlayers = parseInt(responseText[0]);
+						}
+			}
 		                    
 		                    
 		                    
@@ -297,6 +416,8 @@
 		                    activePlayerVar = responseText;
 		                    $("p:contains('"+ activePlayerVar +"')").parent().toggleClass("active");
 		                    console.log("response active player: " + activePlayerVar);
+						}
+			}
 		                    
 		                    
 		    function cardCatNames() {
@@ -333,7 +454,7 @@
 				      document.getElementById('Btn')
 				        categorySelected = clicked_id;
 				          console.log("this clicked id is: " + categorySelected);
-		
+			}
 		   
 		            	
 		    function getchosenCategory() {
@@ -359,72 +480,7 @@
                     $('#communityPileSize').text(parseInt(responseText[0]));
                 };
                 xhr.send();
-                
-                
-            function getCardName(){
-        		  	var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getCardName	");
-        			xhr.send();
-        			xhr.onload = function(e){
-        		  		var responseText = xhr.response;
-        		  		document.getElementById("cardName").innerHTML = responseText;
-        		  	} 
-        	  	}
-                
-            }
-		    
-		   
-		    
-		            	
+			}            	
 		</script>
-		
-		<!-- Here are examples of how to call REST API Methods -->
-		<script type="text/javascript">
-		
-			// This calls the helloJSONList REST method from TopTrumpsRESTAPI
-			function helloJSONList() {
-			
-				// First create a CORS request, this is the message we are going to send (a get request in this case)
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/helloJSONList"); // Request type and URL
-				
-				// Message is not sent yet, but we can check that the browser supports CORS
-				if (!xhr) {
-  					alert("CORS not supported");
-				}
-
-				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
-				// to do when the response arrives 
-				xhr.onload = function(e) {
- 					var responseText = xhr.response; // the text of the response
-					alert(responseText); // lets produce an alert
-				};
-				
-				// We have done everything we need to prepare the CORS request, so send it
-				xhr.send();		
-			}
-			
-			// This calls the helloJSONList REST method from TopTrumpsRESTAPI
-			function helloWord(word) {
-			
-				// First create a CORS request, this is the message we are going to send (a get request in this case)
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/helloWord?Word="+word); // Request type and URL+parameters
-				
-				// Message is not sent yet, but we can check that the browser supports CORS
-				if (!xhr) {
-  					alert("CORS not supported");
-				}
-
-				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
-				// to do when the response arrives 
-				xhr.onload = function(e) {
- 					var responseText = xhr.response; // the text of the response
-					alert(responseText); // lets produce an alert
-				};
-				
-				// We have done everything we need to prepare the CORS request, so send it
-				xhr.send();		
-			}
-
-		</script>
-		
 		</body>
 </html>

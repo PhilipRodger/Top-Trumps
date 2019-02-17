@@ -119,6 +119,10 @@ public class TopTrumpsRESTAPI {
 		if (response == null || response.gameFinished) {
 			view.startGameListner.startNewGame(5);
 		} else if (!response.roundHasBeenResolved) {
+//		if (response == null || response.gameFinished) {
+//			view.startGameListner.startNewGame(5);
+//		} else 
+		//	if (!response.roundHasBeenResolved){
 			if (response.playersTurnIndex == 0) {
 				// User's turn so...
 				try {
