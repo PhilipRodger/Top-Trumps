@@ -107,18 +107,24 @@ public class TopTrumpsRESTAPI {
 	 */
 	public String helloWord(@QueryParam("Word") String Word) throws IOException {
 		return "Hello " + Word;
-
+		
 	}
-
+	@GET
+	@Path("/newGame")
+	public void newGame() {
+		view.startGameListner.startNewGame(5);
+	}
+	
 	RoundObjectToJson response;
 
 	@GET
 	@Path("/response")
 	public String response(@QueryParam("selection") int selection) throws IOException {
 		do {
-		if (response == null || response.gameFinished) {
-			view.startGameListner.startNewGame(5);
-		} else if (!response.roundHasBeenResolved) {
+//		if (response == null || response.gameFinished) {
+//			view.startGameListner.startNewGame(5);
+//		} else 
+			if (!response.roundHasBeenResolved) {
 			if (response.playersTurnIndex == 0) {
 				// User's turn so...
 				try {

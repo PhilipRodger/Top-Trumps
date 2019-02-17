@@ -162,19 +162,19 @@
 </div>
 <button type="button" id="nextButton" onclick="" class="btn btn-primary btn-lg">Next</button>
 <div  class="categoryButtons" id="categoryButtons">                                       
-        <button id="sizeButton" onclick="">Size</button>
-        <button id="speedButton" onclick="">Speed</button>
+        <button id="sizeButton" onclick="response(0)">Size</button>
+        <button id="speedButton" onclick="response(1)">Speed</button>
         
-		<button id="rangeButton" onclick="">Range</button>
-		<button id="firePower" onclick="">Firepower</button>
-        <button id="cargoButton" onclick="">Cargo</button>
+		<button id="rangeButton" onclick="response(2)">Range</button>
+		<button id="firePower" onclick="response(3)">Firepower</button>
+        <button id="cargoButton" onclick="response(4)">Cargo</button>
     </div>  
     
 </div><br/><br/><br/>
 <div class="mx-auto" style="width: 200px;">
         <div class="card border-primary mb-3" style="width: 18rem;">
                 <div class="card-header text-center text-white bg-primary mb-3" style="max-width: 18rem;">
-                    <h5>The active player is </h5>
+                    <h5 id="activePlayer"></h5>
                     <p id="communalPile"></p>
                     <p id="roundNumber"></p>
                 </div>
@@ -196,6 +196,7 @@
                 player3Card();
                 player4Card();
                 player5Card();
+                getActivePlayer();
                 getCommunalPile();
                 getRoundNumber();
 				
@@ -208,8 +209,7 @@
 			//----Global Variables----//
 			
 			
-			var roundNum;
-			var numOfPlayers;
+	
 			var categorySelected;
 			
 		
@@ -251,6 +251,24 @@
                 };
                 xhr.send();
             }
+            
+            function getActivePlayer() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    var playerIndex = responseText.playersTurnIndex;
+                    if (playerIndex == 0) {
+                    document.getElementById('activePlayer').innerHTML="The active player is you. Please select a category.";
+                    } else {
+                    hideButtons();
+                    document.getElementById('activePlayer').innerHTML="The active player is AI Player " + playerIndex + ".";
+                    }
+                };
+                xhr.send();
+            }
 
             function getCommunalPile() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
@@ -277,6 +295,26 @@
                 };
                 xhr.send();
             }
+            
+            function response(selection) {
+			
+				
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?selection="+selection); // Request type and URL+parameters
+				
+				
+				if (!xhr) {
+  					alert("CORS not supported");
+				}
+
+				
+				xhr.onload = function(e) {
+ 					var responseText = xhr.response; // the text of the response
+					 
+				};
+				
+			
+				xhr.send();		
+			}
                   
                   function player1Card() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
@@ -384,125 +422,24 @@
 			}
 				
 						
-						
-			function resolveRound () {
-							
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/resolveRound")
-						if(!xhr){
-							alert("CORS not supported");
-									}
-					xhr.send();
 			
-			}
 					
-			function getRoundWinner(){
-					//  create a CORS request, this is the message we are going to send (a get request in this case)
-					var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getRoundWinner"); // Request type and URL+parameters
-					// Message is not sent yet, but we can check that the browser supports CORS
-					if (!xhr) {
-						alert("CORS not supported");
-					}
-					
-					// We have done everything we need to prepare the CORS request, so send it
-					xhr.send()
-					
-					xhr.onload = function(e){
-				  		document.getElementById("(insert element you want)").innerHTML = "" + roundNum + ":  " + xhr.response;
-				  	}
-			} 
+		 
 				
-			function numberOfPlayers() {
-		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/numOfPlayers"); // Request type and URL
-		                if (!xhr) {
-		                    alert("CORS not supported");
-		                }
-		                xhr.onload = function(e) {
-		                    var responseText = JSON.parse(xhr.response); // the text of the response
-		                    numOfPlayers = parseInt(responseText[0]);
-						}
-			}
+			
 		                    
 		                    
 		                    
-		     function namesOfPlayers() {
-		              var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/namesOfPlayers"); // Request type and URL
-		                    if (!xhr) {
-		                            alert("CORS not supported");
-		                        }
-		                    xhr.onload = function() {
-		                           var  responseText = JSON.parse(xhr.response); // the text of the response
-		                            var n = parseInt(responseText[0]); //number of players
-		                            for (var i=1; i<(n+1); i++) {
-		                                $(".nameOfPlayer"+i).text(responseText[i]);
-		                            }
-		                        };
-		                        xhr.send();
-		                    }
-					
-		    function activePlayer() {
-		                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/activePlayer"); // Request type and URL
-		                if (!xhr) {
-		                    alert("CORS not supported");
-		                }
-		                xhr.onload = function(e) {
-		                    var responseText = JSON.parse(xhr.response); // the text of the response
-		                    $("p").parent().removeClass("active");
-		                    console.log("response old active player: " + activePlayerVar);
-		                    activePlayerVar = responseText;
-		                    $("p:contains('"+ activePlayerVar +"')").parent().toggleClass("active");
-		                    console.log("response active player: " + activePlayerVar);
-						}
-			}
+		     
+		 
 		                    
 		                    
-		    function cardCatNames() {
-		                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/cardCat"); // Request type and URL
-		                 if (!xhr) {
-		                 alert("CORS not supported");
-		                        }
-		                 xhr.onload = function(e) {
-		                 var responseText = JSON.parse(xhr.response); // the text of the response
-		                 for(var i=0; i<responseText.length; i++) {
-		                 $("#nameOfCat"+(i+1)).text(responseText[i]);
-		                 $("#nameOfCat"+(i+1)+"Btn").text(responseText[i]);
-		                            }
-		                        };
-		                        xhr.send();
-		                    }
+		    
 		        		   
-		      function getCardValues() {
-		                       var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getCardValues"); // Request type and URL
-		                       if (!xhr) {
-		                           alert("CORS not supported");
-		                       }
-		                       xhr.onload = function(e) {
-		                           var responseText = JSON.parse(xhr.response); // the text of the response
-		                           for (var i=0; i<responseText.length; i++) {
-		                               $("#cat"+(i+1)+"Value").text(parseInt(responseText[i]));
-		                           }
-		                       };
-		                       xhr.send();
-		                   }
+		   
 				
 		                
-		    function setCategory(clicked_id) {
-				      document.getElementById('Btn')
-				        categorySelected = clicked_id;
-				          console.log("this clicked id is: " + categorySelected);
-			}
-		   
-		            	
-		    function getchosenCategory() {
-		         var xhr = createCORSRequest('PUT', "http://localhost:7777/toptrumps/categorySelection"); // Request type and URL+parameters
-		                if (!xhr) {
-		                        alert("CORS not supported");
-		                    }
-		                    xhr.onload = function(e) {
-		                        var responseText = xhr.response; // the text of the response
-		                        $('#chosenCategory').text(responseText); //change user interface with chosen category
-		                    };
-		                    xhr.send();
-		                }        	
+		           	
 		            	
 		    
 		               	
