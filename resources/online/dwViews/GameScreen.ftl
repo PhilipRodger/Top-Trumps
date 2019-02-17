@@ -1,3 +1,4 @@
+
 <html>
 
 	<head>
@@ -31,7 +32,6 @@
                         font: italic;
                         text-align: center;
                     }
-
                     #nextButton {
                         position: absolute;
                     right: 0;
@@ -40,7 +40,6 @@
                         font: italic;
                         text-align: center;
                     }
-
                     
                     
                 </style>
@@ -212,37 +211,31 @@
 			function createCORSRequest(method, url) {
   				var xhr = new XMLHttpRequest();
   				if ("withCredentials" in xhr) {
-
     				// Check if the XMLHttpRequest object has a "withCredentials" property.
     				// "withCredentials" only exists on XMLHTTPRequest2 objects.
     				xhr.open(method, url, true);
-
   				} else if (typeof XDomainRequest != "undefined") {
-
     				// Otherwise, check if XDomainRequest.
     				// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
     				xhr = new XDomainRequest();
     				xhr.open(method, url);
-
  				 } else {
-
     				// Otherwise, CORS is not supported by the browser.
     				xhr = null;
-
   				 }
   				 return xhr;
 			}
 			
 			 function updateGame() {
-			 
-             getCommunalPile();
-             getActivePlayer();
-             getRoundNumber();
-             player1Card();
+			 player1Card();
              player2Card();
              player3Card();
              player4Card();
              player5Card();
+             getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();
+           
              document.getElementById('announce2').innerHTML="";
              var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=true"); // Request type and URL
                 if (!xhr) {
@@ -262,7 +255,6 @@
                 };
                 xhr.send();
             }
-
             
                 
             function gameOver() {
@@ -303,7 +295,7 @@
                     if (playerIndex == 0) {
                     document.getElementById('nextButton').style.visibility = "hidden";
                     showButtons();
-                    document.getElementById('categoryButtons').style.visibility = "hidden";
+                  
                     document.getElementById('activePlayer').innerHTML="The active player is you.";
                     
                     
@@ -313,12 +305,11 @@
                     document.getElementById('activePlayer').innerHTML="The active player is AI Player " + playerIndex + ".";
                    	aiCategory();
                     }
-                    gameOver();
+                    
                     
                 };
                 xhr.send();
             }
-
             function getCommunalPile() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
@@ -331,7 +322,6 @@
                 };
                 xhr.send();
             }
-
             
             function getRoundNumber() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
@@ -402,7 +392,6 @@
 				if (!xhr) {
   					alert("CORS not supported");
 				}
-
 				
 				xhr.onload = function(e) {
                      var responseText = xhr.response; // the text of the response
@@ -441,7 +430,6 @@
                 };
                 xhr.send();
             }
-
             function player2Card() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
@@ -459,7 +447,6 @@
                 };
                 xhr.send();
             }
-
             function player3Card() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
@@ -477,7 +464,6 @@
                 };
                 xhr.send();
             }
-
             function player4Card() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
@@ -495,7 +481,6 @@
                 };
                 xhr.send();
             }
-
             function player5Card() {
                 var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
@@ -513,7 +498,6 @@
                 };
                 xhr.send();
             }
-
 			
 			
 			function hideButtons() {
