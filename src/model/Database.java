@@ -66,7 +66,7 @@ public class Database {
 						// gameID of 1
 		int nDraws = gstats.getNumOfDraws(); // number of draws in the game
 		int nRounds = gstats.getNumOfRounds(); // number of rounds in the game
-		int gWinner = 0; // integer denoting which player won the game. if 1, human player wins, beyond 1
+		int gWinner = 2; // integer denoting which player won the game. if 1, human player wins, beyond 1
 							// denotes a computer victory
 		int p1RW = players[0].getRoundsWon(); // rounds won per player
 		int p2RW = players[1].getRoundsWon();
