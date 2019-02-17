@@ -206,7 +206,7 @@ public class OnlineView implements TopTrumpsView {
 							break;
 						}
 					}
-					
+					response.chosenCategory = Card.getCategories()[currentRound.getChosenCategory()];
 					response.communityPileSize = currentRound.getCommunityPileSize();
 					response.roundHasBeenResolved = false;
 					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
@@ -254,6 +254,8 @@ public class OnlineView implements TopTrumpsView {
 			}
 		
 		}
+		response.chosenCategory = Card.getCategories()[currentRound.getChosenCategory()];
+
 		response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
 		for (int i = 0; i < currentRound.getPlayers().length; i++) {
 			response.playersToJson[i] = new PlayerToJson();
