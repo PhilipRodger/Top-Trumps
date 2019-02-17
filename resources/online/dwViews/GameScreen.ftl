@@ -23,14 +23,26 @@
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
     	  <!--CSS for Game Screen-->
             <style>
-                    .footer {
+                    .categoryButtons {
                         position: absolute;
-                    right: 0;
-                    bottom: 10;
+                    right: 800;
+                    bottom: 100;
                     left: 0;
                         font: italic;
                         text-align: center;
                     }
+
+                    #nextButton {
+                        position: absolute;
+                    right: 0;
+                    bottom: 100;
+                    left: 1100;
+                        font: italic;
+                        text-align: center;
+                    }
+
+                    
+                    
                 </style>
     	<div class="container">
 <br/>
@@ -146,12 +158,25 @@
                                                   </p>
                                                 </div>
                                               </div>
+      
 </div>
+<button type="button" id="nextButton" onclick="" class="btn btn-primary btn-lg">Next</button>
+<div  class="categoryButtons" id="categoryButtons">                                       
+        <button id="sizeButton" onclick="">Size</button>
+        <button id="speedButton" onclick="">Speed</button>
+        
+		<button id="rangeButton" onclick="">Range</button>
+		<button id="firePower" onclick="">Firepower</button>
+        <button id="cargoButton" onclick="">Cargo</button>
+    </div>  
+    
 </div><br/><br/><br/>
 <div class="mx-auto" style="width: 200px;">
         <div class="card border-primary mb-3" style="width: 18rem;">
                 <div class="card-header text-center text-white bg-primary mb-3" style="max-width: 18rem;">
                     <h5>The active player is </h5>
+                    <p id="communalPile"></p>
+                    <p id="roundNumber"></p>
                 </div>
                 <div class="card-body text-center">
                         <h5>Game Announcement</h5>
@@ -171,15 +196,8 @@
                 player3Card();
                 player4Card();
                 player5Card();
-                
-			
-				// --------------------------------------------------------------------------
-				// You can call other methods you want to run when the page first loads here
-				// --------------------------------------------------------------------------
-				
-				// For example, lets call our sample methods
-			//	helloJSONList();
-			//	helloWord("Student");
+                getCommunalPile();
+                getRoundNumber();
 				
 			}
 			
@@ -229,7 +247,33 @@
                     alert("CORS not supported");
                 }
                 xhr.onload = function(e) {
+                    var responseText = xhr.response; 
+                };
+                xhr.send();
+            }
+
+            function getCommunalPile() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
                     var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('communalPile').innerHTML="Cards in Communal Pile: " +JSON.stringify(responseText.communityPileSize);
+                    
+                };
+                xhr.send();
+            }
+
+            function getRoundNumber() {
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('roundNumber').innerHTML="Round Number: " +JSON.stringify(responseText.roundNumber);
+                    
                 };
                 xhr.send();
             }
@@ -326,7 +370,10 @@
 
 			
 			
-			
+			function hideButtons() {
+                
+                document.getElementById('categoryButtons').style.visibility = "hidden";
+            }
 			function startRound () {
 				
 				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/startRound")
@@ -347,19 +394,7 @@
 					xhr.send();
 			
 			}
-			
-			function getRoundNumber(){
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getRoundNumber");
-				if(!xhr){
-			  		alert("CORS not supported");
-		  		}
-				xhr.send();
-				xhr.onload = function(e){
-			  		roundNumber =  xhr.response;
-			  	}
-			} 
-				
-				
+					
 			function getRoundWinner(){
 					//  create a CORS request, this is the message we are going to send (a get request in this case)
 					var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getRoundWinner"); // Request type and URL+parameters
@@ -470,17 +505,7 @@
 		                }        	
 		            	
 		    
-		    function communityPileSize() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/communityPileSize"); // Request type and URL
-                	if (!xhr) {
-                		alert("CORS not supported");
-                }
-                xhr.onload = function(e) {
-                    var responseText = JSON.parse(xhr.response); // the text of the response
-                    $('#communityPileSize').text(parseInt(responseText[0]));
-                };
-                xhr.send();
-			}            	
+		               	
 		</script>
 		</body>
 </html>
