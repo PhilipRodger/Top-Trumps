@@ -273,7 +273,7 @@ public class OnlineView implements TopTrumpsView {
 				response.playersToJson[i].humanPlayer = false;
 			}
 			response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
-			for (Card card : currentRound.getCommunityPile().getListRepresentation()) {
+			for (Card card : currentRound.getListOfCardsInRound()) {
 				if(card.getOwner() == currentRound.getPlayers()[i]) {
 					response.playersToJson[i].cardName = card.getName();
 					response.playersToJson[i].size = card.getValue(0);
