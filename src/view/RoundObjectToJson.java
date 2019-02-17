@@ -4,6 +4,7 @@ public class RoundObjectToJson {
 	// Game Data
 	public boolean gameFinished;
 	public int gameWinner;
+	public String gameWinnerString;
 	public int communityPileSize;
 	
 	//Round Data

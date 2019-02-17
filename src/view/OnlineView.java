@@ -54,6 +54,7 @@ public class OnlineView implements TopTrumpsView {
 				
 				RoundObjectToJson response = new RoundObjectToJson();
 				response.gameFinished = true;
+				response.gameWinnerString = game.getPlayers()[0].getName();
 				response.roundNumber = Round.getRoundNumber();
 				setResponse(response);
 				
@@ -74,6 +75,7 @@ public class OnlineView implements TopTrumpsView {
 				for(int i = 0; i < game.getPlayers().length; i++) {
 					if(game.getPlayers()[i] == game.getGameWinner()) {
 						response.gameWinner = i;
+						response.gameWinnerString = game.getPlayers()[i].getName();
 					}
 				}
 				response.roundNumber = Round.getRoundNumber();
