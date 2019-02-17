@@ -376,4 +376,8 @@ public class Game {
 			testFile.writeDecksAtEndOfRound(round);
 		}
 	}
+
+	public Round getCurrentRound() {
+		return round;
+	}
 }

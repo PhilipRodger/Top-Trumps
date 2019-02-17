@@ -115,9 +115,10 @@ public class TopTrumpsRESTAPI {
 	@GET
 	@Path("/response")
 	public String response(@QueryParam("selection") int selection) throws IOException {
+		do {
 		if (response == null || response.gameFinished) {
 			view.startGameListner.startNewGame(5);
-		} else if (!response.roundHasBeenResolved){
+		} else if (!response.roundHasBeenResolved) {
 			if (response.playersTurnIndex == 0) {
 				// User's turn so...
 				try {
@@ -128,10 +129,12 @@ public class TopTrumpsRESTAPI {
 			} else {
 				view.nextCatagoryListener.nextCategory();
 			}
+		} else {
+			view.nextRoundListener.nextRound();
 		}
-		
-		return oWriter.writeValueAsString(response);
+		} while (view.autoResolve);
 
+		return oWriter.writeValueAsString(response);
 
 	}
 
