@@ -267,15 +267,25 @@
 	                
 	                    var responseText = JSON.parse(xhr.response); // the text of the response
 	                    var playerCard = responseText.playersToJson[0].numberOfCards;
-	                    var gameWinner;
+	                    var player2Card = responseText.playersToJson[0].numberOfCards;
+	                    var player3Card = responseText.playersToJson[0].numberOfCards;
+	                    var player4Card = responseText.playersToJson[0].numberOfCards;
+	                    var player5Card = responseText.playersToJson[0].numberOfCards;
+	                   
 	                    
 	                    if (playerCard == 0) {
 	               
 	                    hideButtons();
-	                    gameWinner = responseText.gameWinnerString;
+	                    
 	                    alert("The game is over and the winner is " +responseText.gameWinnerString+". Thanks for playing!");
 	                    window.location ='http://localhost:7777/toptrumps/';
 	                    }
+	                    else if (player2Card == 0 && player3Card == 0 && player4Card == 0 && player5Card == 0){
+	                    hideButtons();
+	                    alert("Congratulations, you won!");
+	                    window.location ='http://localhost:7777/toptrumps/';
+	                    }
+	                    
 	                    
 	                    
 	                };
