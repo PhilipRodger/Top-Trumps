@@ -160,14 +160,14 @@
                                               </div>
       
 </div>
-<button type="button" id="nextButton" onclick="" class="btn btn-primary btn-lg">Next</button>
+<button type="button" id="nextButton" onclick="updateGame()" class="btn btn-primary btn-lg">Next</button>
 <div  class="categoryButtons" id="categoryButtons">                                       
-        <button id="sizeButton" onclick="response(0)">Size</button>
-        <button id="speedButton" onclick="response(1)">Speed</button>
+        <button id="sizeButton" onclick="response(0); updateGame();">Size</button>
+        <button id="speedButton" onclick="response(1); updateGame();">Speed</button>
         
-		<button id="rangeButton" onclick="response(2)">Range</button>
-		<button id="firePower" onclick="response(3)">Firepower</button>
-        <button id="cargoButton" onclick="response(4)">Cargo</button>
+		<button id="rangeButton" onclick="response(2); updateGame();">Range</button>
+		<button id="firePower" onclick="response(3); updateGame();">Firepower</button>
+        <button id="cargoButton" onclick="response(4); updateGame();">Cargo</button>
     </div>  
     
 </div><br/><br/><br/>
@@ -179,7 +179,7 @@
                     <p id="roundNumber"></p>
                 </div>
                 <div class="card-body text-center">
-                        <h5>Game Announcement</h5>
+                        <h5 id="announce"></h5>
                     </div>
                   </div><br/><br/>
       </div>	
@@ -190,7 +190,6 @@
 		
 			// Method that is called on page load
 			function initalize() {
-				newGame();
                 player1Card();
                 player2Card();
                 player3Card();
@@ -205,13 +204,6 @@
 			// -----------------------------------------
 			// Add your other Javascript methods Here
 			// -----------------------------------------
-			
-			//----Global Variables----//
-			
-			
-	
-			var categorySelected;
-			
 		
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
@@ -238,22 +230,37 @@
   				 return xhr;
 			}
 			
-			 /**
-             * start the game data request
-             * */
-            function newGame() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/newGame"); // Request type and URL
+			 function updateGame() {
+			 
+            getCommunalPile();
+
+             getActivePlayer();
+             getRoundNumber();
+             player1Card();
+             player2Card();
+             player3Card();
+             player4Card();
+             player5Card();
+             var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=true"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
                 xhr.onload = function(e) {
-                    var responseText = xhr.response; 
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    
+                    
                 };
                 xhr.send();
             }
+
+            
+                
+                
+			 
+			 
             
             function getActivePlayer() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -261,17 +268,21 @@
                     var responseText = JSON.parse(xhr.response); // the text of the response
                     var playerIndex = responseText.playersTurnIndex;
                     if (playerIndex == 0) {
-                    document.getElementById('activePlayer').innerHTML="The active player is you. Please select a category.";
+                    showButtons();
+                    document.getElementById('activePlayer').innerHTML="The active player is you.";
+                    
                     } else {
                     hideButtons();
                     document.getElementById('activePlayer').innerHTML="The active player is AI Player " + playerIndex + ".";
+                   
                     }
+                    
                 };
                 xhr.send();
             }
 
             function getCommunalPile() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -284,7 +295,20 @@
             }
 
             function getRoundNumber() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('roundNumber').innerHTML="Round Number: " +JSON.stringify(responseText.roundNumber);
+                    
+                };
+                xhr.send();
+            }
+            
+            function getRoundNumber() {
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -297,7 +321,23 @@
             }
             
             function response(selection) {
-			
+            hideButtons();
+            if (selection == 0){
+                     document.getElementById('announce').innerHTML="You have selected Size.";
+                     }
+                     else if (selection == 1){
+                     document.getElementById('announce').innerHTML="You have selected Speed.";
+                     }
+                     else if (selection == 2){
+                     document.getElementById('announce').innerHTML="You have selected Range.";
+                     }
+                     else if (selection == 3){
+                     document.getElementById('announce').innerHTML="You have selected Firepower.";
+                     }
+                     else if (selection == 4){
+                     document.getElementById('announce').innerHTML="You have selected Cargo.";
+                     }
+			 
 				
 				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?selection="+selection); // Request type and URL+parameters
 				
@@ -308,16 +348,17 @@
 
 				
 				xhr.onload = function(e) {
- 					var responseText = xhr.response; // the text of the response
-					 
+                     var responseText = xhr.response; // the text of the response
+                     
 				};
-				
-			
-				xhr.send();		
+                xhr.send();		
+                
+               
+                
 			}
                   
                   function player1Card() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -335,7 +376,7 @@
             }
 
             function player2Card() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -353,7 +394,7 @@
             }
 
             function player3Card() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -371,7 +412,7 @@
             }
 
             function player4Card() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -389,7 +430,7 @@
             }
 
             function player5Card() {
-                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -412,37 +453,14 @@
                 
                 document.getElementById('categoryButtons').style.visibility = "hidden";
             }
-			function startRound () {
-				
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/startRound")
-						if(!xhr){
-					  		alert("CORS not supported");
-						}
-						xhr.send();
-			}
-				
-						
 			
-					
-		 
-				
 			
-		                    
-		                    
-		                    
-		     
-		 
-		                    
-		                    
-		    
-		        		   
-		   
-				
-		                
-		           	
-		            	
-		    
-		               	
+			function showButtons() {
+                
+                document.getElementById('categoryButtons').style.visibility = "visible";
+            }
+			
+						               	
 		</script>
 		</body>
 </html>

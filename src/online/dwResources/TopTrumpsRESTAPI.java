@@ -107,39 +107,44 @@ public class TopTrumpsRESTAPI {
 	 */
 	public String helloWord(@QueryParam("Word") String Word) throws IOException {
 		return "Hello " + Word;
-		
+
 	}
-	@GET
-	@Path("/newGame")
-	public void newGame() {
-		view.startGameListner.startNewGame(5);
-	}
-	
+
+//	@GET
+//	@Path("/newGame")
+//	public void newGame() {
+//		view.startGameListner.startNewGame(5);
+//	}
+//
 	RoundObjectToJson response;
 
 	@GET
 	@Path("/response")
-	public String response(@QueryParam("selection") int selection) throws IOException {
+	public String response(@QueryParam("selection") int selection, @QueryParam("update") boolean update) throws IOException {
+		
+		
+		if(update) {
 		do {
-//		if (response == null || response.gameFinished) {
-//			view.startGameListner.startNewGame(5);
-//		} else 
-			if (!response.roundHasBeenResolved) {
-			if (response.playersTurnIndex == 0) {
-				// User's turn so...
-				try {
+			if (response == null || response.gameFinished) {
+				view.autoResolve = false;
+				view.startGameListner.startNewGame(5);
+			} else if (!response.roundHasBeenResolved) {
+				if (response.playersTurnIndex == 0) {
+					// User's turn so...
 					view.userSelectionListner.userSelection(selection);
-				} catch (Exception e) {
-					// TODO: handle exception
+
+				} else {
+					view.nextCatagoryListener.nextCategory();
 				}
 			} else {
-				view.nextCatagoryListener.nextCategory();
+				if (model.nextTurnPossible()) {
+					view.nextRoundListener.nextRound();
+				} else if (model.resolveComputerTurnPossible()) {
+					view.nextCatagoryListener.nextCategory();
+				}
 			}
-		} else {
-			view.nextRoundListener.nextRound();
-		}
 		} while (view.autoResolve);
-
+		}
 		return oWriter.writeValueAsString(response);
 
 	}

@@ -91,7 +91,7 @@ public class OnlineView implements TopTrumpsView {
 					RoundObjectToJson response = new RoundObjectToJson();
 					displayTurnResolutionResponse(game.getCurrentRound(), response);
 					setResponse(response);
-					//autoResolve = true;
+					autoResolve = true;
 				}
 			}
 		});
