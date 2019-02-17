@@ -10,6 +10,7 @@ public class RoundObjectToJson {
 	public boolean roundHasBeenResolved;
 	public int roundNumber;
 	public int playersTurnIndex;
+	public String playersTurnName; 
 	
 	//Only filled up when Round has resolved
 	public int roundWinnerIndex; // -1 if draw
