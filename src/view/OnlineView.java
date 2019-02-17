@@ -159,6 +159,7 @@ public class OnlineView implements TopTrumpsView {
 							break;
 						}
 					}
+					response.communityPileSize = currentRound.getCommunityPileSize();
 					response.roundHasBeenResolved = false;
 					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
 					for (int i = 0; i < currentRound.getPlayers().length; i++) {
@@ -203,6 +204,8 @@ public class OnlineView implements TopTrumpsView {
 							break;
 						}
 					}
+					
+					response.communityPileSize = currentRound.getCommunityPileSize();
 					response.roundHasBeenResolved = false;
 					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
 					for (int i = 0; i < currentRound.getPlayers().length; i++) {
@@ -240,6 +243,7 @@ public class OnlineView implements TopTrumpsView {
 				break;
 			}
 		}
+		response.communityPileSize = currentRound.getCommunityPileSize();
 		response.roundHasBeenResolved = true;
 		for (int i = 0; i < currentRound.getPlayers().length; i++) {
 			if (currentRound.getPlayers()[i] == currentRound.getRoundWinner()) {

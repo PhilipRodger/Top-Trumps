@@ -112,8 +112,9 @@ public class TopTrumpsModel {
 		this.displayUserOutOfGame = displayer;
 	}
 
-	public void addDisplayUserWonRound(DisplayUserWonRound displayUserWonRound2) {
+	public void addDisplayUserWonRound(DisplayUserWonRound displayer) {
 		// TODO Auto-generated method stub
+		this.displayUserWonRound = displayer;
 		
 	}
 
