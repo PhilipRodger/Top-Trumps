@@ -116,22 +116,24 @@ public class TopTrumpsRESTAPI {
 	@Path("/response")
 	public String response(@QueryParam("selection") int selection) throws IOException {
 		do {
-		if (response == null || response.gameFinished) {
-			view.startGameListner.startNewGame(5);
-		} else if (!response.roundHasBeenResolved) {
-			if (response.playersTurnIndex == 0) {
-				// User's turn so...
-				try {
+			if (response == null || response.gameFinished) {
+				view.autoResolve = false;
+				view.startGameListner.startNewGame(5);
+			} else if (!response.roundHasBeenResolved) {
+				if (response.playersTurnIndex == 0) {
+					// User's turn so...
 					view.userSelectionListner.userSelection(selection);
-				} catch (Exception e) {
-					// TODO: handle exception
+
+				} else {
+					view.nextCatagoryListener.nextCategory();
 				}
 			} else {
-				view.nextCatagoryListener.nextCategory();
+				if (model.nextTurnPossible()) {
+					view.nextRoundListener.nextRound();
+				} else if (model.resolveComputerTurnPossible()) {
+					view.nextCatagoryListener.nextCategory();
+				}
 			}
-		} else {
-			view.nextRoundListener.nextRound();
-		}
 		} while (view.autoResolve);
 
 		return oWriter.writeValueAsString(response);
