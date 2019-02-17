@@ -248,6 +248,8 @@ public class OnlineView implements TopTrumpsView {
 		for (int i = 0; i < currentRound.getPlayers().length; i++) {
 			if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
 				response.playersTurnIndex = i;
+				response.playersTurnName = currentRound.getPlayers()[i].getName();
+
 				break;
 			}
 		}
