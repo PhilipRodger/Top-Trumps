@@ -61,7 +61,7 @@ public class TopTrumpsRESTAPI {
 		// ----------------------------------------------------
 		// Add relevant initalization here
 		// ----------------------------------------------------
-		
+
 		boolean writeGameLogsToFile = false; // Should always be false
 		model = new TopTrumpsModel(writeGameLogsToFile);
 		view = new OnlineView(model);
@@ -92,6 +92,7 @@ public class TopTrumpsRESTAPI {
 		// We can turn arbatory Java objects directly into JSON strings using
 		// Jackson seralization, assuming that the Java objects are not too complex.
 		String listAsJSONString = oWriter.writeValueAsString(listOfWords);
+
 		return listAsJSONString;
 	}
 
@@ -108,22 +109,20 @@ public class TopTrumpsRESTAPI {
 		return "Hello " + Word;
 
 	}
-	
-	@GET
-	@Path("/newGame")
-	public void newGame() {
-		view.startGameListner.startNewGame(5);
-	}
+
 	RoundObjectToJson response;
-	PlayerToJson player;
 
 	@GET
 	@Path("/response")
 	public String response(@QueryParam("selection") int selection) throws IOException {
+		do {
+		if (response == null || response.gameFinished) {
+			view.startGameListner.startNewGame(5);
+		} else if (!response.roundHasBeenResolved) {
 //		if (response == null || response.gameFinished) {
 //			view.startGameListner.startNewGame(5);
 //		} else 
-			if (!response.roundHasBeenResolved){
+		//	if (!response.roundHasBeenResolved){
 			if (response.playersTurnIndex == 0) {
 				// User's turn so...
 				try {
@@ -133,21 +132,21 @@ public class TopTrumpsRESTAPI {
 				}
 			} else {
 				view.nextCatagoryListener.nextCategory();
-			
 			}
+		} else {
+			view.nextRoundListener.nextRound();
 		}
-		
+		} while (view.autoResolve);
+
 		return oWriter.writeValueAsString(response);
 
-
 	}
-	
-	
 
 	/// ***** relevant methods ******///
 
 	/// ******** Database API methods ********///
 	@GET
+
 	@Path("/totalGames")
 	/**
 	 * Get total games played from the database
