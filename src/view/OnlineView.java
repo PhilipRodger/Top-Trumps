@@ -25,6 +25,7 @@ import model.Round;
 import model.TopTrumpsModel;
 import online.dwResources.TopTrumpsRESTAPI;
 
+//TODO The print statements/ CLI specific methods should be removed before submission. 
 public class OnlineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;
 	TopTrumpsModel model;
