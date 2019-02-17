@@ -86,7 +86,7 @@ public class CommandLineView implements TopTrumpsView {
 				}
 			}
 		});
-		model.addDisplayUserOutOfGame(new DisplayUserWonRound() {
+		model.addDisplayUserWonRound(new DisplayUserWonRound() {
 
 			@Override
 			public void showUserWonRound(Round currentRound) {

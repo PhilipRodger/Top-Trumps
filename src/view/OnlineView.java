@@ -21,6 +21,7 @@ import model.Card;
 import model.DatabaseResponse;
 import model.Game;
 import model.HumanPlayer;
+import model.Player;
 import model.Round;
 import model.TopTrumpsModel;
 import online.dwResources.TopTrumpsRESTAPI;
@@ -28,7 +29,7 @@ import online.dwResources.TopTrumpsRESTAPI;
 public class OnlineView implements TopTrumpsView {
 	private final int numOfPlayers = 5;
 	TopTrumpsModel model;
-	boolean autoResolve = false;
+	public boolean autoResolve = false;
 	boolean mainMenu = true;
 
 	public OnlineView(TopTrumpsModel model) {
@@ -50,6 +51,11 @@ public class OnlineView implements TopTrumpsView {
 				System.out.println("You won!");
 				System.out.println(String.format("After only %d rounds!\n\n", Round.getRoundNumber()));
 				showMainMenu();
+				
+				RoundObjectToJson response = new RoundObjectToJson();
+				response.gameFinished = true;
+				setResponse(response);
+				
 				autoResolve = false;
 
 			}
@@ -62,6 +68,14 @@ public class OnlineView implements TopTrumpsView {
 				System.out.println(String.format("You lost, the winner was %s.", game.getGameWinner().getName()));
 				System.out.println(String.format("After only %d rounds!\n\n", Round.getRoundNumber()));
 				showMainMenu();
+				RoundObjectToJson response = new RoundObjectToJson();
+				response.gameFinished = true;
+				for(int i = 0; i < game.getPlayers().length; i++) {
+					if(game.getPlayers()[i] == game.getGameWinner()) {
+						response.gameWinner = i;
+					}
+				}
+				setResponse(response);
 				autoResolve = false;
 			}
 		});
@@ -74,12 +88,14 @@ public class OnlineView implements TopTrumpsView {
 				if (!autoResolve) {
 					System.out.println("You are out of the game, enter anything to resolve the game.");
 					System.out.println("This may take a while if you wanted a log file.");
-
-					autoResolve = true;
+					RoundObjectToJson response = new RoundObjectToJson();
+					displayTurnResolutionResponse(game.getCurrentRound(), response);
+					setResponse(response);
+					//autoResolve = true;
 				}
 			}
 		});
-		model.addDisplayUserOutOfGame(new DisplayUserWonRound() {
+		model.addDisplayUserWonRound(new DisplayUserWonRound() {
 
 			@Override
 			public void showUserWonRound(Round currentRound) {
@@ -87,6 +103,9 @@ public class OnlineView implements TopTrumpsView {
 				if (!autoResolve) {
 					showCardsInRound(currentRound);
 					System.out.println("You won this round, enter anything to continue.");
+					RoundObjectToJson response = new RoundObjectToJson();
+					displayTurnResolutionResponse(currentRound, response);
+					setResponse(response);
 				}
 			}
 		});
@@ -98,6 +117,10 @@ public class OnlineView implements TopTrumpsView {
 				if (!autoResolve) {
 					showCardsInRound(currentRound);
 					System.out.println("Round Draw, enter anything to continue.");
+					RoundObjectToJson response = new RoundObjectToJson();
+					displayTurnResolutionResponse(currentRound, response);
+					response.roundWinnerIndex = -1;
+					setResponse(response);
 				}
 			}
 		});
@@ -112,44 +135,7 @@ public class OnlineView implements TopTrumpsView {
 					System.out.println("You lost this round, enter anything to continue.");
 
 					RoundObjectToJson response = new RoundObjectToJson();
-					response.gameFinished = false;
-					response.roundNumber = Round.getRoundNumber();
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
-							response.playersTurnIndex = i;
-							break;
-						}
-					}
-					response.roundHasBeenResolved = true;
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						if (currentRound.getPlayers()[i] == currentRound.getRoundWinner()) {
-							response.roundWinnerIndex = i;
-							break;
-						}
-					
-					}
-					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						response.playersToJson[i] = new PlayerToJson();
-						response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
-						if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
-							response.playersToJson[i].humanPlayer = true;
-						} else {
-							response.playersToJson[i].humanPlayer = false;
-						}
-						response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
-						for (Card card : currentRound.getCommunityPile().getListRepresentation()) {
-							if(card.getOwner() == currentRound.getPlayers()[i]) {
-								response.playersToJson[i].cardName = card.getName();
-								response.playersToJson[i].size = card.getValue(0);
-								response.playersToJson[i].speed = card.getValue(1);
-								response.playersToJson[i].range = card.getValue(2);
-								response.playersToJson[i].firepower = card.getValue(3);
-								response.playersToJson[i].cargo = card.getValue(4);
-								break;
-							}
-						}
-					}
+					displayTurnResolutionResponse(currentRound, response);
 					setResponse(response);
 				}
 			}
@@ -170,9 +156,11 @@ public class OnlineView implements TopTrumpsView {
 					for (int i = 0; i < currentRound.getPlayers().length; i++) {
 						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
 							response.playersTurnIndex = i;
+							response.playersTurnName = currentRound.getPlayers()[i].getName();
 							break;
 						}
 					}
+					response.communityPileSize = currentRound.getCommunityPileSize();
 					response.roundHasBeenResolved = false;
 					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
 					for (int i = 0; i < currentRound.getPlayers().length; i++) {
@@ -214,9 +202,12 @@ public class OnlineView implements TopTrumpsView {
 					for (int i = 0; i < currentRound.getPlayers().length; i++) {
 						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
 							response.playersTurnIndex = i;
+							response.playersTurnName = currentRound.getPlayers()[i].getName();
 							break;
 						}
 					}
+					
+					response.communityPileSize = currentRound.getCommunityPileSize();
 					response.roundHasBeenResolved = false;
 					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
 					for (int i = 0; i < currentRound.getPlayers().length; i++) {
@@ -243,6 +234,48 @@ public class OnlineView implements TopTrumpsView {
 			}
 		});
 
+	}
+	
+	private void displayTurnResolutionResponse(Round currentRound, RoundObjectToJson response) {
+		response.gameFinished = false;
+		response.roundNumber = Round.getRoundNumber();
+		for (int i = 0; i < currentRound.getPlayers().length; i++) {
+			if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+				response.playersTurnIndex = i;
+				break;
+			}
+		}
+		response.communityPileSize = currentRound.getCommunityPileSize();
+		response.roundHasBeenResolved = true;
+		for (int i = 0; i < currentRound.getPlayers().length; i++) {
+			if (currentRound.getPlayers()[i] == currentRound.getRoundWinner()) {
+				response.roundWinnerIndex = i;
+				break;
+			}
+		
+		}
+		response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
+		for (int i = 0; i < currentRound.getPlayers().length; i++) {
+			response.playersToJson[i] = new PlayerToJson();
+			response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
+			if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
+				response.playersToJson[i].humanPlayer = true;
+			} else {
+				response.playersToJson[i].humanPlayer = false;
+			}
+			response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
+			for (Card card : currentRound.getCommunityPile().getListRepresentation()) {
+				if(card.getOwner() == currentRound.getPlayers()[i]) {
+					response.playersToJson[i].cardName = card.getName();
+					response.playersToJson[i].size = card.getValue(0);
+					response.playersToJson[i].speed = card.getValue(1);
+					response.playersToJson[i].range = card.getValue(2);
+					response.playersToJson[i].firepower = card.getValue(3);
+					response.playersToJson[i].cargo = card.getValue(4);
+					break;
+				}
+			}
+		}
 	}
 
 	// Display the card a user drew to prompt them to make a choice.
