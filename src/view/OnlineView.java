@@ -21,7 +21,6 @@ import model.Card;
 import model.DatabaseResponse;
 import model.Game;
 import model.HumanPlayer;
-import model.Player;
 import model.Round;
 import model.TopTrumpsModel;
 import online.dwResources.TopTrumpsRESTAPI;
@@ -53,11 +52,8 @@ public class OnlineView implements TopTrumpsView {
 				showMainMenu();
 				
 				RoundObjectToJson response = new RoundObjectToJson();
-				response.gameFinished = true;
-				response.gameWinnerString = game.getPlayers()[0].getName();
-				response.roundNumber = Round.getRoundNumber();
+				displayGameOverResponce(game, response);
 				setResponse(response);
-				
 				autoResolve = false;
 
 			}
@@ -71,15 +67,7 @@ public class OnlineView implements TopTrumpsView {
 				System.out.println(String.format("After only %d rounds!\n\n", Round.getRoundNumber()));
 				showMainMenu();
 				RoundObjectToJson response = new RoundObjectToJson();
-				response.gameFinished = true;
-				for(int i = 0; i < game.getPlayers().length; i++) {
-					if(game.getPlayers()[i] == game.getGameWinner()) {
-						response.gameWinner = i;
-						response.gameWinnerString = game.getPlayers()[i].getName();
-					}
-				}
-				response.roundNumber = Round.getRoundNumber();
-
+				displayGameOverResponce(game, response);
 				setResponse(response);
 				autoResolve = false;
 			}
@@ -157,36 +145,7 @@ public class OnlineView implements TopTrumpsView {
 					showUsersCard(currentRound.getFirstCard());
 
 					RoundObjectToJson response = new RoundObjectToJson();
-					response.gameFinished = false;
-					response.roundNumber = Round.getRoundNumber();
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
-							response.playersTurnIndex = i;
-							response.playersTurnName = currentRound.getPlayers()[i].getName();
-							break;
-						}
-					}
-					response.communityPileSize = currentRound.getCommunityPileSize();
-					response.roundHasBeenResolved = false;
-					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						response.playersToJson[i] = new PlayerToJson();
-						response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
-						if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
-							response.playersToJson[i].humanPlayer = true;
-						} else {
-							response.playersToJson[i].humanPlayer = false;
-						}
-						response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
-						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
-							response.playersToJson[i].cardName = currentRound.getFirstCard().getName();
-							response.playersToJson[i].size = currentRound.getFirstCard().getValue(0);
-							response.playersToJson[i].speed = currentRound.getFirstCard().getValue(1);
-							response.playersToJson[i].range = currentRound.getFirstCard().getValue(2);
-							response.playersToJson[i].firepower = currentRound.getFirstCard().getValue(3);
-							response.playersToJson[i].cargo = currentRound.getFirstCard().getValue(4);
-						}
-					}
+					showTurnBeforeResolution(currentRound, response);
 					setResponse(response);
 				}
 			}
@@ -203,57 +162,47 @@ public class OnlineView implements TopTrumpsView {
 					System.out.println("Enter anything to resolve the round.");
 
 					RoundObjectToJson response = new RoundObjectToJson();
-					response.gameFinished = false;
-					response.roundNumber = Round.getRoundNumber();
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
-							response.playersTurnIndex = i;
-							response.playersTurnName = currentRound.getPlayers()[i].getName();
-							break;
-						}
-					}
+					showTurnBeforeResolution(currentRound, response);
 					response.chosenCategory = Card.getCategories()[currentRound.getChosenCategory()];
-					response.communityPileSize = currentRound.getCommunityPileSize();
-					response.roundHasBeenResolved = false;
-					response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
-					for (int i = 0; i < currentRound.getPlayers().length; i++) {
-						response.playersToJson[i] = new PlayerToJson();
-						response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
-						if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
-							response.playersToJson[i].humanPlayer = true;
-						} else {
-							response.playersToJson[i].humanPlayer = false;
-						}
-						response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
-						if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
-							response.playersToJson[i].cardName = currentRound.getFirstCard().getName();
-							response.playersToJson[i].size = currentRound.getFirstCard().getValue(0);
-							response.playersToJson[i].speed = currentRound.getFirstCard().getValue(1);
-							response.playersToJson[i].range = currentRound.getFirstCard().getValue(2);
-							response.playersToJson[i].firepower = currentRound.getFirstCard().getValue(3);
-							response.playersToJson[i].cargo = currentRound.getFirstCard().getValue(4);
-						}
-					}
 					setResponse(response);
 
 				}
 			}
 		});
-
+	}
+	
+	
+	private void displayGameOverResponce(Game game, RoundObjectToJson response) {
+		// Base response is the turn that caused the game over 
+		displayTurnResolutionResponse(game.getCurrentRound(), response);
+		
+		// Overwrite some data to show the winner
+		response.gameFinished = true;
+		for(int i = 0; i < game.getPlayers().length; i++) {
+			if(game.getPlayers()[i] == game.getGameWinner()) {
+				response.gameWinner = i;
+				response.gameWinnerString = game.getPlayers()[i].getName();
+			}
+		}
+	}
+	
+	private void showTurnBeforeResolution(Round currentRound, RoundObjectToJson response) {
+		showTurnGeneral(currentRound, response);
+		response.roundHasBeenResolved = false;
+		for (int i = 0; i < currentRound.getPlayers().length; i++) {
+			if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+				response.playersToJson[i].cardName = currentRound.getFirstCard().getName();
+				response.playersToJson[i].size = currentRound.getFirstCard().getValue(0);
+				response.playersToJson[i].speed = currentRound.getFirstCard().getValue(1);
+				response.playersToJson[i].range = currentRound.getFirstCard().getValue(2);
+				response.playersToJson[i].firepower = currentRound.getFirstCard().getValue(3);
+				response.playersToJson[i].cargo = currentRound.getFirstCard().getValue(4);
+			}
+		}
 	}
 	
 	private void displayTurnResolutionResponse(Round currentRound, RoundObjectToJson response) {
-		response.gameFinished = false;
-		response.roundNumber = Round.getRoundNumber();
-		for (int i = 0; i < currentRound.getPlayers().length; i++) {
-			if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
-				response.playersTurnIndex = i;
-				response.playersTurnName = currentRound.getPlayers()[i].getName();
-
-				break;
-			}
-		}
-		response.communityPileSize = currentRound.getCommunityPileSize();
+		showTurnGeneral(currentRound, response);
 		response.roundHasBeenResolved = true;
 		for (int i = 0; i < currentRound.getPlayers().length; i++) {
 			if (currentRound.getPlayers()[i] == currentRound.getRoundWinner()) {
@@ -261,20 +210,10 @@ public class OnlineView implements TopTrumpsView {
 				response.roundWinnerString = currentRound.getPlayers()[i].getName();
 				break;
 			}
-		
 		}
 		response.chosenCategory = Card.getCategories()[currentRound.getChosenCategory()];
-
-		response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
+		
 		for (int i = 0; i < currentRound.getPlayers().length; i++) {
-			response.playersToJson[i] = new PlayerToJson();
-			response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
-			if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
-				response.playersToJson[i].humanPlayer = true;
-			} else {
-				response.playersToJson[i].humanPlayer = false;
-			}
-			response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
 			for (Card card : currentRound.getListOfCardsInRound()) {
 				if(card.getOwner() == currentRound.getPlayers()[i]) {
 					response.playersToJson[i].cardName = card.getName();
@@ -286,6 +225,31 @@ public class OnlineView implements TopTrumpsView {
 					break;
 				}
 			}
+		}
+	}
+	
+	private void showTurnGeneral(Round currentRound, RoundObjectToJson response) {
+		response.gameFinished = false;
+		response.roundNumber = Round.getRoundNumber();
+		for (int i = 0; i < currentRound.getPlayers().length; i++) {
+			if (currentRound.getPlayers()[i] == currentRound.getPlayersTurn()) {
+				response.playersTurnIndex = i;
+				response.playersTurnName = currentRound.getPlayers()[i].getName();
+				break;
+			}
+		}
+		response.communityPileSize = currentRound.getCommunityPileSize();
+		
+		response.playersToJson = new PlayerToJson[currentRound.getPlayers().length];
+		for (int i = 0; i < currentRound.getPlayers().length; i++) {
+			response.playersToJson[i] = new PlayerToJson();
+			response.playersToJson[i].inGame = currentRound.getPlayers()[i].inGame();
+			if (currentRound.getPlayers()[i] instanceof HumanPlayer) {
+				response.playersToJson[i].humanPlayer = true;
+			} else {
+				response.playersToJson[i].humanPlayer = false;
+			}
+			response.playersToJson[i].numberOfCards = currentRound.getPlayers()[i].getNumberOfCards();
 		}
 	}
 
