@@ -54,6 +54,7 @@ public class OnlineView implements TopTrumpsView {
 				
 				RoundObjectToJson response = new RoundObjectToJson();
 				response.gameFinished = true;
+				response.roundNumber = Round.getRoundNumber();
 				setResponse(response);
 				
 				autoResolve = false;
@@ -75,6 +76,8 @@ public class OnlineView implements TopTrumpsView {
 						response.gameWinner = i;
 					}
 				}
+				response.roundNumber = Round.getRoundNumber();
+
 				setResponse(response);
 				autoResolve = false;
 			}
