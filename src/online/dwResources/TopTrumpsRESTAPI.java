@@ -132,6 +132,7 @@ public class TopTrumpsRESTAPI {
 				if (response.playersTurnIndex == 0) {
 					// User's turn so...
 					view.userSelectionListner.userSelection(selection);
+					
 
 				} else {
 					view.nextCatagoryListener.nextCategory();

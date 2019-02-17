@@ -162,12 +162,12 @@
 </div>
 <button type="button" id="nextButton" onclick="updateGame()" class="btn btn-primary btn-lg">Next</button>
 <div  class="categoryButtons" id="categoryButtons">                                       
-        <button id="sizeButton" onclick="response(0); updateGame();">Size</button>
-        <button id="speedButton" onclick="response(1); updateGame();">Speed</button>
+        <button id="sizeButton" onclick="response(0); humanCategory();">Size</button>
+        <button id="speedButton" onclick="response(1); humanCategory();">Speed</button>
         
-		<button id="rangeButton" onclick="response(2); updateGame();">Range</button>
-		<button id="firePower" onclick="response(3); updateGame();">Firepower</button>
-        <button id="cargoButton" onclick="response(4); updateGame();">Cargo</button>
+		<button id="rangeButton" onclick="response(2); humanCategory();">Range</button>
+		<button id="firePower" onclick="response(3); humanCategory();">Firepower</button>
+        <button id="cargoButton" onclick="response(4); humanCategory();">Cargo</button>
     </div>  
     
 </div><br/><br/><br/>
@@ -179,7 +179,8 @@
                     <p id="roundNumber"></p>
                 </div>
                 <div class="card-body text-center">
-                        <h5 id="announce"></h5>
+                        <h5 id="announce"></h5><br/>
+                        <p id="announce2"></p>
                     </div>
                   </div><br/><br/>
       </div>	
@@ -232,8 +233,7 @@
 			
 			 function updateGame() {
 			 
-            getCommunalPile();
-
+             getCommunalPile();
              getActivePlayer();
              getRoundNumber();
              player1Card();
@@ -241,13 +241,21 @@
              player3Card();
              player4Card();
              player5Card();
+             document.getElementById('announce2').innerHTML="";
              var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=true"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
                 xhr.onload = function(e) {
                     var responseText = JSON.parse(xhr.response); // the text of the response
+                    var roundOver = responseText.roundHasBeenResolved;
+                    var roundWinnerIndex = responseText.roundWinnerIndex;
+                    if (roundWinnerIndex >=0 && roundOver==true) {
                     
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
+                    } else {
+                    document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
+                    }
                     
                 };
                 xhr.send();
@@ -268,13 +276,16 @@
                     var responseText = JSON.parse(xhr.response); // the text of the response
                     var playerIndex = responseText.playersTurnIndex;
                     if (playerIndex == 0) {
+                    document.getElementById('nextButton').style.visibility = "hidden";
                     showButtons();
                     document.getElementById('activePlayer').innerHTML="The active player is you.";
                     
+                    
                     } else {
                     hideButtons();
+                    document.getElementById('nextButton').style.visibility = "visible";
                     document.getElementById('activePlayer').innerHTML="The active player is AI Player " + playerIndex + ".";
-                   
+                   	aiCategory();
                     }
                     
                 };
@@ -294,6 +305,7 @@
                 xhr.send();
             }
 
+            
             function getRoundNumber() {
                 var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
@@ -307,39 +319,57 @@
                 xhr.send();
             }
             
-            function getRoundNumber() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+            function humanCategory() {
+            
+             var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                hideButtons();
+                document.getElementById('nextButton').style.visibility = "visible";
                 if (!xhr) {
                     alert("CORS not supported");
                 }
                 xhr.onload = function(e) {
                     var responseText = JSON.parse(xhr.response); // the text of the response
-                    document.getElementById('roundNumber').innerHTML="Round Number: " +JSON.stringify(responseText.roundNumber);
+                    var chosenCard = responseText.chosenCategory;
+                    if (chosenCard == null) {
+                    document.getElementById('announce').innerHTML="";
+                    }
+                    else {
+                    document.getElementById('announce').innerHTML="You have chosen " +JSON.stringify(responseText.chosenCategory);
+                    }
+                };
+                xhr.send();
+            
+            
+            
+            }
+            function aiCategory() {
+            
+             var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    document.getElementById('announce').innerHTML="The AI player has chosen " +JSON.stringify(responseText.chosenCategory);
                     
                 };
                 xhr.send();
+            
+            
+            
             }
             
             function response(selection) {
-            hideButtons();
-            if (selection == 0){
-                     document.getElementById('announce').innerHTML="You have selected Size.";
-                     }
-                     else if (selection == 1){
-                     document.getElementById('announce').innerHTML="You have selected Speed.";
-                     }
-                     else if (selection == 2){
-                     document.getElementById('announce').innerHTML="You have selected Range.";
-                     }
-                     else if (selection == 3){
-                     document.getElementById('announce').innerHTML="You have selected Firepower.";
-                     }
-                     else if (selection == 4){
-                     document.getElementById('announce').innerHTML="You have selected Cargo.";
-                     }
-			 
-				
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?selection="+selection); // Request type and URL+parameters
+            getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();
+             player1Card();
+             player2Card();
+             player3Card();
+             player4Card();
+             player5Card();
+             
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?selection="+selection+"&update=true"); // Request type and URL+parameters
 				
 				
 				if (!xhr) {
@@ -349,8 +379,17 @@
 				
 				xhr.onload = function(e) {
                      var responseText = xhr.response; // the text of the response
+                     var roundOver = responseText.roundHasBeenResolved;
+                    var roundWinnerIndex = responseText.roundWinnerIndex;
+                    if (roundWinnerIndex >=0 && roundOver==true) {
+                    
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
+                    } else {
+                    document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
+                    }
                      
 				};
+				
                 xhr.send();		
                 
                
