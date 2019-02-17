@@ -48,7 +48,7 @@
 <br/>
 		<div id="playing-cards" class="container">
 <div class="card-deck">
-        <div class="card border-success" style="width: 18rem;">
+        <div  class="card border-success" id="card1" style="width: 18rem;">
             <div class="card-header text-center text-white bg-success mb-3" style="max-width: 18rem;">
                 <h5>Player</h5>
                 <p id="numCard1"></p>
@@ -70,7 +70,7 @@
                 </div>
               </div>
 
-              <div class="card border-danger" style="width: 18rem;">
+              <div class="card border-danger" id="card2" style="width: 18rem;">
                     <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
                         <h5>AI Player 1</h5>
                         <p id="numCard2"></p>
@@ -94,7 +94,7 @@
                       </div>
 
                       <div class="card border-danger" style="width: 18rem;">
-                            <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                            <div class="card-header text-center text-white bg-danger mb-3" id="card3" style="max-width: 18rem;">
                                 <h5>AI Player 2</h5>
                                 <p id="numCard3"></p>
                             </div>
@@ -116,7 +116,7 @@
                               </div>
 
                               <div class="card border-danger" style="width: 18rem;">
-                                    <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                    <div class="card-header text-center text-white bg-danger mb-3" id="card4" style="max-width: 18rem;">
                                         <h5>AI Player 3</h5>
                                         <p id="numCard4"></p>
                                     </div>
@@ -138,7 +138,7 @@
                                       </div>
 
                                       <div class="card border-danger" style="width: 18rem;">
-                                            <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
+                                            <div class="card-header text-center text-white bg-danger mb-3"  style="max-width: 18rem;">
                                                 <h5>AI Player 4</h5>
                                                 <p id="numCard5"></p>
                                             </div>
@@ -160,15 +160,17 @@
                                               </div>
       
 </div>
-<button type="button" id="nextButton" onclick="updateGame()" class="btn btn-primary btn-lg">Next</button>
+<button type="button" id="nextButton" onclick="updateGame(); gameOver();" class="btn btn-primary btn-lg">Next</button>
 <div  class="categoryButtons" id="categoryButtons">                                       
-        <button id="sizeButton" onclick="response(0); humanCategory();">Size</button>
-        <button id="speedButton" onclick="response(1); humanCategory();">Speed</button>
+        <button id="sizeButton" onclick="response(0); humanCategory(); gameOver();">Size</button>
+        <button id="speedButton" onclick="response(1); humanCategory(); gameOver();">Speed</button>
         
-		<button id="rangeButton" onclick="response(2); humanCategory();">Range</button>
-		<button id="firePower" onclick="response(3); humanCategory();">Firepower</button>
-        <button id="cargoButton" onclick="response(4); humanCategory();">Cargo</button>
+		<button id="rangeButton" onclick="response(2); humanCategory(); gameOver();">Range</button>
+		<button id="firePower" onclick="response(3); humanCategory(); gameOver();">Firepower</button>
+        <button id="cargoButton" onclick="response(4); humanCategory(); gameOver();">Cargo</button>
+        
     </div>  
+ 
     
 </div><br/><br/><br/>
 <div class="mx-auto" style="width: 200px;">
@@ -242,7 +244,7 @@
              player4Card();
              player5Card();
              document.getElementById('announce2').innerHTML="";
-             var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=true"); // Request type and URL
+             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=true"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -263,12 +265,35 @@
 
             
                 
-                
+            function gameOver() {
+            
+	            var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
+	                if (!xhr) {
+	                    alert("CORS not supported");
+	                }
+	                xhr.onload = function(e) {
+	                
+	                    var responseText = JSON.parse(xhr.response); // the text of the response
+	                    var playerCard = responseText.playersToJson[0].numberOfCards;
+	                    var gameWinner;
+	                    
+	                    if (playerCard == 0) {
+	               
+	                    hideButtons();
+	                    gameWinner = responseText.gameWinnerString;
+	                    alert("The game is over and the winner is " +responseText.gameWinnerString+". Thanks for playing!");
+	                    window.location ='http://localhost:7777/toptrumps/';
+	                    }
+	                    
+	                    
+	                };
+	                xhr.send();
+            }
 			 
 			 
             
             function getActivePlayer() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -278,6 +303,7 @@
                     if (playerIndex == 0) {
                     document.getElementById('nextButton').style.visibility = "hidden";
                     showButtons();
+                    document.getElementById('categoryButtons').style.visibility = "hidden";
                     document.getElementById('activePlayer').innerHTML="The active player is you.";
                     
                     
@@ -287,13 +313,14 @@
                     document.getElementById('activePlayer').innerHTML="The active player is AI Player " + playerIndex + ".";
                    	aiCategory();
                     }
+                    gameOver();
                     
                 };
                 xhr.send();
             }
 
             function getCommunalPile() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -307,7 +334,7 @@
 
             
             function getRoundNumber() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -321,7 +348,7 @@
             
             function humanCategory() {
             
-             var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 hideButtons();
                 document.getElementById('nextButton').style.visibility = "visible";
                 if (!xhr) {
@@ -344,13 +371,13 @@
             }
             function aiCategory() {
             
-             var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
                 xhr.onload = function(e) {
                     var responseText = JSON.parse(xhr.response); // the text of the response
-                    document.getElementById('announce').innerHTML="The AI player has chosen " +JSON.stringify(responseText.chosenCategory);
+                    document.getElementById('announce').innerHTML="The AI player has chosen " +responseText.chosenCategory;
                     
                 };
                 xhr.send();
@@ -381,11 +408,12 @@
                      var responseText = xhr.response; // the text of the response
                      var roundOver = responseText.roundHasBeenResolved;
                     var roundWinnerIndex = responseText.roundWinnerIndex;
-                    if (roundWinnerIndex >=0 && roundOver==true) {
-                    
-                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
-                    } else {
+                    if (roundWinnerIndex == -1) {
                     document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
+                    
+                    } else {
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
+                   
                     }
                      
 				};
@@ -397,7 +425,7 @@
 			}
                   
                   function player1Card() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -415,7 +443,7 @@
             }
 
             function player2Card() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -433,7 +461,7 @@
             }
 
             function player3Card() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -451,7 +479,7 @@
             }
 
             function player4Card() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
@@ -469,7 +497,7 @@
             }
 
             function player5Card() {
-                var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=false"); // Request type and URL
+                var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
                 if (!xhr) {
                     alert("CORS not supported");
                 }
