@@ -110,11 +110,20 @@ public class TopTrumpsRESTAPI {
 
 	}
 
+//	@GET
+//	@Path("/newGame")
+//	public void newGame() {
+//		view.startGameListner.startNewGame(5);
+//	}
+//
 	RoundObjectToJson response;
 
 	@GET
 	@Path("/response")
-	public String response(@QueryParam("selection") int selection) throws IOException {
+	public String response(@QueryParam("selection") int selection, @QueryParam("update") boolean update) throws IOException {
+		
+		
+		if(update) {
 		do {
 			if (response == null || response.gameFinished) {
 				view.autoResolve = false;
@@ -135,7 +144,7 @@ public class TopTrumpsRESTAPI {
 				}
 			}
 		} while (view.autoResolve);
-
+		}
 		return oWriter.writeValueAsString(response);
 
 	}
