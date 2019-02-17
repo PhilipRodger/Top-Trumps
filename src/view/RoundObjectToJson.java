@@ -15,6 +15,8 @@ public class RoundObjectToJson {
 	
 	//Only filled up when Round has resolved
 	public int roundWinnerIndex; // -1 if draw
+	public String roundWinnerString;
+
 	
 	// Player Data
 	public PlayerToJson playersToJson[];

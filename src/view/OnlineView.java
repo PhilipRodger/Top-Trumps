@@ -123,6 +123,7 @@ public class OnlineView implements TopTrumpsView {
 					RoundObjectToJson response = new RoundObjectToJson();
 					displayTurnResolutionResponse(currentRound, response);
 					response.roundWinnerIndex = -1;
+					response.roundWinnerString = "Draw";
 					setResponse(response);
 				}
 			}
@@ -253,6 +254,7 @@ public class OnlineView implements TopTrumpsView {
 		for (int i = 0; i < currentRound.getPlayers().length; i++) {
 			if (currentRound.getPlayers()[i] == currentRound.getRoundWinner()) {
 				response.roundWinnerIndex = i;
+				response.roundWinnerString = currentRound.getPlayers()[i].getName();
 				break;
 			}
 		
