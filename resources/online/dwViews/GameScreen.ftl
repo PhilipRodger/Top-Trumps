@@ -159,14 +159,14 @@
                                               </div>
       
 </div>
-<button type="button" id="nextButton" onclick="updateGame(); gameOver();" class="btn btn-primary btn-lg">Next</button>
+<button type="button" id="nextButton" onclick="updateGame();" class="btn btn-primary btn-lg">Next</button>
 <div  class="categoryButtons" id="categoryButtons">                                       
-        <button id="sizeButton" onclick="response(0); humanCategory(); gameOver();">Size</button>
-        <button id="speedButton" onclick="response(1); humanCategory(); gameOver();">Speed</button>
+        <button id="sizeButton" onclick="response(0); humanCategory();">Size</button>
+        <button id="speedButton" onclick="response(1); humanCategory();">Speed</button>
         
-		<button id="rangeButton" onclick="response(2); humanCategory(); gameOver();">Range</button>
-		<button id="firePower" onclick="response(3); humanCategory(); gameOver();">Firepower</button>
-        <button id="cargoButton" onclick="response(4); humanCategory(); gameOver();">Cargo</button>
+		<button id="rangeButton" onclick="response(2); humanCategory();">Range</button>
+		<button id="firePower" onclick="response(3); humanCategory();">Firepower</button>
+        <button id="cargoButton" onclick="response(4); humanCategory();">Cargo</button>
         
     </div>  
  
@@ -193,14 +193,15 @@
 			// Method that is called on page load
 			function initalize() {
 				startGame();
-                player1Card();
-                player2Card();
-                player3Card();
-                player4Card();
-                player5Card();
-                getActivePlayer();
-                getCommunalPile();
-                getRoundNumber();
+				player1Card();
+             player2Card();
+             player3Card();
+             player4Card();
+             player5Card();
+             getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();
+                 
      
 				
 			}
@@ -242,7 +243,7 @@
                     var roundWinnerIndex = responseText.roundWinnerIndex;
                     if (roundWinnerIndex >=0 && roundOver==true) {
                     
-                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " + responseText.roundWinnerString;
                     } else if (roundWinnerIndex == 0 && roundOver== true){
                     document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
                     } else {
@@ -251,11 +252,13 @@
                     
                 };
                 xhr.send();
+                
+                
             }
             
 			
 			 function updateGame() {
-			 
+			  
            
              document.getElementById('announce2').innerHTML="";
              var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=true"); // Request type and URL
@@ -266,18 +269,25 @@
                     var responseText = JSON.parse(xhr.response); // the text of the response
                     var roundOver = responseText.roundHasBeenResolved;
                     var roundWinnerIndex = responseText.roundWinnerIndex;
-                    if (roundWinnerIndex >=0 && roundOver==true) {
+                    if ((roundWinnerIndex == -1) && (roundOver== true)) {
                     
-                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
-                    } else if (roundWinnerIndex == 0 && roundOver== true){
                     document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
-                    } else {
+                    
+                    } else if ((roundWinnerIndex > 0)  && (roundOver== true)){
+                    
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " + responseText.roundWinnerString;
+                    
+                    } else if ((responseText.roundWinnerString == "User(You)")  && (roundOver== true)) {
+                    document.getElementById('announce2').innerHTML="The round is over and you won the round.";
+                    }
+                    else {
                     document.getElementById('announce2').innerHTML=" ";
                     }
-                    
+                     gameOver(); 
                 };
                 xhr.send();
-             player1Card();
+                
+                player1Card();
              player2Card();
              player3Card();
              player4Card();
@@ -285,6 +295,10 @@
              getCommunalPile();
              getActivePlayer();
              getRoundNumber();
+               
+             
+             
+             
             }
             
                 
@@ -302,17 +316,19 @@
 	                    var player3Card = responseText.playersToJson[0].numberOfCards;
 	                    var player4Card = responseText.playersToJson[0].numberOfCards;
 	                    var player5Card = responseText.playersToJson[0].numberOfCards;
+	                    var isGameOver = responseText.gameFinished;
 	                   
 	                    
-	                    if (playerCard == 0) {
+	                    if ((isGameOver == true) && (playerCard == 0)) {
 	               
 	                    hideButtons();
-	                    
+	                    document.getElementById('nextButton').style.visibility = "hidden";
 	                    alert("The game is over and the winner is " +responseText.gameWinnerString+". Thanks for playing!");
 	                    window.location ='http://localhost:7777/toptrumps/';
 	                    }
-	                    else if (player2Card == 0 && player3Card == 0 && player4Card == 0 && player5Card == 0){
+	                    else if ((isGameOver = true) && (player2Card == 0) && (player3Card == 0) && (player4Card == 0) && (player5Card == 0)){
 	                    hideButtons();
+	                    document.getElementById('nextButton').style.visibility = "hidden";
 	                    alert("Congratulations, you won!");
 	                    window.location ='http://localhost:7777/toptrumps/';
 	                    }
@@ -422,7 +438,7 @@
             }
             
             function response(selection) {
-            
+             
              
 				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?selection="+selection+"&update=true"); // Request type and URL+parameters
 				
@@ -432,29 +448,36 @@
 				}
 				
 				xhr.onload = function(e) {
-                     var responseText = xhr.response; // the text of the response
-                     var roundOver = responseText.roundHasBeenResolved;
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    var roundOver = responseText.roundHasBeenResolved;
                     var roundWinnerIndex = responseText.roundWinnerIndex;
-                    if (roundWinnerIndex == -1) {
+                    if ((roundWinnerIndex == -1) && (roundOver== true)) {
+                    
                     document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
                     
-                    } else {
-                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
-                   
+                    } else if ((roundWinnerIndex > 0)  && (roundOver== true)){
+                    
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " + responseText.roundWinnerString;
+                    
+                    } else if ((responseText.roundWinnerString == "User(You)")  && (roundOver== true)) {
+                    document.getElementById('announce2').innerHTML="The round is over and you won the round.";
                     }
-                     
+                    else {
+                    document.getElementById('announce2').innerHTML=" ";
+                    }
+                     gameOver();  
 				};
 				
-                xhr.send();		
-                getCommunalPile();
-             getActivePlayer();
-             getRoundNumber();
-             player1Card();
+                xhr.send();	
+                player1Card();
              player2Card();
              player3Card();
              player4Card();
              player5Card();
-                
+             getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();	
+             
                
                 
 			}
