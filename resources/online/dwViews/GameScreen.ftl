@@ -71,7 +71,7 @@
 
               <div class="card border-danger" id="card2" style="width: 18rem;">
                     <div class="card-header text-center text-white bg-danger mb-3" style="max-width: 18rem;">
-                        <h5>AI Player 1</h5>
+                        <h5>AI Player 1 (Computer1)</h5>
                         <p id="numCard2"></p>
                     </div>
                     <div class="card-name text-center">
@@ -94,7 +94,7 @@
 
                       <div class="card border-danger" style="width: 18rem;">
                             <div class="card-header text-center text-white bg-danger mb-3" id="card3" style="max-width: 18rem;">
-                                <h5>AI Player 2</h5>
+                                <h5>AI Player 2 (Computer2)</h5>
                                 <p id="numCard3"></p>
                             </div>
                             <div class="card-name text-center">
@@ -116,7 +116,7 @@
 
                               <div class="card border-danger" style="width: 18rem;">
                                     <div class="card-header text-center text-white bg-danger mb-3" id="card4" style="max-width: 18rem;">
-                                        <h5>AI Player 3</h5>
+                                        <h5>AI Player 3 (Computer3)</h5>
                                         <p id="numCard4"></p>
                                     </div>
                                     <div class="card-name text-center">
@@ -138,7 +138,7 @@
 
                                       <div class="card border-danger" style="width: 18rem;">
                                             <div class="card-header text-center text-white bg-danger mb-3"  style="max-width: 18rem;">
-                                                <h5>AI Player 4</h5>
+                                                <h5>AI Player 4 (Computer4)</h5>
                                                 <p id="numCard5"></p>
                                             </div>
                                             <div class="card-name text-center">
@@ -192,6 +192,7 @@
 		
 			// Method that is called on page load
 			function initalize() {
+				startGame();
                 player1Card();
                 player2Card();
                 player3Card();
@@ -200,6 +201,7 @@
                 getActivePlayer();
                 getCommunalPile();
                 getRoundNumber();
+     
 				
 			}
 			
@@ -226,15 +228,8 @@
   				 return xhr;
 			}
 			
-			 function updateGame() {
-			 player1Card();
-             player2Card();
-             player3Card();
-             player4Card();
-             player5Card();
-             getCommunalPile();
-             getActivePlayer();
-             getRoundNumber();
+			function startGame() {
+			 
            
              document.getElementById('announce2').innerHTML="";
              var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=true"); // Request type and URL
@@ -248,12 +243,48 @@
                     if (roundWinnerIndex >=0 && roundOver==true) {
                     
                     document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
-                    } else {
+                    } else if (roundWinnerIndex == 0 && roundOver== true){
                     document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
+                    } else {
+                    document.getElementById('announce2').innerHTML=" ";
                     }
                     
                 };
                 xhr.send();
+            }
+            
+			
+			 function updateGame() {
+			 
+           
+             document.getElementById('announce2').innerHTML="";
+             var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=true"); // Request type and URL
+                if (!xhr) {
+                    alert("CORS not supported");
+                }
+                xhr.onload = function(e) {
+                    var responseText = JSON.parse(xhr.response); // the text of the response
+                    var roundOver = responseText.roundHasBeenResolved;
+                    var roundWinnerIndex = responseText.roundWinnerIndex;
+                    if (roundWinnerIndex >=0 && roundOver==true) {
+                    
+                    document.getElementById('announce2').innerHTML="The round is over and the winner is " +JSON.stringify(responseText.roundWinnerString);
+                    } else if (roundWinnerIndex == 0 && roundOver== true){
+                    document.getElementById('announce2').innerHTML="The round is over and the result is a draw.";
+                    } else {
+                    document.getElementById('announce2').innerHTML=" ";
+                    }
+                    
+                };
+                xhr.send();
+             player1Card();
+             player2Card();
+             player3Card();
+             player4Card();
+             player5Card();
+             getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();
             }
             
                 
@@ -317,6 +348,7 @@
                     }
                     
                     
+                    
                 };
                 xhr.send();
             }
@@ -344,11 +376,13 @@
                     
                 };
                 xhr.send();
+                
             }
             
             function humanCategory() {
             
              var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?update=false"); // Request type and URL
+                
                 hideButtons();
                 document.getElementById('nextButton').style.visibility = "visible";
                 if (!xhr) {
@@ -365,6 +399,7 @@
                     }
                 };
                 xhr.send();
+                
             
             
             
@@ -387,14 +422,7 @@
             }
             
             function response(selection) {
-            getCommunalPile();
-             getActivePlayer();
-             getRoundNumber();
-             player1Card();
-             player2Card();
-             player3Card();
-             player4Card();
-             player5Card();
+            
              
 				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/response?selection="+selection+"&update=true"); // Request type and URL+parameters
 				
@@ -418,6 +446,14 @@
 				};
 				
                 xhr.send();		
+                getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();
+             player1Card();
+             player2Card();
+             player3Card();
+             player4Card();
+             player5Card();
                 
                
                 

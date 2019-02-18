@@ -45,7 +45,7 @@
     <div class="row">
     
     <div class="col-8 col-sm-6">
-    <a class="btn btn-lg btn-light" href="/toptrumps/game" onclick="newGame()" id="startGameButton">Start a new Top Trumps Game</a>
+    <a class="btn btn-lg btn-light" href="/toptrumps/game" id="startGameButton">Start a new Top Trumps Game</a>
     </div>
     </div>
   </div>
@@ -98,18 +98,7 @@
 				
 				
 			}
-			function newGame() {
-			var xhr = createCORSRequest('GET', "http://127.0.0.1:7777/toptrumps/response?update=true"); // Request type and URL
-                if (!xhr) {
-                    alert("CORS not supported");
-                }
-                xhr.onload = function(e) {
-                    var responseText = JSON.parse(xhr.response); // the text of the response
-                    
-                    
-                };
-                xhr.send();
-			}
+			
 			
 			// -----------------------------------------
 			// Add your other Javascript methods Here
