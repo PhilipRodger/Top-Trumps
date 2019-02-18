@@ -253,6 +253,14 @@
                 };
                 xhr.send();
                 
+                player1Card();
+             player2Card();
+             player3Card();
+             player4Card();
+             player5Card();
+             getCommunalPile();
+             getActivePlayer();
+             getRoundNumber();
                 
             }
             
