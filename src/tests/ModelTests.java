@@ -1,24 +1,18 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Test;
 
-import model.Card;
 import model.CardPile;
 import model.Deck;
-import model.Player;
-import view.CommandLineView;
 import model.Game;
+import view.CommandLineView;
 
 class ModelTests {
 
 	Deck deck;
 	Game game;
-	private Player[] players;
 	CommandLineView command;
 
 	@Test

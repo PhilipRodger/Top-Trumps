@@ -1,12 +1,8 @@
 package online.dwResources;
 
-import displayers.*;
-import model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
-import java.util.Collection;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,16 +11,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import online.configuration.TopTrumpsJSONConfiguration;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import model.*;
-import controler.*;
-import view.*;
-import listeners.*;
+import controler.TopTrumpsContoller;
+import model.Database;
+import model.DatabaseResponse;
+import model.TopTrumpsModel;
+import online.configuration.TopTrumpsJSONConfiguration;
+import view.OnlineView;
+import view.RoundObjectToJson;
 
 @Path("/toptrumps") // Resources specified here should be hosted at http://localhost:7777/toptrumps
 @Produces(MediaType.APPLICATION_JSON) // This resource returns JSON content
@@ -46,7 +42,6 @@ public class TopTrumpsRESTAPI {
 	 * easily.
 	 */
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
-	private static final String DECK_LOCATION = "StarCitizenDeck.txt";
 	TopTrumpsModel model;
 	OnlineView view;
 

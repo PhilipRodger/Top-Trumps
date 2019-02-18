@@ -1,7 +1,10 @@
 package view;
 
-import listeners.*;
-import model.*;
+import listeners.NextCategoryListener;
+import listeners.NextRoundListener;
+import listeners.StartGameListener;
+import listeners.UserSelectionListener;
+import listeners.ViewStatisticsListener;
 
 public interface TopTrumpsView {
 	// Interface that the CLI and Website should implement.
