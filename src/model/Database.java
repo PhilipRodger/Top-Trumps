@@ -15,9 +15,9 @@ public class Database {
 	 * 
 	 */
 	public Connection connectToDB() {
-		final String username = "postgres";
-		final String password = "6114680d";
-		final String dbName = "jdbc:postgresql:topTrumps";
+		final String username = "m_18_2413547k";
+		final String password = "2413547k";
+		final String dbName = "jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/";
 
 		try {
 			Class.forName("org.postgresql.Driver");
